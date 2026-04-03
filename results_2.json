@@ -1,0 +1,3407 @@
+[
+  {
+    "timestamp": "2026-03-13T17:59:19.199991",
+    "prompt": "Who wrote The Silent Empire of Mars",
+    "answer": "\"The Silent Empire of Mars\" was written by the author and scientist John E. McFetridge. If you have any specific questions about the book or its themes, feel free to ask!",
+    "triples": [
+      {
+        "s": "Silent Empire of Mars",
+        "p": "written_by",
+        "o": "John E. McFetridge",
+        "sentence": "\"The Silent Empire of Mars\" was written by the author and scientist John E. McFetridge.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q111",
+        "o_qid": "Q16876681",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:33:21.336490",
+    "prompt": "What is the capital of France?",
+    "answer": "The capital of France is Paris.",
+    "triples": [
+      {
+        "s": "France",
+        "p": "capital_of",
+        "o": "Paris",
+        "sentence": "The capital of France is Paris.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P36",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q142",
+        "o_qid": "Q90",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:33:27.966250",
+    "prompt": "Is Paris the capital of Germany?",
+    "answer": "No, Paris is not the capital of Germany; it is the capital of France. The capital of Germany is Berlin.",
+    "triples": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "it is the capital of France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      },
+      {
+        "s": "Berlin",
+        "p": "capital_of",
+        "o": "Germany",
+        "sentence": "The capital of Germany is Berlin.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q64",
+        "o_qid": "Q183",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:33:39.942598",
+    "prompt": "What is the capital of Australia?",
+    "answer": "The capital of Australia is Canberra.",
+    "triples": [
+      {
+        "s": "Australia",
+        "p": "capital_of",
+        "o": "Canberra",
+        "sentence": "The capital of Australia is Canberra.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P36",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q408",
+        "o_qid": "Q3114",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:05.212206",
+    "prompt": "Is Sydney the capital of Australia?",
+    "answer": "No, Sydney is not the capital of Australia. The capital of Australia is Canberra. Sydney is the capital of the state of New South Wales and is the largest city in Australia, but the federal government is based in Canberra.",
+    "triples": [
+      {
+        "s": "Canberra",
+        "p": "capital_of",
+        "o": "Australia",
+        "sentence": "The capital of Australia is Canberra.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3114",
+        "o_qid": "Q408",
+        "ask_result": true
+      },
+      {
+        "s": "Sydney",
+        "p": "capital_of",
+        "o": "New South Wales",
+        "sentence": "Sydney is the capital of the state of New South Wales.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3130",
+        "o_qid": "Q3224",
+        "ask_result": true
+      },
+      {
+        "s": "Sydney",
+        "p": "capital_of",
+        "o": "Australia",
+        "sentence": "No, Sydney is not the capital of Australia.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3130",
+        "o_qid": "Q408",
+        "ask_result": false
+      },
+      {
+        "s": "Sydney",
+        "p": "capital_of",
+        "o": "state of New South Wales",
+        "sentence": "Sydney is the capital of the state of New South Wales and is the largest city in Australia, but the federal government is based in Canberra.",
+        "confidence": 0.6,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3130",
+        "o_qid": "Q3224",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:12.464928",
+    "prompt": "Where is Paris located?",
+    "answer": "Paris is located in northern France, along the Seine River. It is the capital city and is situated in the Île-de-France region. Paris is known for its rich history, culture, and landmarks such as the Eiffel Tower, the Louvre Museum, and Notre-Dame Cathedral.",
+    "triples": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "It is the capital city and is situated in the Île-de-France region.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      },
+      {
+        "s": "Paris",
+        "p": "located_in",
+        "o": "Île-de-France",
+        "sentence": "It is the capital city and is situated in the Île-de-France region.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q13917",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:17.327818",
+    "prompt": "Which country is Cairo in?",
+    "answer": "Cairo is the capital city of Egypt.",
+    "triples": [
+      {
+        "s": "Cairo",
+        "p": "capital_of",
+        "o": "Egypt",
+        "sentence": "Cairo is the capital city of Egypt.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q85",
+        "o_qid": "Q79",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:23.357637",
+    "prompt": "Which continent is Egypt in?",
+    "answer": "Egypt is located in Africa. It is situated in the northeastern corner of the continent and is often considered a transcontinental country because the Sinai Peninsula extends into Asia.",
+    "triples": [
+      {
+        "s": "Egypt",
+        "p": "located_in",
+        "o": "Africa",
+        "sentence": "Egypt is located in Africa.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q79",
+        "o_qid": "Q15",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:31.447528",
+    "prompt": "Who wrote Wuthering Heights?",
+    "answer": "\"Wuthering Heights\" was written by Emily Brontë. It was published in 1847 under the pseudonym \"Ellis Bell.\"",
+    "triples": [
+      {
+        "s": "Wuthering Heights",
+        "p": "written_by",
+        "o": "Emily Brontë",
+        "sentence": "\"Wuthering Heights\" was written by Emily Brontë.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": "Q80137",
+        "ask_result": true
+      },
+      {
+        "s": "Wuthering Heights",
+        "p": "publication_year",
+        "o": "1847",
+        "sentence": "It was published in 1847 under the pseudonym \"Ellis Bell.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:39.728669",
+    "prompt": "When was Wuthering Heights published?",
+    "answer": "\"Wuthering Heights\" was published in 1847. It was initially released under the pseudonym \"Ellis Bell.\"",
+    "triples": [
+      {
+        "s": "Wuthering Heights",
+        "p": "publication_year",
+        "o": "1847",
+        "sentence": "\"Wuthering Heights\" was published in 1847.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Wuthering Heights",
+        "p": "alias_of",
+        "o": "Ellis Bell",
+        "sentence": "It was initially released under the pseudonym \"Ellis Bell.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "REFUTED",
+        "s_qid": null,
+        "o_qid": "Q80137",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:34:45.861832",
+    "prompt": "Was Wuthering Heights published in 1848?",
+    "answer": "\"Wuthering Heights\" was actually published in 1847. It was released in December of that year under the pseudonym \"Ellis Bell,\" which was used by Emily Brontë. The novel gained recognition over time and is now considered a classic of English literature.",
+    "triples": [
+      {
+        "s": "Wuthering Heights",
+        "p": "publication_year",
+        "o": "1847",
+        "sentence": "\"Wuthering Heights\" was actually published in 1847.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Wuthering Heights",
+        "p": "written_by",
+        "o": "Emily Brontë",
+        "sentence": "It was released in December of that year under the pseudonym \"Ellis Bell,\" which was used by Emily Brontë.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": "Q80137",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:00.283216",
+    "prompt": "Who wrote Pride and Prejudice?",
+    "answer": "\"Pride and Prejudice\" was written by Jane Austen. It was first published in 1813 and is one of her most famous novels.",
+    "triples": [
+      {
+        "s": "Pride and Prejudice",
+        "p": "written_by",
+        "o": "Jane Austen",
+        "sentence": "\"Pride and Prejudice\" was written by Jane Austen.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": "Q36322",
+        "ask_result": true
+      },
+      {
+        "s": "Pride and Prejudice",
+        "p": "publication_year",
+        "o": "1813",
+        "sentence": "It was first published in 1813.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:07.230238",
+    "prompt": "When was Pride and Prejudice published?",
+    "answer": "\"Pride and Prejudice\" was published on January 28, 1813.",
+    "triples": [
+      {
+        "s": "Pride and Prejudice",
+        "p": "publication_date",
+        "o": "January 28, 1813",
+        "sentence": "\"Pride and Prejudice\" was published on January 28, 1813.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Pride and Prejudice",
+        "p": "publication_year",
+        "o": "1813",
+        "sentence": "\"Pride and Prejudice\" was published on January 28, 1813.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:19.637381",
+    "prompt": "Is Jane Austen the author of Pride and Prejudice?",
+    "answer": "Yes, Jane Austen is the author of \"Pride and Prejudice.\" The novel was published in 1813 and is one of her most famous works, known for its themes of love, social class, and the complexities of relationships.",
+    "triples": [
+      {
+        "s": "Jane Austen",
+        "p": "author_of",
+        "o": "Pride and Prejudice",
+        "sentence": "Yes, Jane Austen is the author of \"Pride and Prejudice.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q36322",
+        "o_qid": "Q170583",
+        "ask_result": true
+      },
+      {
+        "s": "Pride and Prejudice",
+        "p": "publication_year",
+        "o": "1813",
+        "sentence": "The novel was published in 1813.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Pride and Prejudice",
+        "p": "written_by",
+        "o": "Jane Austen",
+        "sentence": "Yes, Jane Austen is the author of \"Pride and Prejudice.\"",
+        "confidence": 0.6,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q170583",
+        "o_qid": "Q36322",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:40.032979",
+    "prompt": "Who is Shakspere?",
+    "answer": "\"Shakspere\" is an alternative spelling of \"Shakespeare,\" referring to William Shakespeare, the renowned English playwright and poet. Born in 1564, he is widely regarded as one of the greatest writers in the English language and is known for his plays, sonnets, and poems. His works, including classics like \"Hamlet,\" \"Romeo and Juliet,\" and \"Macbeth,\" explore themes of love, power, betrayal, and the human condition. Shakespeare's influence on literature and the arts is profound and enduring, making him a central figure in English literature. If you have a specific context or aspect of Shakspere you want to explore, feel free to ask!",
+    "triples": [
+      {
+        "s": "Shakspere",
+        "p": "alias_of",
+        "o": "Shakespeare",
+        "sentence": "\"Shakspere\" is an alternative spelling of \"Shakespeare.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q692",
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "date_of_birth",
+        "o": "1564",
+        "sentence": "Born in 1564, he is widely regarded as one of the greatest writers in the English language.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P569",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "occupation",
+        "o": "playwright",
+        "sentence": "referring to William Shakespeare, the renowned English playwright and poet.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q214917",
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "occupation",
+        "o": "poet",
+        "sentence": "referring to William Shakespeare, the renowned English playwright and poet.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q49757",
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "notable_work",
+        "o": "Hamlet",
+        "sentence": "His works, including classics like \"Hamlet,\" \"Romeo and Juliet,\" and \"Macbeth,\" explore themes of love, power, betrayal, and the human condition.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q41567",
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "notable_work",
+        "o": "Romeo and Juliet",
+        "sentence": "His works, including classics like \"Hamlet,\" \"Romeo and Juliet,\" and \"Macbeth,\" explore themes of love, power, betrayal, and the human condition.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q83186",
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "notable_work",
+        "o": "Macbeth",
+        "sentence": "His works, including classics like \"Hamlet,\" \"Romeo and Juliet,\" and \"Macbeth,\" explore themes of love, power, betrayal, and the human condition.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q130283",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:47.086744",
+    "prompt": "Is 'Shakspere' an alternative spelling of William Shakespeare?",
+    "answer": "Yes, \"Shakspere\" is an alternative spelling of William Shakespeare's name. It is one of the variations recorded in historical documents. The spelling of names, especially in the 16th and 17th centuries, was often inconsistent, and different versions of Shakespeare's name can be found in various texts and records from his time.",
+    "triples": [
+      {
+        "s": "Shakspere",
+        "p": "alias_of",
+        "o": "William Shakespeare",
+        "sentence": "\"Shakspere\" is an alternative spelling of William Shakespeare's name.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q692",
+        "ask_result": true
+      },
+      {
+        "s": "Shakspere",
+        "p": "alias_of",
+        "o": "William Shakespeare's",
+        "sentence": "Yes, \"Shakspere\" is an alternative spelling of William Shakespeare's name.",
+        "confidence": 0.6,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q692",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:50.261385",
+    "prompt": "When was William Shakespeare born?",
+    "answer": "William Shakespeare was born on April 23, 1564.",
+    "triples": [
+      {
+        "s": "William Shakespeare",
+        "p": "date_of_birth",
+        "o": "1564",
+        "sentence": "William Shakespeare was born on April 23, 1564.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P569",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:35:57.585411",
+    "prompt": "Where was William Shakespeare born?",
+    "answer": "William Shakespeare was born in Stratford-upon-Avon, England, in April 1564.",
+    "triples": [
+      {
+        "s": "William Shakespeare",
+        "p": "date_of_birth",
+        "o": "1564",
+        "sentence": "William Shakespeare was born in Stratford-upon-Avon, England, in April 1564.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P569",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "William Shakespeare",
+        "p": "place_of_birth",
+        "o": "Stratford-upon-Avon",
+        "sentence": "William Shakespeare was born in Stratford-upon-Avon, England, in April 1564.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P19",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": "Q189288",
+        "ask_result": true
+      },
+      {
+        "s": "Stratford-upon-Avon",
+        "p": "located_in",
+        "o": "England",
+        "sentence": "William Shakespeare was born in Stratford-upon-Avon, England, in April 1564.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q189288",
+        "o_qid": "Q21",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:00.778288",
+    "prompt": "When did William Shakespeare die?",
+    "answer": "William Shakespeare died on April 23, 1616.",
+    "triples": [
+      {
+        "s": "William Shakespeare",
+        "p": "date_of_death",
+        "o": "1616",
+        "sentence": "William Shakespeare died on April 23, 1616.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P570",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q692",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:08.118719",
+    "prompt": "Who is the CEO of Apple?",
+    "answer": "As of my last update, the CEO of Apple is Tim Cook. He has held the position since August 2011, succeeding Steve Jobs. For the most current information, it's always best to check the latest news sources.",
+    "triples": [
+      {
+        "s": "Tim Cook",
+        "p": "ceo_of",
+        "o": "Apple",
+        "sentence": "As of my last update, the CEO of Apple is Tim Cook.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P169",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q265852",
+        "o_qid": "Q312",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:16.552452",
+    "prompt": "Who founded Microsoft?",
+    "answer": "Microsoft was founded by Bill Gates and Paul Allen on April 4, 1975.",
+    "triples": [
+      {
+        "s": "Microsoft",
+        "p": "founded_by",
+        "o": "Bill Gates",
+        "sentence": "Microsoft was founded by Bill Gates and Paul Allen on April 4, 1975.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q2283",
+        "o_qid": "Q5284",
+        "ask_result": true
+      },
+      {
+        "s": "Microsoft",
+        "p": "founded_by",
+        "o": "Paul Allen",
+        "sentence": "Microsoft was founded by Bill Gates and Paul Allen on April 4, 1975.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q2283",
+        "o_qid": "Q162005",
+        "ask_result": true
+      },
+      {
+        "s": "Microsoft",
+        "p": "founded_on",
+        "o": "April 4, 1975",
+        "sentence": "Microsoft was founded by Bill Gates and Paul Allen on April 4, 1975.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q2283",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:20.037019",
+    "prompt": "When was Google founded?",
+    "answer": "Google was founded on September 4, 1998.",
+    "triples": [
+      {
+        "s": "Google",
+        "p": "founded_on",
+        "o": "September 4, 1998",
+        "sentence": "Google was founded on September 4, 1998.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:25.736359",
+    "prompt": "What currency does Japan use?",
+    "answer": "Japan uses the Japanese yen, which is abbreviated as JPY. The symbol for the yen is ¥.",
+    "triples": [
+      {
+        "s": "Japan",
+        "p": "currency_of",
+        "o": "Japanese yen",
+        "sentence": "Japan uses the Japanese yen.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P38",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q17",
+        "o_qid": "Q8146",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:30.950727",
+    "prompt": "What language is spoken in Brazil?",
+    "answer": "The official language spoken in Brazil is Portuguese. It is the most widely used language in the country, reflecting Brazil's colonial history. There are also numerous indigenous languages spoken by various indigenous communities throughout Brazil.",
+    "triples": [
+      {
+        "s": "Brazil",
+        "p": "language_of",
+        "o": "Portuguese",
+        "sentence": "The official language spoken in Brazil is Portuguese.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P37",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q155",
+        "o_qid": "Q5146",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:36:45.920903",
+    "prompt": "Is Spanish the official language of Brazil?",
+    "answer": "No, Spanish is not the official language of Brazil. The official language of Brazil is Portuguese. Brazil is the largest Portuguese-speaking country in the world.",
+    "triples": [
+      {
+        "s": "Spanish",
+        "p": "language_of",
+        "o": "Brazil",
+        "sentence": "No, Spanish is not the official language of Brazil.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P37",
+        "reverse": false,
+        "mapped": false,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q1321",
+        "o_qid": "Q155",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:37:06.680067",
+    "prompt": "Is Alexandria part of Egypt?",
+    "answer": "Yes, Alexandria is a city in Egypt. It is located on the Mediterranean coast and is the country’s second-largest city after Cairo. Founded by Alexander the Great in 331 BC, Alexandria has a rich history and was once a major center of culture and learning in the ancient world, known for the famous Library of Alexandria. Today, it remains an important economic and cultural hub in Egypt.",
+    "triples": [
+      {
+        "s": "Alexandria",
+        "p": "located_in",
+        "o": "Egypt",
+        "sentence": "Yes, Alexandria is a city in Egypt.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q87",
+        "o_qid": "Q79",
+        "ask_result": true
+      },
+      {
+        "s": "Alexandria",
+        "p": "founded_by",
+        "o": "Alexander the Great",
+        "sentence": "Founded by Alexander the Great in 331 BC.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q209929",
+        "o_qid": "Q8409",
+        "ask_result": false
+      },
+      {
+        "s": "Alexandria",
+        "p": "founded_on",
+        "o": "331 BC",
+        "sentence": "Founded by Alexander the Great in 331 BC.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": null,
+        "o_qid": null,
+        "ask_result": null
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:37:25.326330",
+    "prompt": "Is Greenland part of Denmark?",
+    "answer": "Yes, Greenland is an autonomous territory within the Kingdom of Denmark. While it has its own government and controls many of its internal affairs, Denmark is responsible for areas such as foreign affairs, defense, and monetary policy. Greenlanders have a significant degree of self-governance, and there has been ongoing discussion about their relationship with Denmark and potential further autonomy.",
+    "triples": [
+      {
+        "s": "Greenland",
+        "p": "part_of",
+        "o": "Kingdom of Denmark",
+        "sentence": "Greenland is an autonomous territory within the Kingdom of Denmark.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P361",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q223",
+        "o_qid": "Q756617",
+        "ask_result": true
+      },
+      {
+        "s": "Greenlanders",
+        "p": "occupation",
+        "o": "self-governance",
+        "sentence": "Greenlanders have a significant degree of self-governance.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q888553",
+        "o_qid": "Q417633",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:37:34.433877",
+    "prompt": "Is the Eiffel Tower located in Paris?",
+    "answer": "Yes, the Eiffel Tower is located in Paris, France. It is one of the most iconic landmarks in the city and was completed in 1889 for the Exposition Universelle (World's Fair).",
+    "triples": [
+      {
+        "s": "Eiffel Tower",
+        "p": "located_in",
+        "o": "Paris",
+        "sentence": "the Eiffel Tower is located in Paris, France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": "Q90",
+        "ask_result": true
+      },
+      {
+        "s": "Eiffel Tower",
+        "p": "located_in",
+        "o": "France",
+        "sentence": "the Eiffel Tower is located in Paris, France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": "Q142",
+        "ask_result": true
+      },
+      {
+        "s": "Eiffel Tower",
+        "p": "founded_on",
+        "o": "1889",
+        "sentence": "was completed in 1889 for the Exposition Universelle (World's Fair).",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": null,
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:37:48.129422",
+    "prompt": "Is the Eiffel Tower located in London?",
+    "answer": "No, the Eiffel Tower is not located in London. It is situated in Paris, France. The Eiffel Tower is one of the most iconic landmarks in the world and was completed in 1889 for the Exposition Universelle (World's Fair). In London, you can find other famous landmarks, such as the Big Ben and the Tower Bridge.",
+    "triples": [
+      {
+        "s": "Eiffel Tower",
+        "p": "located_in",
+        "o": "Paris",
+        "sentence": "It is situated in Paris, France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": "Q90",
+        "ask_result": true
+      },
+      {
+        "s": "Eiffel Tower",
+        "p": "founded_on",
+        "o": "1889",
+        "sentence": "The Eiffel Tower was completed in 1889 for the Exposition Universelle (World's Fair).",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Eiffel Tower",
+        "p": "located_in",
+        "o": "London",
+        "sentence": "No, the Eiffel Tower is not located in London.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P131",
+        "reverse": false,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q243",
+        "o_qid": "Q84",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:38:09.475544",
+    "prompt": "Is Albert Einstein a physicist?",
+    "answer": "Yes, Albert Einstein was a physicist. He is best known for his contributions to theoretical physics, particularly for his theories of relativity, including the special theory of relativity and the general theory of relativity. His work fundamentally changed our understanding of space, time, and gravity. Einstein also made significant contributions to quantum mechanics and statistical mechanics.",
+    "triples": [
+      {
+        "s": "Albert Einstein",
+        "p": "occupation",
+        "o": "physicist",
+        "sentence": "Albert Einstein was a physicist.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q169470",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "notable_work",
+        "o": "theories of relativity",
+        "sentence": "He is best known for his contributions to theoretical physics, particularly for his theories of relativity.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q937",
+        "o_qid": "Q201607",
+        "ask_result": false
+      },
+      {
+        "s": "theories of relativity",
+        "p": "alias_of",
+        "o": "special theory of relativity",
+        "sentence": "including the special theory of relativity and the general theory of relativity.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "REFUTED",
+        "s_qid": null,
+        "o_qid": "Q11455",
+        "ask_result": false
+      },
+      {
+        "s": "theories of relativity",
+        "p": "alias_of",
+        "o": "general theory of relativity",
+        "sentence": "including the special theory of relativity and the general theory of relativity.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q201607",
+        "o_qid": "Q201607",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:38:27.168326",
+    "prompt": "Is Albert Einstein a painter?",
+    "answer": "No, Albert Einstein is not primarily known as a painter. He was a theoretical physicist best known for his contributions to the field of physics, particularly the theory of relativity and the famous equation \\(E=mc^2\\). While he had interests in music and even dabbled in painting later in life, his legacy is firmly rooted in science rather than the arts.",
+    "triples": [
+      {
+        "s": "Albert Einstein",
+        "p": "occupation",
+        "o": "theoretical physicist",
+        "sentence": "He was a theoretical physicist best known for his contributions to the field of physics, particularly the theory of relativity and the famous equation \\(E=mc^2\\).",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q169470",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "notable_work",
+        "o": "theory of relativity",
+        "sentence": "He was a theoretical physicist best known for his contributions to the field of physics, particularly the theory of relativity and the famous equation \\(E=mc^2\\).",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q43514",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "notable_work",
+        "o": "E=mc^2",
+        "sentence": "He was a theoretical physicist best known for his contributions to the field of physics, particularly the theory of relativity and the famous equation \\(E=mc^2\\).",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P800",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q35875",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "occupation",
+        "o": "painter",
+        "sentence": "No, Albert Einstein is not primarily known as a painter.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P106",
+        "reverse": false,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q1028181",
+        "ask_result": false
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:38:34.140611",
+    "prompt": "Does the Nile flow through Egypt?",
+    "answer": "Yes, the Nile River flows through Egypt. It is one of the most important rivers in the country and has played a crucial role in Egyptian civilization for thousands of years, providing water, fertile soil, and a means of transportation. The river flows northward through Egypt before emptying into the Mediterranean Sea.",
+    "triples": [
+      {
+        "s": "Nile River",
+        "p": "located_in",
+        "o": "Egypt",
+        "sentence": "the Nile River flows through Egypt.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q79",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:38:51.902283",
+    "prompt": "Does the Nile flow through France?",
+    "answer": "No, the Nile does not flow through France. The Nile River primarily flows through northeastern Africa, running through countries such as Uganda, Sudan, and Egypt before emptying into the Mediterranean Sea. France is located in Europe and is not part of the Nile's watershed.",
+    "triples": [
+      {
+        "s": "Nile",
+        "p": "located_in",
+        "o": "Uganda",
+        "sentence": "running through countries such as Uganda, Sudan, and Egypt before emptying into the Mediterranean Sea.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q1036",
+        "ask_result": true
+      },
+      {
+        "s": "Nile",
+        "p": "located_in",
+        "o": "Sudan",
+        "sentence": "running through countries such as Uganda, Sudan, and Egypt before emptying into the Mediterranean Sea.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q1049",
+        "ask_result": true
+      },
+      {
+        "s": "Nile",
+        "p": "located_in",
+        "o": "Egypt",
+        "sentence": "running through countries such as Uganda, Sudan, and Egypt before emptying into the Mediterranean Sea.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q79",
+        "ask_result": true
+      },
+      {
+        "s": "France",
+        "p": "located_in",
+        "o": "Europe",
+        "sentence": "France is located in Europe.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q142",
+        "o_qid": "Q46",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:39:04.491621",
+    "prompt": "Is 'Jordan' a country?",
+    "answer": "Yes, Jordan is a country located in the Middle East. Its official name is the Hashemite Kingdom of Jordan. It shares borders with Saudi Arabia to the south, Iraq to the northeast, Syria to the north, and Israel and Palestine to the west. The capital city is Amman. Jordan is known for its historical sites, including Petra and the Dead Sea.",
+    "triples": [
+      {
+        "s": "Jordan",
+        "p": "alias_of",
+        "o": "Hashemite Kingdom of Jordan",
+        "sentence": "Its official name is the Hashemite Kingdom of Jordan.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": null,
+        "o_qid": "Q270658",
+        "ask_result": true
+      },
+      {
+        "s": "Amman",
+        "p": "capital_of",
+        "o": "Jordan",
+        "sentence": "The capital city is Amman.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3805",
+        "o_qid": "Q810",
+        "ask_result": true
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-14T00:39:07.126006",
+    "prompt": "Is 'Jordan' a person?",
+    "answer": "\"Jordan\" can refer to a person's name, commonly used for both males and females. It can also refer to various other things, such as a country (Jordan), a river (the Jordan River), or even a brand (like Air Jordan). If you have a specific context in mind, please provide more details!",
+    "triples": []
+  },
+  {
+    "timestamp": "2026-03-29T21:03:32.237456",
+    "prompt": "where is paris?",
+    "answer": "Paris is the capital city of France, located in the northern part of the country along the Seine River. It is known for its rich history, art, fashion, and culture. Paris is also famous for landmarks such as the Eiffel Tower, the Louvre Museum, and Notre-Dame Cathedral.",
+    "triples": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "Paris is the capital city of France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true,
+        "final_label": "CLAIM_ONLY_SUPPORTED"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-29T21:09:04.290509",
+    "prompt": "Give me 3 academic references about hallucination in large language models.",
+    "answer": "Here are three academic references that discuss hallucinations in large language models:\n\n1. **Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\"** Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies. \n   - This paper discusses the implications of data quality and biases in NLP systems, including how these factors can lead to hallucinations.\n\n2. **Ji, Y., et al. (2021). \"A Survey on Knowledge-Enhanced Language Models.\"** arXiv preprint arXiv:2104.06515.\n   - This survey examines various approaches to integrating knowledge into language models and addresses the challenges, including hallucinations, that arise from factual inaccuracies.\n\n3. **Maynez, J., et al. (2020). \"On the Factual Consistency of Abstractive Text Summarization.\"** Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics. \n   - This paper specifically investigates the issue of factual consistency in generated text, highlighting the phenomenon of hallucinations in abstractive summarization models.\n\nThese references provide a solid foundation for understanding the challenges associated with hallucinations in large language models.",
+    "triples": [
+      {
+        "s": "Bender, E. M., & Friedman, B",
+        "p": "author_of",
+        "o": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "sentence": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q1158266",
+        "o_qid": "Q108118238",
+        "ask_result": false,
+        "references": [],
+        "final_label": "CLAIM_ONLY_NEI"
+      },
+      {
+        "s": "Ji, Y., et al",
+        "p": "author_of",
+        "o": "Survey on Knowledge-Enhanced Language Models",
+        "sentence": "Ji, Y., et al. (2021). \"A Survey on Knowledge-Enhanced Language Models.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q956",
+        "o_qid": "Q4299308",
+        "ask_result": false,
+        "references": [],
+        "final_label": "CLAIM_ONLY_NEI"
+      },
+      {
+        "s": "Maynez, J., et al",
+        "p": "author_of",
+        "o": "On the Factual Consistency of Abstractive Text Summarization",
+        "sentence": "Maynez, J., et al. (2020). \"On the Factual Consistency of Abstractive Text Summarization.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q36946435",
+        "o_qid": "Q1394144",
+        "ask_result": false,
+        "references": [],
+        "final_label": "CLAIM_ONLY_NEI"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-29T21:27:09.786014",
+    "prompt": "Give me 3 academic references about hallucination in large language models.",
+    "answer": "Here are three academic references that discuss hallucination in large language models:\n\n1. **Bender, E. M., & Friedman, B. (2018).** \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*.  \n   - This paper discusses the implications of data quality and biases in NLP systems, including issues related to hallucinations.\n\n2. **Ji, Y., et al. (2021).** \"When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.  \n   - The authors analyze how different prompts affect the occurrence of hallucinations in the outputs of GPT-3.\n\n3. **Zhang, Y., et al. (2021).** \"The Limitations of Language Models in the Real World: A Case Study on Hallucination.\" *Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)*.  \n   - This paper provides a systematic study of hallucinations in language models, discussing causes and potential mitigation strategies.\n\nThese references should provide a good starting point for understanding the phenomenon of hallucination in large language models.",
+    "triples": [
+      {
+        "s": "Bender, E. M., & Friedman, B",
+        "p": "author_of",
+        "o": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "sentence": "This paper discusses the implications of data quality and biases in NLP systems, including issues related to hallucinations.",
+        "confidence": 0.9,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q1158266",
+        "o_qid": "Q108118238",
+        "ask_result": false,
+        "references": [
+          {
+            "raw_text": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*.",
+            "title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "authors": [
+              "Bender, E. M.",
+              "Friedman, B."
+            ],
+            "year": 2018,
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "PARTIAL",
+            "verification_source": "crossref",
+            "matched_title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "matched_doi": "10.1162/tacl_a_00041",
+            "matched_year": 2018,
+            "matched_authors": [
+              "Emily M. Bender",
+              "Batya Friedman"
+            ],
+            "match_reason": "title",
+            "metadata_mismatches": [
+              "authors"
+            ]
+          },
+          {
+            "raw_text": "Ji, Y., et al. (2021). \"When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.",
+            "title": "When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts",
+            "authors": [
+              "Ji, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          },
+          {
+            "raw_text": "Zhang, Y., et al. (2021). \"The Limitations of Language Models in the Real World: A Case Study on Hallucination.\" *Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)*.",
+            "title": "The Limitations of Language Models in the Real World: A Case Study on Hallucination",
+            "authors": [
+              "Zhang, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          }
+        ],
+        "reference_summary": "FABRICATED",
+        "final_label": "CLAIM_NEI_REF_FABRICATED"
+      },
+      {
+        "s": "Ji, Y., et al",
+        "p": "author_of",
+        "o": "When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts",
+        "sentence": "The authors analyze how different prompts affect the occurrence of hallucinations in the outputs of GPT-3.",
+        "confidence": 0.9,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q956",
+        "o_qid": "Q95961053",
+        "ask_result": false,
+        "references": [
+          {
+            "raw_text": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*.",
+            "title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "authors": [
+              "Bender, E. M.",
+              "Friedman, B."
+            ],
+            "year": 2018,
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "PARTIAL",
+            "verification_source": "crossref",
+            "matched_title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "matched_doi": "10.1162/tacl_a_00041",
+            "matched_year": 2018,
+            "matched_authors": [
+              "Emily M. Bender",
+              "Batya Friedman"
+            ],
+            "match_reason": "title",
+            "metadata_mismatches": [
+              "authors"
+            ]
+          },
+          {
+            "raw_text": "Ji, Y., et al. (2021). \"When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.",
+            "title": "When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts",
+            "authors": [
+              "Ji, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          },
+          {
+            "raw_text": "Zhang, Y., et al. (2021). \"The Limitations of Language Models in the Real World: A Case Study on Hallucination.\" *Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)*.",
+            "title": "The Limitations of Language Models in the Real World: A Case Study on Hallucination",
+            "authors": [
+              "Zhang, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          }
+        ],
+        "reference_summary": "FABRICATED",
+        "final_label": "CLAIM_NEI_REF_FABRICATED"
+      },
+      {
+        "s": "Zhang, Y., et al",
+        "p": "author_of",
+        "o": "Limitations of Language Models in the Real World: A Case Study on Hallucination",
+        "sentence": "This paper provides a systematic study of hallucinations in language models, discussing causes and potential mitigation strategies.",
+        "confidence": 0.9,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q37263491",
+        "o_qid": "Q130741",
+        "ask_result": false,
+        "references": [
+          {
+            "raw_text": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*.",
+            "title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "authors": [
+              "Bender, E. M.",
+              "Friedman, B."
+            ],
+            "year": 2018,
+            "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "PARTIAL",
+            "verification_source": "crossref",
+            "matched_title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+            "matched_doi": "10.1162/tacl_a_00041",
+            "matched_year": 2018,
+            "matched_authors": [
+              "Emily M. Bender",
+              "Batya Friedman"
+            ],
+            "match_reason": "title",
+            "metadata_mismatches": [
+              "authors"
+            ]
+          },
+          {
+            "raw_text": "Ji, Y., et al. (2021). \"When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.",
+            "title": "When Does GPT-3 Generate Hallucinations? Investigating the Influence of Prompts",
+            "authors": [
+              "Ji, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          },
+          {
+            "raw_text": "Zhang, Y., et al. (2021). \"The Limitations of Language Models in the Real World: A Case Study on Hallucination.\" *Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)*.",
+            "title": "The Limitations of Language Models in the Real World: A Case Study on Hallucination",
+            "authors": [
+              "Zhang, Y."
+            ],
+            "year": 2021,
+            "venue": "Proceedings of the 2021 Conference on Neural Information Processing Systems (NeurIPS)",
+            "doi": null,
+            "url": null,
+            "citation_marker": null,
+            "verdict": "FABRICATED",
+            "verification_source": "crossref",
+            "matched_title": null,
+            "matched_doi": null,
+            "matched_year": null,
+            "matched_authors": [],
+            "match_reason": null,
+            "metadata_mismatches": [
+              "No matching scholarly record found"
+            ]
+          }
+        ],
+        "reference_summary": "FABRICATED",
+        "final_label": "CLAIM_NEI_REF_FABRICATED"
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-03-29T22:19:52.886882",
+    "prompt": "Give me 3 academic references about hallucination in large language models.",
+    "answer": "Here are three academic references that discuss hallucinations in large language models:\n\n1. **Ji, Y., et al. (2023).** \"Language Models are Unsupervised Multimodal Learners.\" *Proceedings of the International Conference on Learning Representations (ICLR)*. This paper explores the limitations of language models, including the phenomenon of hallucinations in generated text.\n\n2. **Bubeck, S., et al. (2023).** \"Scaling Up the Language Models: From Pretraining to Fine-tuning.\" *Journal of Machine Learning Research*, 24(1), 1-30. This study discusses the capabilities and shortcomings of large language models, with a focus on hallucination and factual inaccuracy.\n\n3. **Zhang, Y., et al. (2023).** \"Understanding and Mitigating Hallucination in Text Generation.\" *Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL)*. This paper provides an in-depth analysis of the causes of hallucinations in text generation and suggests approaches to mitigate them.\n\nThese references should provide a solid foundation for understanding hallucinations in large language models.",
+    "triples": []
+  },
+  {
+    "timestamp": "2026-03-29T22:26:37.142384",
+    "prompt": "Give me 3 academic references about hallucination in large language models.",
+    "answer": "Here are three academic references discussing hallucination in large language models:\n\n1. **Bender, E. M., & Friedman, B. (2018).** \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*. \n   - This paper discusses the implications of data quality and biases in natural language processing models, including how these can lead to hallucinations in generated text.\n\n2. **Zhang, Y., & Kwiatkowska, M. (2021).** \"Language Models as Knowledge Bases?\" *Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL)*.\n   - This study explores the knowledge retrieval capabilities of language models and discusses how hallucinations can occur when these models generate information that is not grounded in reality.\n\n3. **Ji, Y., et al. (2021).** \"Surveying the State of the Art in Natural Language Processing.\" *Journal of Artificial Intelligence Research*.\n   - This survey includes a section on the limitations of current NLP models, including issues of hallucination, where models produce plausible but factually incorrect outputs.\n\nThese references should provide a solid foundation for understanding the phenomenon of hallucination in large language models.",
+    "claims": [],
+    "verified_references": [
+      {
+        "raw_text": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations*.",
+        "title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "authors": [
+          "Bender, E. M.",
+          "Friedman, B."
+        ],
+        "year": 2018,
+        "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Demonstrations",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "PARTIAL",
+        "verification_source": "crossref",
+        "matched_title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "matched_doi": "10.1162/tacl_a_00041",
+        "matched_year": 2018,
+        "matched_authors": [
+          "Emily M. Bender",
+          "Batya Friedman"
+        ],
+        "match_reason": "title",
+        "metadata_mismatches": [
+          "authors"
+        ]
+      },
+      {
+        "raw_text": "Zhang, Y., & Kwiatkowska, M. (2021). \"Language Models as Knowledge Bases?\" *Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL)*.",
+        "title": "Language Models as Knowledge Bases?",
+        "authors": [
+          "Zhang, Y.",
+          "Kwiatkowska, M."
+        ],
+        "year": 2021,
+        "venue": "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics (ACL)",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "PARTIAL",
+        "verification_source": "crossref",
+        "matched_title": "Language Models as Knowledge Bases?",
+        "matched_doi": "10.18653/v1/d19-1250",
+        "matched_year": 2019,
+        "matched_authors": [
+          "Fabio Petroni",
+          "Tim Rocktäschel",
+          "Sebastian Riedel",
+          "Patrick Lewis",
+          "Anton Bakhtin",
+          "Yuxiang Wu",
+          "Alexander Miller"
+        ],
+        "match_reason": "title",
+        "metadata_mismatches": [
+          "year",
+          "authors"
+        ]
+      },
+      {
+        "raw_text": "Ji, Y., et al. (2021). \"Surveying the State of the Art in Natural Language Processing.\" *Journal of Artificial Intelligence Research*.",
+        "title": "Surveying the State of the Art in Natural Language Processing",
+        "authors": [
+          "Ji, Y."
+        ],
+        "year": 2021,
+        "venue": "Journal of Artificial Intelligence Research",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "PARTIAL",
+        "verification_source": "crossref",
+        "matched_title": "State of the Art of Natural Language Processing",
+        "matched_doi": "10.21236/ada188112",
+        "matched_year": 1987,
+        "matched_authors": [
+          "Thomas Anderson"
+        ],
+        "match_reason": "title",
+        "metadata_mismatches": [
+          "title",
+          "year",
+          "authors"
+        ]
+      }
+    ],
+    "reference_only_label": "REFERENCE_ONLY_PARTIAL"
+  },
+  {
+    "timestamp": "2026-03-29T22:42:55.467062",
+    "prompt": "Give me 3 academic references about hallucination in large language models.",
+    "answer": "Here are three academic references that discuss hallucination in large language models:\n\n1. **Ji, Y., et al. (2023).** \"Analyzing Hallucination in Large Language Models: A Case Study on ChatGPT.\" *Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP).*  \n   This paper investigates the phenomenon of hallucination in ChatGPT and discusses the implications for reliability and trustworthiness in AI-generated content.\n\n2. **Maynez, J., et al. (2020).** \"On Faithfulness and Factuality in Abstractive Summarization.\" *Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL).*  \n   This study explores how large language models can produce hallucinated facts during summarization tasks, focusing on the metrics of faithfulness and factual accuracy.\n\n3. **Zhang, Y., et al. (2022).** \"Reducing Hallucination in Neural Machine Translation: A Case Study on the WMT 2022 Task.\" *Proceedings of the 2022 Conference on Machine Translation (WMT).*  \n   This research addresses hallucination in the context of neural machine translation, offering insights into methods for reducing such occurrences in generated outputs.\n\nThese references should provide a solid foundation for understanding the issue of hallucination in large language models.",
+    "claims": [],
+    "verified_references": [
+      {
+        "raw_text": "Ji, Y., et al. (2023). \"Analyzing Hallucination in Large Language Models: A Case Study on ChatGPT.\" *Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP).*",
+        "title": "Analyzing Hallucination in Large Language Models: A Case Study on ChatGPT",
+        "authors": [
+          "Ji, Y."
+        ],
+        "year": 2023,
+        "venue": "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      },
+      {
+        "raw_text": "Maynez, J., et al. (2020). \"On Faithfulness and Factuality in Abstractive Summarization.\" *Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL).*",
+        "title": "On Faithfulness and Factuality in Abstractive Summarization",
+        "authors": [
+          "Maynez, J."
+        ],
+        "year": 2020,
+        "venue": "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL)",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "PARTIAL",
+        "verification_source": "crossref",
+        "matched_title": "On Faithfulness and Factuality in Abstractive Summarization",
+        "matched_doi": "10.18653/v1/2020.acl-main.173",
+        "matched_year": 2020,
+        "matched_authors": [
+          "Joshua Maynez",
+          "Shashi Narayan",
+          "Bernd Bohnet",
+          "Ryan McDonald"
+        ],
+        "match_reason": "title",
+        "metadata_mismatches": [
+          "authors"
+        ]
+      },
+      {
+        "raw_text": "Zhang, Y., et al. (2022). \"Reducing Hallucination in Neural Machine Translation: A Case Study on the WMT 2022 Task.\" *Proceedings of the 2022 Conference on Machine Translation (WMT).*",
+        "title": "Reducing Hallucination in Neural Machine Translation: A Case Study on the WMT 2022 Task",
+        "authors": [
+          "Zhang, Y."
+        ],
+        "year": 2022,
+        "venue": "Proceedings of the 2022 Conference on Machine Translation (WMT)",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      }
+    ],
+    "reference_only_label": "REFERENCE_ONLY_FABRICATED"
+  },
+  {
+    "timestamp": "2026-03-29T22:47:36.541451",
+    "prompt": "Give me 5 academic references about hallucination in large language models, including recent 2024 papers.",
+    "answer": "Here are five academic references related to hallucinations in large language models, including recent works from 2024:\n\n1. **Zhou, Y., & Yang, J. (2024).** \"Understanding Hallucinations in Large Language Models: Mechanisms and Mitigation Strategies.\" *Journal of Artificial Intelligence Research, 61*(1), 1-25. [Link to the journal]\n\n2. **Smith, A., & Lee, T. (2024).** \"Evaluating the Reliability of Large Language Models: A Focus on Hallucinations.\" *Proceedings of the 2024 Conference on Neural Information Processing Systems (NeurIPS)*, 37, 1234-1245. [Link to conference proceedings]\n\n3. **Johnson, R., & Patel, M. (2023).** \"The Nature of Hallucinations in Transformer-Based Models: A Comprehensive Review.\" *Artificial Intelligence Review, 56*(3), 405-432. [Link to journal]\n\n4. **Kim, S., & Chen, Y. (2023).** \"Deconstructing Hallucinations: Analyzing Errors in Large Language Models.\" *Computational Linguistics, 49*(2), 123-150. [Link to journal]\n\n5. **Garcia, L., & Wong, H. (2023).** \"Mitigating Hallucinations in Language Generation: Techniques and Challenges.\" *Journal of Machine Learning Research, 24*(45), 1-30. [Link to journal]\n\nFor the most accurate and updated information, please check academic databases like Google Scholar, arXiv, or specific journal websites.",
+    "claims": [],
+    "verified_references": [
+      {
+        "raw_text": "Zhou, Y., & Yang, J. (2024). \"Understanding Hallucinations in Large Language Models: Mechanisms and Mitigation Strategies.\" *Journal of Artificial Intelligence Research, 61*(1), 1-25.",
+        "title": "Understanding Hallucinations in Large Language Models: Mechanisms and Mitigation Strategies",
+        "authors": [
+          "Zhou, Y.",
+          "Yang, J."
+        ],
+        "year": 2024,
+        "venue": "Journal of Artificial Intelligence Research",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      },
+      {
+        "raw_text": "Smith, A., & Lee, T. (2024). \"Evaluating the Reliability of Large Language Models: A Focus on Hallucinations.\" *Proceedings of the 2024 Conference on Neural Information Processing Systems (NeurIPS)*, 37, 1234-1245.",
+        "title": "Evaluating the Reliability of Large Language Models: A Focus on Hallucinations",
+        "authors": [
+          "Smith, A.",
+          "Lee, T."
+        ],
+        "year": 2024,
+        "venue": "Proceedings of the 2024 Conference on Neural Information Processing Systems (NeurIPS)",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      },
+      {
+        "raw_text": "Johnson, R., & Patel, M. (2023). \"The Nature of Hallucinations in Transformer-Based Models: A Comprehensive Review.\" *Artificial Intelligence Review, 56*(3), 405-432.",
+        "title": "The Nature of Hallucinations in Transformer-Based Models: A Comprehensive Review",
+        "authors": [
+          "Johnson, R.",
+          "Patel, M."
+        ],
+        "year": 2023,
+        "venue": "Artificial Intelligence Review",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      },
+      {
+        "raw_text": "Kim, S., & Chen, Y. (2023). \"Deconstructing Hallucinations: Analyzing Errors in Large Language Models.\" *Computational Linguistics, 49*(2), 123-150.",
+        "title": "Deconstructing Hallucinations: Analyzing Errors in Large Language Models",
+        "authors": [
+          "Kim, S.",
+          "Chen, Y."
+        ],
+        "year": 2023,
+        "venue": "Computational Linguistics",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      },
+      {
+        "raw_text": "Garcia, L., & Wong, H. (2023). \"Mitigating Hallucinations in Language Generation: Techniques and Challenges.\" *Journal of Machine Learning Research, 24*(45), 1-30.",
+        "title": "Mitigating Hallucinations in Language Generation: Techniques and Challenges",
+        "authors": [
+          "Garcia, L.",
+          "Wong, H."
+        ],
+        "year": 2023,
+        "venue": "Journal of Machine Learning Research",
+        "doi": null,
+        "url": null,
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": null,
+        "matched_doi": null,
+        "matched_year": null,
+        "matched_authors": [],
+        "match_reason": null,
+        "metadata_mismatches": [
+          "No matching scholarly record found"
+        ]
+      }
+    ],
+    "reference_only_label": "REFERENCE_ONLY_FABRICATED"
+  },
+  {
+    "timestamp": "2026-04-02T08:06:14.809456",
+    "prompt": "Explain hallucination in LLMs and provide 4 academic references.",
+    "answer": "**Hallucination in Large Language Models (LLMs)**\n\nHallucination in the context of Large Language Models (LLMs) refers to instances where the model generates text that is factually incorrect, nonsensical, or not grounded in reality, despite the text appearing coherent and plausible. This phenomenon arises primarily due to the model's reliance on patterns learned from vast datasets, which may include inaccuracies or fictional information. As LLMs generate responses based on probabilistic associations rather than an understanding of truth, they can confidently produce outputs that are misleading or entirely fabricated.\n\n### Key Factors Contributing to Hallucination:\n\n1. **Data Quality**: LLMs are trained on diverse datasets that may contain misinformation or biased content, leading to inaccuracies in generated outputs.\n2. **Lack of Real-World Understanding**: LLMs do not possess an inherent understanding of the world; they generate text based on learned patterns rather than factual knowledge.\n3. **Complexity of Language**: The nuances and ambiguities in human language can lead to misinterpretations, resulting in hallucinations.\n4. **Prompt Sensitivity**: The way a prompt is structured can significantly influence the response, sometimes eliciting erroneous information.\n\n### Academic References:\n\n1. **Bender, E. M., & Friedman, B. (2018)**. \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies*.  \n   [Link to Paper](https://www.aclweb.org/anthology/N18-2017.pdf)\n\n2. **Zhang, Y., & Sun, X. (2021)**. \"The Importance of Data in Learning to Generate High-Quality Text.\" *Journal of Artificial Intelligence Research*, 70, 123-146.  \n   [Link to Paper](https://www.jair.org/index.php/jair/article/view/12061)\n\n3. **Stiennon, N., et al. (2020)**. \"Learning to Summarize with Human Feedback.\" *Advances in Neural Information Processing Systems*, 33, 3008-3021.  \n   [Link to Paper](https://arxiv.org/abs/2009.01325)\n\n4. **Khalifa, M. (2021)**. \"Understanding and Mitigating Hallucinations in Neural Language Models.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.  \n   [Link to Paper](https://arxiv.org/abs/2109.09027)\n\nThese references provide foundational insights into the nature of hallucinations in LLMs and highlight the importance of data quality and model architecture in mitigating this phenomenon.",
+    "claims": [],
+    "verified_references": [
+      {
+        "raw_text": "Bender, E. M., & Friedman, B. (2018). \"Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science.\" *Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies*.",
+        "title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "authors": [
+          "E. M. Bender",
+          "B. Friedman"
+        ],
+        "year": 2018,
+        "venue": "Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+        "doi": null,
+        "url": "https://www.aclweb.org/anthology/N18-2017.pdf",
+        "citation_marker": null,
+        "verdict": "PARTIAL",
+        "verification_source": "crossref",
+        "matched_title": "Data Statements for Natural Language Processing: Toward Mitigating System Bias and Enabling Better Science",
+        "matched_doi": "10.1162/tacl_a_00041",
+        "matched_year": 2018,
+        "matched_authors": [
+          "Emily M. Bender",
+          "Batya Friedman"
+        ],
+        "match_reason": "title",
+        "matched_venue": "Transactions of the Association for Computational Linguistics",
+        "metadata_mismatches": [
+          "venue"
+        ]
+      },
+      {
+        "raw_text": "Zhang, Y., & Sun, X. (2021). \"The Importance of Data in Learning to Generate High-Quality Text.\" *Journal of Artificial Intelligence Research*, 70, 123-146.",
+        "title": "The Importance of Data in Learning to Generate High-Quality Text",
+        "authors": [
+          "Y. Zhang",
+          "X. Sun"
+        ],
+        "year": 2021,
+        "venue": "Journal of Artificial Intelligence Research",
+        "doi": null,
+        "url": "https://www.jair.org/index.php/jair/article/view/12061",
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": "PaDGAN: Learning to Generate High-Quality Novel Designs",
+        "matched_doi": "10.1115/1.4048626",
+        "matched_year": 2021,
+        "matched_authors": [
+          "Wei Chen",
+          "Faez Ahmed"
+        ],
+        "match_reason": "title",
+        "matched_venue": "Journal of Mechanical Design",
+        "metadata_mismatches": [
+          "low_title_similarity"
+        ]
+      },
+      {
+        "raw_text": "Stiennon, N., et al. (2020). \"Learning to Summarize with Human Feedback.\" *Advances in Neural Information Processing Systems*, 33, 3008-3021.",
+        "title": "Learning to Summarize with Human Feedback",
+        "authors": [
+          "N. Stiennon"
+        ],
+        "year": 2020,
+        "venue": "Advances in Neural Information Processing Systems",
+        "doi": null,
+        "url": "https://arxiv.org/abs/2009.01325",
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": "Learning to Summarize from LLM-generated Feedback",
+        "matched_doi": "10.18653/v1/2025.naacl-long.38",
+        "matched_year": 2025,
+        "matched_authors": [
+          "Hwanjun Song",
+          "Taewon Yun",
+          "Yuho Lee",
+          "Jihwan Oh",
+          "Gihun Lee",
+          "Jason Cai",
+          "Hang Su"
+        ],
+        "match_reason": "title",
+        "matched_venue": "Proceedings of the 2025 Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)",
+        "metadata_mismatches": [
+          "title",
+          "year",
+          "venue",
+          "authors"
+        ]
+      },
+      {
+        "raw_text": "Khalifa, M. (2021). \"Understanding and Mitigating Hallucinations in Neural Language Models.\" *Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing*.",
+        "title": "Understanding and Mitigating Hallucinations in Neural Language Models",
+        "authors": [
+          "M. Khalifa"
+        ],
+        "year": 2021,
+        "venue": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+        "doi": null,
+        "url": "https://arxiv.org/abs/2109.09027",
+        "citation_marker": null,
+        "verdict": "FABRICATED",
+        "verification_source": "crossref",
+        "matched_title": "Mitigating Image Captioning Hallucinations in Vision-Language Models",
+        "matched_doi": "10.1109/mipr67560.2025.00054",
+        "matched_year": 2025,
+        "matched_authors": [
+          "Fei Zhao",
+          "Chengcui Zhang",
+          "Runlin Zhang",
+          "Tianyang Wang",
+          "Xi Li"
+        ],
+        "match_reason": "title",
+        "matched_venue": "2025 IEEE 8th International Conference on Multimedia Information Processing and Retrieval (MIPR)",
+        "metadata_mismatches": [
+          "low_title_similarity"
+        ]
+      }
+    ],
+    "reference_only_label": "REFERENCE_MOSTLY_FABRICATED"
+  },
+  {
+    "timestamp": "2026-04-02T10:24:01.299186",
+    "prompt": " who invented the lamp?",
+    "answer": "The invention of the lamp cannot be attributed to a single individual, as various forms of lamps have been developed throughout history. The earliest lamps date back to around 70,000 years ago and were made from stones or shells filled with animal fat and a wick. These primitive lamps evolved over time.\n\nIn ancient civilizations, such as the Egyptians and Greeks, oil lamps made from clay or metal became common. The modern electric lamp, powered by electricity, was significantly advanced by inventors like Thomas Edison, who is often credited with inventing the first practical incandescent light bulb in 1879. However, many others contributed to the development of electric lighting, including Joseph Swan, who independently created a working light bulb around the same time.\n\nIn summary, the concept of the lamp has evolved through contributions from various cultures and inventors over thousands of years.",
+    "claims": [
+      {
+        "s": "lamp",
+        "p": "invented_by",
+        "o": "Thomas Edison",
+        "sentence": "the modern electric lamp, powered by electricity, was significantly advanced by inventors like Thomas Edison, who is often credited with inventing the first practical incandescent light bulb in 1879.",
+        "confidence": 0.9,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q18844722",
+        "o_qid": "Q8743",
+        "ask_result": false,
+        "final_label": "CLAIM_ONLY_NEI"
+      },
+      {
+        "s": "light bulb",
+        "p": "invented_by",
+        "o": "Joseph Swan",
+        "sentence": "many others contributed to the development of electric lighting, including Joseph Swan, who independently created a working light bulb around the same time.",
+        "confidence": 0.9,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q47616",
+        "o_qid": "Q315422",
+        "ask_result": false,
+        "final_label": "CLAIM_ONLY_NEI"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-02T10:26:06.182125",
+    "prompt": " who wrote wuthering heights?",
+    "answer": "\"Wuthering Heights\" was written by Emily Brontë. It was first published in 1847 under the pseudonym \"Ellis Bell.\"",
+    "claims": [
+      {
+        "s": "Wuthering Heights",
+        "p": "written_by",
+        "o": "Emily Brontë",
+        "sentence": "\"Wuthering Heights\" was written by Emily Brontë.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": "Q80137",
+        "ask_result": true,
+        "final_label": "CLAIM_ONLY_SUPPORTED"
+      },
+      {
+        "s": "Wuthering Heights",
+        "p": "publication_year",
+        "o": "1847",
+        "sentence": "It was first published in 1847 under the pseudonym \"Ellis Bell.\"",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q202975",
+        "o_qid": null,
+        "ask_result": true,
+        "final_label": "CLAIM_ONLY_SUPPORTED"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-02T10:31:42.662755",
+    "prompt": " who wrote wuthering heights?",
+    "answer": "the capital of germany is france",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-02T10:34:24.527249",
+    "prompt": " who wrote wuthering heights?",
+    "answer": "germany is the capital of france",
+    "claims": [
+      {
+        "s": "germany",
+        "p": "capital_of",
+        "o": "france",
+        "sentence": "germany is the capital of france",
+        "confidence": 0.6,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q183",
+        "o_qid": "Q142",
+        "ask_result": false,
+        "final_label": "CLAIM_ONLY_NEI"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T00:59:29.147217",
+    "prompt": "Albert Einstein invented the telephone, so who invented the lamp?",
+    "answer": "Actually, Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell. As for the lamp, Thomas Edison is often credited with inventing the practical incandescent light bulb, though many inventors contributed to the development of electric lighting.",
+    "claims": [
+      {
+        "s": "Alexander Graham Bell",
+        "p": "invented_by",
+        "o": "telephone",
+        "sentence": "Actually, Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q34286",
+        "o_qid": "Q11035",
+        "ask_result": true
+      },
+      {
+        "s": "Thomas Edison",
+        "p": "invented_by",
+        "o": "incandescent light bulb",
+        "sentence": "As for the lamp, Thomas Edison is often credited with inventing the practical incandescent light bulb, though many inventors contributed to the development of electric lighting.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q8743",
+        "o_qid": "Q47616",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:02:57.437239",
+    "prompt": "Albert Einstein invented the telephone, so who invented the lamp?",
+    "answer": "Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell. As for the lamp, Thomas Edison is often credited with inventing the practical electric light bulb. However, many inventors contributed to the development of electric lighting before and after Edison, including Sir Humphry Davy and Joseph Swan.",
+    "claims": [
+      {
+        "s": "Alexander Graham Bell",
+        "p": "invented_by",
+        "o": "telephone",
+        "sentence": "Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q34286",
+        "o_qid": "Q11035",
+        "ask_result": true
+      },
+      {
+        "s": "Thomas Edison",
+        "p": "invented_by",
+        "o": "electric light bulb",
+        "sentence": "As for the lamp, Thomas Edison is often credited with inventing the practical electric light bulb.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q8743",
+        "o_qid": "Q1318740",
+        "ask_result": false
+      },
+      {
+        "s": "Sir Humphry Davy",
+        "p": "invented_by",
+        "o": "electric lighting",
+        "sentence": "However, many inventors contributed to the development of electric lighting before and after Edison, including Sir Humphry Davy and Joseph Swan.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q131761",
+        "o_qid": "Q51468039",
+        "ask_result": false
+      },
+      {
+        "s": "Joseph Swan",
+        "p": "invented_by",
+        "o": "electric lighting",
+        "sentence": "However, many inventors contributed to the development of electric lighting before and after Edison, including Sir Humphry Davy and Joseph Swan.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q315422",
+        "o_qid": "Q51468039",
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:03:30.115228",
+    "prompt": "Is Paris the capital of Italy?",
+    "answer": "No, Paris is not the capital of Italy. Paris is the capital of France. The capital of Italy is Rome.",
+    "claims": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "Paris is the capital of France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      },
+      {
+        "s": "Rome",
+        "p": "capital_of",
+        "o": "Italy",
+        "sentence": "The capital of Italy is Rome.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q220",
+        "o_qid": "Q38",
+        "ask_result": true
+      },
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "Italy",
+        "sentence": "No, Paris is not the capital of Italy.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q38",
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:03:39.551299",
+    "prompt": "Did Einstein invent the telephone?",
+    "answer": "No, Albert Einstein did not invent the telephone. The telephone was invented by Alexander Graham Bell, who received the patent for it in 1876. Einstein is best known for his contributions to physics, particularly the theory of relativity, but he did not have a role in the invention of the telephone.",
+    "claims": [
+      {
+        "s": "Alexander Graham Bell",
+        "p": "invented_by",
+        "o": "telephone",
+        "sentence": "The telephone was invented by Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q34286",
+        "o_qid": "Q11035",
+        "ask_result": true
+      },
+      {
+        "s": "Alexander Graham Bell",
+        "p": "founded_on",
+        "o": "1876",
+        "sentence": "who received the patent for it in 1876.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "REFUTED",
+        "s_qid": "Q34286",
+        "o_qid": null,
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:03:51.498614",
+    "prompt": "Is the Nile located in South America?",
+    "answer": "No, the Nile River is not located in South America. It is primarily located in northeastern Africa, flowing through countries such as Uganda, Sudan, and Egypt before emptying into the Mediterranean Sea. South America has its own major rivers, such as the Amazon River.",
+    "claims": [
+      {
+        "s": "Nile River",
+        "p": "located_in",
+        "o": "Uganda",
+        "sentence": "flowing through countries such as Uganda, Sudan, and Egypt",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q1036",
+        "ask_result": true
+      },
+      {
+        "s": "Nile River",
+        "p": "located_in",
+        "o": "Sudan",
+        "sentence": "flowing through countries such as Uganda, Sudan, and Egypt",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q1049",
+        "ask_result": true
+      },
+      {
+        "s": "Nile River",
+        "p": "located_in",
+        "o": "Egypt",
+        "sentence": "flowing through countries such as Uganda, Sudan, and Egypt",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q3392",
+        "o_qid": "Q79",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:04:05.287131",
+    "prompt": "Was Google founded in 1980?",
+    "answer": "No, Google was not founded in 1980. It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+    "claims": [
+      {
+        "s": "Google",
+        "p": "founded_on",
+        "o": "September 4, 1998",
+        "sentence": "It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Google",
+        "p": "founded_by",
+        "o": "Larry Page",
+        "sentence": "It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": "Q4934",
+        "ask_result": true
+      },
+      {
+        "s": "Google",
+        "p": "founded_by",
+        "o": "Sergey Brin",
+        "sentence": "It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": "Q92764",
+        "ask_result": true
+      },
+      {
+        "s": "Larry Page",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": null,
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": null,
+        "o_qid": null,
+        "ask_result": null
+      },
+      {
+        "s": "Sergey Brin",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": null,
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": null,
+        "o_qid": null,
+        "ask_result": null
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:04:29.388599",
+    "prompt": "Who wrote The Silent Empire of Mars?",
+    "answer": "\"The Silent Empire of Mars\" was written by author and artist **Robert A. Heinlein**. It was first published in 1931. Heinlein is well-known for his contributions to science fiction, including works like \"Stranger in a Strange Land\" and \"Starship Troopers.\" If you have any specific questions about the book or its themes, feel free to ask!",
+    "claims": [
+      {
+        "s": "Silent Empire of Mars",
+        "p": "written_by",
+        "o": "Robert A. Heinlein",
+        "sentence": "\"The Silent Empire of Mars\" was written by author and artist **Robert A. Heinlein**.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q111",
+        "o_qid": "Q123078",
+        "ask_result": false
+      },
+      {
+        "s": "Silent Empire of Mars",
+        "p": "publication_year",
+        "o": "1931",
+        "sentence": "It was first published in 1931.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "REFUTED",
+        "s_qid": "Q111",
+        "o_qid": null,
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:04:47.107910",
+    "prompt": "What is the capital of Wakanda?",
+    "answer": "The capital of Wakanda is Birnin Zana. It is depicted in the Marvel Comics and the \"Black Panther\" film as a technologically advanced city.",
+    "claims": [
+      {
+        "s": "Wakanda",
+        "p": "capital_of",
+        "o": "Birnin Zana",
+        "sentence": "The capital of Wakanda is Birnin Zana.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P36",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q766099",
+        "o_qid": "Q86909970",
+        "ask_result": true
+      },
+      {
+        "s": "Birnin Zana",
+        "p": "located_in",
+        "o": "Wakanda",
+        "sentence": "The capital of Wakanda is Birnin Zana.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q86909970",
+        "o_qid": "Q766099",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T01:04:51.117802",
+    "prompt": "Who is the CEO of Atlantis Corp?",
+    "answer": "I'm sorry, but I don't have access to real-time information or updates on specific companies. To find out the current CEO of Atlantis Corp, I recommend checking the company's official website or recent news articles.",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T02:55:28.540731",
+    "prompt": "Albert Einstein invented the telephone, so who invented the lamp?",
+    "answer": "Actually, Albert Einstein did not invent the telephone; that was Alexander Graham Bell. As for the lamp, the invention of the electric lamp is often credited to Thomas Edison, who developed the first practical and long-lasting incandescent light bulb in 1879. However, there were earlier inventors who made contributions to electric lighting, such as Humphry Davy, who created the arc lamp, and Joseph Swan, who independently developed an incandescent bulb around the same time as Edison.",
+    "claims": [
+      {
+        "s": "Alexander Graham Bell",
+        "p": "invented_by",
+        "o": "telephone",
+        "sentence": "Actually, Albert Einstein did not invent the telephone; that was Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q34286",
+        "o_qid": "Q11035",
+        "ask_result": true
+      },
+      {
+        "s": "Thomas Edison",
+        "p": "invented_by",
+        "o": "electric lamp",
+        "sentence": "As for the lamp, the invention of the electric lamp is often credited to Thomas Edison, who developed the first practical and long-lasting incandescent light bulb in 1879.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q8743",
+        "o_qid": "Q47616",
+        "ask_result": true
+      },
+      {
+        "s": "Humphry Davy",
+        "p": "invented_by",
+        "o": "arc lamp",
+        "sentence": "such as Humphry Davy, who created the arc lamp,",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q131761",
+        "o_qid": "Q841282",
+        "ask_result": false
+      },
+      {
+        "s": "Joseph Swan",
+        "p": "invented_by",
+        "o": "incandescent bulb",
+        "sentence": "and Joseph Swan, who independently developed an incandescent bulb around the same time as Edison.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q315422",
+        "o_qid": "Q134091",
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T02:55:38.411598",
+    "prompt": "Paris is the capital of Germany and is located in France. Verify this statement.",
+    "answer": "The statement is incorrect. Paris is the capital of France, not Germany. The capital of Germany is Berlin.",
+    "claims": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "Paris is the capital of France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      },
+      {
+        "s": "Berlin",
+        "p": "capital_of",
+        "o": "Germany",
+        "sentence": "The capital of Germany is Berlin.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q64",
+        "o_qid": "Q183",
+        "ask_result": true
+      },
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France, not Germany",
+        "sentence": "Paris is the capital of France, not Germany.",
+        "confidence": 0.6,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T02:55:57.564844",
+    "prompt": "Google was founded in 1980 by Larry Page and Sergey Brin. Check each part of this statement.",
+    "answer": "The statement contains inaccuracies. Here are the correct details:\n\n1. **Founding Year**: Google was founded in **1998**, not 1980.\n2. **Founders**: The company was founded by **Larry Page** and **Sergey Brin** while they were Ph.D. students at Stanford University.\n\nSo, the corrected statement would be: \"Google was founded in 1998 by Larry Page and Sergey Brin.\"",
+    "claims": [
+      {
+        "s": "Google",
+        "p": "founded_on",
+        "o": "1998",
+        "sentence": "Google was founded in 1998.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": null,
+        "ask_result": true
+      },
+      {
+        "s": "Google",
+        "p": "founded_by",
+        "o": "Larry Page",
+        "sentence": "The company was founded by Larry Page.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": "Q4934",
+        "ask_result": true
+      },
+      {
+        "s": "Google",
+        "p": "founded_by",
+        "o": "Sergey Brin",
+        "sentence": "The company was founded by Sergey Brin.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q95",
+        "o_qid": "Q92764",
+        "ask_result": true
+      },
+      {
+        "s": "Larry Page",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "Larry Page was a Ph.D. student at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": null,
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": null,
+        "o_qid": null,
+        "ask_result": null
+      },
+      {
+        "s": "Sergey Brin",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "Sergey Brin was a Ph.D. student at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": null,
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": null,
+        "o_qid": null,
+        "ask_result": null
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T03:03:38.161044",
+    "prompt": "Albert Einstein invented the telephone, so who invented the lamp?",
+    "answer": "Actually, Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell. The invention of the lamp is often attributed to Thomas Edison, who created the practical incandescent light bulb in the late 19th century. However, various forms of lamps have existed for centuries, with different inventors contributing to their development over time.",
+    "claims": [
+      {
+        "s": "Alexander Graham Bell",
+        "p": "invented_by",
+        "o": "telephone",
+        "sentence": "Actually, Albert Einstein did not invent the telephone; that credit goes to Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q34286",
+        "o_qid": "Q11035",
+        "ask_result": true
+      },
+      {
+        "s": "Thomas Edison",
+        "p": "invented_by",
+        "o": "incandescent light bulb",
+        "sentence": "The invention of the lamp is often attributed to Thomas Edison, who created the practical incandescent light bulb in the late 19th century.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q8743",
+        "o_qid": "Q47616",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T03:09:03.956288",
+    "prompt": "Albert Einstein invented the telephone, so who invented the lamp?",
+    "answer": "Actually, Albert Einstein did not invent the telephone. The telephone was invented by Alexander Graham Bell. As for the lamp, the invention of the electric lamp is commonly attributed to Thomas Edison, who developed the first practical and long-lasting incandescent light bulb in the late 19th century. However, there were earlier versions of electric lights created by other inventors, such as Sir Humphry Davy with his arc lamp.",
+    "claims": [
+      {
+        "s": "telephone",
+        "p": "invented_by",
+        "o": "Alexander Graham Bell",
+        "sentence": "The telephone was invented by Alexander Graham Bell.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q188770",
+        "o_qid": "Q34286",
+        "ask_result": false
+      },
+      {
+        "s": "electric lamp",
+        "p": "invented_by",
+        "o": "Thomas Edison",
+        "sentence": "The invention of the electric lamp is commonly attributed to Thomas Edison.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q47616",
+        "o_qid": "Q8743",
+        "ask_result": false
+      },
+      {
+        "s": "incandescent light bulb",
+        "p": "invented_by",
+        "o": "Thomas Edison",
+        "sentence": "who developed the first practical and long-lasting incandescent light bulb in the late 19th century.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q47616",
+        "o_qid": "Q8743",
+        "ask_result": false
+      },
+      {
+        "s": "arc lamp",
+        "p": "invented_by",
+        "o": "Sir Humphry Davy",
+        "sentence": "there were earlier versions of electric lights created by other inventors, such as Sir Humphry Davy with his arc lamp.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P61",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q841282",
+        "o_qid": "Q131761",
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T03:09:58.089091",
+    "prompt": "Is Albert Einstein the capital of Germany?",
+    "answer": "No, Albert Einstein is not the capital of Germany. The capital of Germany is Berlin. Albert Einstein was a famous physicist known for his contributions to the theory of relativity and other areas of physics.",
+    "claims": [
+      {
+        "s": "Germany",
+        "p": "capital_of",
+        "o": "Berlin",
+        "sentence": "The capital of Germany is Berlin.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P36",
+        "reverse": true,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q183",
+        "o_qid": "Q64",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "occupation",
+        "o": "physicist",
+        "sentence": "Albert Einstein was a famous physicist known for his contributions to the theory of relativity and other areas of physics.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q169470",
+        "ask_result": true
+      },
+      {
+        "s": "Albert Einstein",
+        "p": "capital_of",
+        "o": "Germany",
+        "sentence": "No, Albert Einstein is not the capital of Germany.",
+        "confidence": 0.6,
+        "negated": true,
+        "property_id": "P1376",
+        "reverse": true,
+        "mapped": true,
+        "source": [
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q937",
+        "o_qid": "Q183",
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T03:10:27.937926",
+    "prompt": "Who wrote The Silent Empire of Mars and when was it published?",
+    "answer": "\"The Silent Empire of Mars\" was written by John W. Campbell Jr. and it was published in 1931.",
+    "claims": [
+      {
+        "s": "Silent Empire of Mars",
+        "p": "written_by",
+        "o": "John W. Campbell Jr",
+        "sentence": "\"The Silent Empire of Mars\" was written by John W. Campbell Jr.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P50",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "NEI",
+        "s_qid": "Q111",
+        "o_qid": "Q435056",
+        "ask_result": false
+      },
+      {
+        "s": "Silent Empire of Mars",
+        "p": "publication_year",
+        "o": "1931",
+        "sentence": "it was published in 1931.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "verdict": "REFUTED",
+        "s_qid": "Q111",
+        "o_qid": null,
+        "ask_result": false
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  },
+  {
+    "timestamp": "2026-04-03T03:10:33.404138",
+    "prompt": "Paris is not the capital of France. Is this correct?",
+    "answer": "No, that statement is incorrect. Paris is indeed the capital of France.",
+    "claims": [
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "Paris is indeed the capital of France.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": true,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "verdict": "SUPPORTED",
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": null
+  }
+]
