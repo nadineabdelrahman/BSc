@@ -1,16 +1,3 @@
-from hybrid_extraction import extract_triples_hybrid
-from verification import verify_triples
-from logger import log_results
-from generation import generate_answer
-prompt = "Albert Einstein invented the telephone, so who invented the lamp?"
-
-answer = generate_answer(prompt)
-
-triples = extract_triples_hybrid(answer)
-
-verified = verify_triples(triples)
-
-log_results(prompt, answer, verified)
 import json
 import os
 from typing import Any, Iterable
@@ -70,4 +57,3 @@ if __name__ == "__main__":
         raise ValueError("No questions found in data/prompts.json")
 
     run_batch(questions)
-

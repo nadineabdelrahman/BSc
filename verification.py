@@ -1,107 +1,56 @@
-# verification.py
-import requests
-import time
 import re
+import time
 from typing import Dict, Any, Optional, List, Tuple
+
+import requests
 
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
-
-# Polite User-Agent is important; Wikidata may throttle/block generic agents.
 USER_AGENT = "HallucinationFirewall/1.0 (research; contact: your_email@example.com)"
 
-# Map your normalized predicates to Wikidata property IDs (P-codes).
-# Extend this as your thesis grows.
 PREDICATE_TO_PROPERTY = {
-    # IMPORTANT FIX:
-    # If your triple is (Paris, capital_of, France) = City -> Country,
-    # then Wikidata property is P1376 "capital of" (not P36).
-    "capital_of": "P1376",        # capital of (city/seat -> territory)
-
-    "located_in": "P131",         # located in the administrative territorial entity
-    "part_of": "P361",            # part of
-    "instance_of": "P31",         # instance of
-
-    "born_in": "P19",             # place of birth
-    "died_in": "P20",             # place of death
-
-    "founded_by": "P112",         # founded by (entity founder)
-    "founder_of": "P112",         # (reverse direction not handled here; see note below)
-
-    "ceo_of": "P169",             # chief executive officer
-
-    # NOTE: "president_of" is tricky (head of state P35 vs head of government P6)
-    # keep your choice, but be aware it can cause false negatives.
-    "president_of": "P35",        # head of state (often closer than P6 for "president")
-
-    "written_by": "P50",          # author
-    "author_of": "P50",           # (reverse direction not handled here; see note below)
-    "invented_by": "P61",         # discoverer or inventor
-    "currency_of": "P38",         # currency
-    "language_of": "P37",         # official language
-
-    "publication_year": "P577",   # publication date (we'll check year match)
-
-    # NEW: your extractor outputs these, so verification must support them
-    "date_of_birth": "P569",
-    "date_of_death": "P570",
+    "capital_of": "P1376",
+    "located_in": "P131",
+    "part_of": "P361",
+    "instance_of": "P31",
+    "born_in": "P19",
+    "died_in": "P20",
     "place_of_birth": "P19",
     "place_of_death": "P20",
+    "date_of_birth": "P569",
+    "date_of_death": "P570",
+    "founded_by": "P112",
+    "founder_of": "P112",
+    "ceo_of": "P169",
+    "president_of": "P35",
+    "written_by": "P50",
+    "author_of": "P50",
+    "invented_by": "P61",
+    "currency_of": "P38",
+    "language_of": "P37",
+    "publication_year": "P577",
     "publication_date": "P577",
     "occupation": "P106",
     "notable_work": "P800",
     "alias_of": "P4970",
     "founded_on": "P571",
+    "headquarters_in": "P159",
+    "country_of_origin": "P495",
+    "genre": "P136",
+    "spouse": "P26",
+    "child_of": "P40",
+    "educated_at": "P69",
+    "population_of": "P1082",
+    "area_of": "P2046",
+    "located_at": "P276",
 }
 
-# Some predicates are naturally "reverse" depending on how your triples are formed.
-# Example:
-#   (Wuthering Heights, written_by, Emily Brontë)  -> wd:WORK wdt:P50 wd:PERSON  (forward)
-# But:
-#   (Emily Brontë, author_of, Wuthering Heights)   -> wd:WORK wdt:P50 wd:PERSON  (reverse)
-# We'll support direction handling for a few known cases.
-REVERSE_PREDICATES = {
-    "author_of",
-    "founder_of",
-    # produced triples are usually (Org, ceo_of, Person),
-    # so ceo_of should normally stay forward.
-    "invented_by",
-}
+REVERSE_PREDICATES = {"author_of", "founder_of", "president_of", "child_of"}
+WEAK_REFUTATION_PREDICATES = {"located_in", "part_of","instance_of", "occupation", "notable_work", "educated_at", "located_at"}
 
-# Very light caching to avoid repeated API calls during batch runs
 _entity_cache: Dict[str, Optional[str]] = {}
 _entity_candidates_cache: Dict[str, List[Dict[str, Any]]] = {}
-_property_cache: Dict[str, Optional[str]] = {}
 
-
-def _looks_vague_region(text: str) -> bool:
-    t = text.lower().strip()
-    return any(x in t for x in ["northern ", "southern ", "eastern ", "western ", "central "])
-
-
-def _build_located_in_path_ask(s_qid: str, o_qid: str) -> str:
-    # allow chains of P131 (admin entity) to reduce false REFUTED
-    # NEW FIX: allow 0+ hops too (wdt:P131*) because some items jump levels
-    return f"""
-    ASK WHERE {{
-      wd:{s_qid} wdt:P131* wd:{o_qid} .
-    }}
-    """.strip()
-def _location_fallback_labels(label: str) -> List[str]:
-    """
-    Generate fallback labels for place-like objects.
-    Example:
-      'Stratford-upon-Avon, England' -> ['Stratford-upon-Avon, England', 'Stratford-upon-Avon']
-    """
-    label = _normalize_entity_text(label)
-    labels = [label]
-
-    if "," in label:
-        first = label.split(",")[0].strip()
-        if first and first not in labels:
-            labels.append(first)
-
-    return labels
 
 def _http_get(url: str, params: Dict[str, Any], headers: Dict[str, str], timeout: int = 20) -> requests.Response:
     resp = requests.get(url, params=params, headers=headers, timeout=timeout)
@@ -109,49 +58,27 @@ def _http_get(url: str, params: Dict[str, Any], headers: Dict[str, str], timeout
     return resp
 
 
-def wikidata_search_entity(label: str, language: str = "en") -> Optional[str]:
-    """
-    Resolve a natural language label to a Wikidata QID using wbsearchentities.
-    Returns QID like 'Q64' or None if not found.
-    """
-    key = label.strip().lower()
-    if not key:
-        return None
-    if key in _entity_cache:
-        return _entity_cache[key]
-
-    params = {
-        "action": "wbsearchentities",
-        "search": label,
-        "language": language,
-        "format": "json",
-        "limit": 1,
-    }
-    headers = {"User-Agent": USER_AGENT}
-
-    try:
-        data = _http_get(WIKIDATA_SEARCH_URL, params=params, headers=headers).json()
-        results = data.get("search", [])
-        qid = results[0].get("id") if results else None
-        _entity_cache[key] = qid
-        return qid
-    except Exception:
-        _entity_cache[key] = None
-        return None
+def _normalize_entity_text(x: str) -> str:
+    x = str(x or "")
+    x = x.replace('"', '').replace('“', '').replace('”', '').replace('*', '').strip()
+    x = re.sub(r"^[-•*]+\s*", "", x)
+    x = re.sub(r"^(?:the|a|an)\s+", "", x, flags=re.I)
+    x = re.sub(r"\s+", " ", x).strip()
+    return x
 
 
-# NEW: get multiple candidates to fix ambiguity (Jordan, Pride and Prejudice editions, Alexandria variants)
-def wikidata_search_candidates(label: str, language: str = "en", limit: int = 5) -> List[Dict[str, Any]]:
-    """
-    Returns candidate objects from wbsearchentities:
-      [{"id": "Q...", "label": "...", "description": "..."}]
-    """
+def _looks_like_year(text: str) -> Optional[str]:
+    m = re.search(r"\b(1[0-9]{3}|20[0-9]{2}|18[0-9]{2})\b", str(text or ""))
+    return m.group(0) if m else None
+
+
+def wikidata_search_candidates(label: str, language: str = "en", limit: int = 6) -> List[Dict[str, Any]]:
     key = label.strip().lower()
     if not key:
         return []
-    if key in _entity_candidates_cache:
-        return _entity_candidates_cache[key]
-
+    cache_key = f"{language}:{limit}:{key}"
+    if cache_key in _entity_candidates_cache:
+        return _entity_candidates_cache[cache_key]
     params = {
         "action": "wbsearchentities",
         "search": label,
@@ -160,833 +87,619 @@ def wikidata_search_candidates(label: str, language: str = "en", limit: int = 5)
         "limit": limit,
     }
     headers = {"User-Agent": USER_AGENT}
-    try:
-        data = _http_get(WIKIDATA_SEARCH_URL, params=params, headers=headers).json()
-        results = data.get("search", []) or []
-        _entity_candidates_cache[key] = results
-        return results
-    except Exception:
-        _entity_candidates_cache[key] = []
-        return []
+    last: List[Dict[str, Any]] = []
+    for attempt in range(3):
+        try:
+            data = _http_get(WIKIDATA_SEARCH_URL, params=params, headers=headers).json()
+            out = data.get("search", []) or []
+            if out:
+                _entity_candidates_cache[cache_key] = out
+                return out
+            last = out
+        except Exception:
+            last = []
+        time.sleep(0.15 * (attempt + 1))
+    _entity_candidates_cache[cache_key] = last
+    return last
 
 
-def _ask_sparql(query: str) -> Optional[bool]:
-    """
-    Run a SPARQL ASK query. Returns True/False if successful, else None on error.
-    """
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Accept": "application/sparql-results+json",
-    }
-    try:
-        resp = requests.get(
-            WIKIDATA_SPARQL_URL,
-            params={"query": query, "format": "json"},
-            headers=headers,
-            timeout=30,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        return bool(data.get("boolean"))
-    except Exception:
+def wikidata_search_entity(label: str, language: str = "en") -> Optional[str]:
+    key = f"{language}:{label.strip().lower()}"
+    if not label.strip():
         return None
+    if key in _entity_cache:
+        return _entity_cache[key]
+    cands = wikidata_search_candidates(label, language=language, limit=3)
+    qid = cands[0].get("id") if cands else None
+    if qid is not None:
+        _entity_cache[key] = qid
+    return qid
+
 
 def _candidate_entity_forms(text: str) -> List[str]:
     t = _normalize_entity_text(text)
-    t = re.sub(r"^(?:the|a|an)\s+", "", t, flags=re.IGNORECASE)
-    t = re.sub(r"'s$", "", t)
     forms = [t]
-
-    simplified = t
-    weak_prefixes = [
-        "the practical ", "a practical ", "an practical ",
-        "practical ", "the famous ", "famous ",
-        "the renowned ", "renowned ",
-        "the early ", "early ",
-        "the modern ", "modern ",
-        "the well-known ", "well-known ",
-    ]
-
-    changed = True
-    while changed:
-        changed = False
-        tl = simplified.lower()
-        for pref in weak_prefixes:
-            if tl.startswith(pref):
-                simplified = simplified[len(pref):].strip()
-                changed = True
-                break
-
-    if simplified not in forms:
-        forms.append(simplified)
-
     if "," in t:
         first = t.split(",")[0].strip()
         if first and first not in forms:
             forms.append(first)
-
-    # try head noun for descriptive occupations/types like "theoretical physicist" or "person's name"
-    if " " in t:
-        head = re.sub(r"'s$", "", t.split()[-1].strip())
-        if head and head not in forms:
-            forms.append(head)
-
-    for form in list(forms):
-        for article in ["the ", "a ", "an "]:
-            if form.lower().startswith(article):
-                shorter = form[len(article):].strip()
-                if shorter and shorter not in forms:
-                    forms.append(shorter)
-
-    return forms
-def _resolve_best_qids_multi_forms(text: str, max_k: int = 5) -> List[str]:
-    qids = []
-    for form in _candidate_entity_forms(text):
-        for q in _resolve_best_qids(form, max_k=max_k):
-            if q not in qids:
-                qids.append(q)
-    return qids[:max_k]
-def _is_generic_placeholder(x: str) -> bool:
-    t = _normalize_entity_text(x).lower() if isinstance(x, str) else str(x).lower()
-    return t in {"it", "book", "novel", "work", "city", "country", "person", "name"}
+    if t.endswith(" Inc") and t not in forms:
+        forms.append(t)
+    if t.endswith(" Inc."):
+        forms.append(t[:-1])
+    return [f for f in forms if f]
 
 
-def _normalize_entity_text(x: str) -> str:
-    # Basic cleanup: remove surrounding quotes/asterisks and extra whitespace
-    # plus simple article stripping so "the Eiffel Tower" links as "Eiffel Tower"
-    x = x.replace('"', "").replace("“", "").replace("”", "").replace("*", "").strip()
-    x = re.sub(r"^(?:the|a|an)\s+", "", x, flags=re.IGNORECASE)
-    x = re.sub(r"\s+", " ", x).strip()
-    return x
+def _resolve_best_qids(label: str, max_k: int = 5) -> List[str]:
+    out: List[str] = []
+    for form in _candidate_entity_forms(label):
+        for c in wikidata_search_candidates(form, limit=max_k):
+            qid = c.get("id")
+            if qid and qid not in out:
+                out.append(qid)
+    return out[:max_k]
 
 
-def _get_property_id(predicate: str) -> Optional[str]:
-    predicate = predicate.strip().lower()
-    if predicate in _property_cache:
-        return _property_cache[predicate]
-    pid = PREDICATE_TO_PROPERTY.get(predicate)
-    _property_cache[predicate] = pid
-    return pid
+def _resolve_best_qids_contextual(label: str, context_text: str, max_k: int = 5) -> List[str]:
+    raw_candidates: List[Dict[str, Any]] = []
+    for form in _candidate_entity_forms(label):
+        for c in wikidata_search_candidates(form, limit=max_k):
+            if c not in raw_candidates:
+                raw_candidates.append(c)
+    if not raw_candidates:
+        return _resolve_best_qids(label, max_k=max_k)
+
+    ctx = (context_text or "").lower()
+    label_l = _normalize_entity_text(label).lower()
+
+    def score_candidate(c: Dict[str, Any]) -> int:
+        cand_label = (c.get("label") or "").lower()
+        desc = (c.get("description") or "").lower()
+        score = 0
+
+        if label_l == "jordan":
+            if any(k in ctx for k in ["country", "capital", "amman", "middle east"]):
+                if "country" in desc or "hashemite kingdom" in desc:
+                    score += 20
+            if any(k in ctx for k in ["basketball", "nba", "bulls", "mvp", "championship"]):
+                if "basketball" in desc or "player" in desc:
+                    score += 20
+            if "river" in ctx and "river" in desc:
+                score += 15
+
+        if label_l == "apple" or label_l == "apple inc":
+            if any(k in ctx for k in ["company", "technology", "iphone", "mac", "inc", "founded by"]):
+                if "technology company" in desc or "company" in desc or cand_label == "apple inc.":
+                    score += 20
+            if any(k in ctx for k in ["fruit", "tree", "edible"]):
+                if "fruit" in desc or "apple" in desc:
+                    score += 15
+
+        if label_l == "tokyo":
+            if any(k in ctx for k in ["capital", "japan", "city"]):
+                if any(k in desc for k in ["capital city", "metropolis", "prefecture", "city"]):
+                    score += 15
+                if "japan" in desc:
+                    score += 10
+
+        if label_l.startswith("facebook"):
+            if any(k in ctx for k in ["company", "launched", "mark zuckerberg", "technology"]):
+                if "company" in desc or "social media" in desc:
+                    score += 20
+
+        # General contextual cues.
+        if any(k in ctx for k in ["company", "founded", "headquartered", "ceo"]):
+            if any(k in desc for k in ["company", "corporation", "business", "organization"]):
+                score += 6
+        if any(k in ctx for k in ["country", "capital", "continent", "middle east"]):
+            if any(k in desc for k in ["country", "city", "capital", "territory"]):
+                score += 5
+        if any(k in ctx for k in ["player", "basketball", "scientist", "poet", "author"]):
+            if any(k in desc for k in ["player", "scientist", "poet", "writer", "human"]):
+                score += 5
+
+        # Prefer exact label match.
+        if cand_label == label_l:
+            score += 3
+        if label_l.replace(" inc", "") == cand_label.replace(" inc.", ""):
+            score += 2
+
+        return score
+
+    ranked = sorted(raw_candidates, key=score_candidate, reverse=True)
+    out: List[str] = []
+    for c in ranked:
+        qid = c.get("id")
+        if qid and qid not in out:
+            out.append(qid)
+    return out[:max_k]
+
+def _desc(c: Dict[str, Any]) -> str:
+    return (c.get("description") or "").lower()
+
+def _label(c: Dict[str, Any]) -> str:
+    return (c.get("label") or "").lower()
+
+def _candidate_role_score(c: Dict[str, Any], predicate: str, is_subject: bool, context_text: str = "") -> int:
+    desc = _desc(c)
+    lab = _label(c)
+    pred = (predicate or "").strip().lower()
+    ctx = (context_text or "").lower()
+    score = 0
+
+    # capital_of: subject should be city/capital, object should be country/state
+    if pred == "capital_of":
+        if is_subject:
+            if any(k in desc for k in ["city", "capital", "commune", "metropolis"]):
+                score += 25
+            if "country" in desc:
+                score -= 10
+        else:
+            if any(k in desc for k in ["country", "state", "sovereign state", "republic", "kingdom"]):
+                score += 25
+            if any(k in desc for k in ["city", "capital", "commune"]):
+                score -= 10
+
+    # located_in: subject often physical entity/place; object must be place-like
+    elif pred == "located_in":
+        if is_subject:
+            if any(k in desc for k in [
+                "river", "city", "town", "village", "building", "museum", "mountain",
+                "university", "airport", "bridge", "lake", "country", "region", "island"
+            ]):
+                score += 20
+        else:
+            if any(k in desc for k in [
+                "country", "continent", "city", "state", "province", "region",
+                "administrative territorial entity", "territory"
+            ]):
+                score += 25
+
+    elif pred == "educated_at":
+        if is_subject:
+            if any(k in desc for k in ["physicist", "scientist", "writer", "human", "person", "businessperson", "entrepreneur"]):
+                score += 15
+        else:
+            if any(k in desc for k in ["university", "college", "school", "educational institution"]):
+                score += 30
+
+    elif pred == "written_by":
+        if is_subject:
+            if any(k in desc for k in ["book", "novel", "work", "poem", "play", "literary work", "film"]):
+                score += 25
+            if "human" in desc:
+                score -= 10
+        else:
+            if any(k in desc for k in ["human", "writer", "author", "poet", "novelist"]):
+                score += 25
+
+    elif pred == "founded_by":
+        if is_subject:
+            if any(k in desc for k in ["company", "organization", "corporation", "business"]):
+                score += 25
+        else:
+            if any(k in desc for k in ["human", "businessperson", "entrepreneur", "person"]):
+                score += 20
+
+    elif pred == "invented_by":
+        if is_subject:
+            if any(k in desc for k in ["device", "invention", "telephone", "technology", "object", "artifact"]):
+                score += 20
+            if "human" in desc:
+                score -= 10
+        else:
+            if any(k in desc for k in ["human", "inventor", "scientist", "engineer", "person"]):
+                score += 25
+
+    elif pred == "instance_of":
+        if not is_subject:
+            if any(k in desc for k in [
+                "class", "type", "category", "Wikimedia disambiguation page",
+                "concept", "country", "city", "river", "human", "fictional country"
+            ]):
+                score += 15
+
+    # extra boost from text itself
+    if pred == "located_in" and "river" in ctx and "river" in desc:
+        score += 20
+    if pred == "capital_of" and "capital" in ctx and any(k in desc for k in ["city", "capital"]):
+        score += 10
+    if pred == "educated_at" and any(k in ctx for k in ["student", "phd", "university"]):
+        if any(k in desc for k in ["university", "school", "college"]):
+            score += 10
+
+    # prefer exact label
+    if lab == _normalize_entity_text(c.get("label", "")).lower():
+        score += 1
+
+    return score
+def _ask_sparql(query: str) -> Optional[bool]:
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/sparql-results+json"}
+    try:
+        resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": query, "format": "json"}, headers=headers, timeout=30)
+        resp.raise_for_status()
+        return bool(resp.json().get("boolean"))
+    except Exception:
+        return None
 
 
-def _looks_like_year(text: str) -> Optional[str]:
-    m = re.search(r"\b(1[0-9]{3}|20[0-9]{2}|19[0-9]{2}|18[0-9]{2})\b", str(text or ""))
-    return m.group(0) if m else None
-
-
-# NEW: detect a date-like string; we mainly need the YEAR for Wikidata date properties
-def _extract_year_anywhere(text: str) -> Optional[str]:
-    return _looks_like_year(text or "")
+def _select_sparql(query: str) -> List[Dict[str, str]]:
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/sparql-results+json"}
+    try:
+        resp = requests.get(WIKIDATA_SPARQL_URL, params={"query": query, "format": "json"}, headers=headers, timeout=30)
+        resp.raise_for_status()
+        bindings = resp.json().get("results", {}).get("bindings", [])
+        out = []
+        for b in bindings:
+            row = {k: v.get("value") for k, v in b.items()}
+            out.append(row)
+        return out
+    except Exception:
+        return []
 
 
 def _build_ask_query(s_qid: str, pid: str, o_qid: str, reverse: bool = False) -> str:
-    """
-    Builds ASK query for: wd:S wdt:PID wd:O
-    If reverse=True, checks: wd:O wdt:PID wd:S
-    """
     if reverse:
         return f"ASK WHERE {{ wd:{o_qid} wdt:{pid} wd:{s_qid} . }}"
     return f"ASK WHERE {{ wd:{s_qid} wdt:{pid} wd:{o_qid} . }}"
 
 
 def _build_year_match_ask(subject_qid: str, pid: str, year: str) -> str:
-    """
-    Generic year match check for date properties (e.g., P577 publication date, P571 inception).
-    """
-    year_int = int(year)
+    return f"ASK WHERE {{ wd:{subject_qid} p:{pid} ?st . ?st ps:{pid} ?dt . FILTER(YEAR(?dt) = {year}) }}"
+
+
+def _build_located_in_union_ask(s_qid: str, o_qid: str) -> str:
     return f"""
     ASK WHERE {{
-      wd:{subject_qid} wdt:{pid} ?date .
-      FILTER(YEAR(?date) = {year_int})
+      {{ wd:{s_qid} wdt:P131* wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P17 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P30 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P361 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P206 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P276 wd:{o_qid} . }}
     }}
     """.strip()
 
 
-# NEW: located_in should not be only P131.
-# We try multiple “containment” properties to avoid false REFUTED:
-# - P131 (admin entity)
-# - P17  (country)
-# - P30  (continent) -> fixes Egypt in Africa
-# - P361 (part of)
-def _build_located_in_multi_ask(s_qid: str, o_qid: str) -> str:
-    return f"""
-    ASK WHERE {{
-      {{
-        wd:{s_qid} wdt:P131* wd:{o_qid} .
-      }}
-      UNION {{
-        wd:{s_qid} wdt:P17 wd:{o_qid} .
-      }}
-      UNION {{
-        wd:{s_qid} wdt:P30 wd:{o_qid} .
-      }}
-      UNION {{
-        wd:{s_qid} wdt:P361 wd:{o_qid} .
-      }}
-    }}
-    """.strip()
+def _get_property_id(predicate: str) -> Optional[str]:
+    return PREDICATE_TO_PROPERTY.get((predicate or "").strip().lower())
 
 
-# NEW: people roles are usually occupations, not instance_of
-# This fixes: Einstein physicist, Shakespeare playwright/poet
-def _build_human_occupation_ask(person_qid: str, occupation_qid: str) -> str:
-    return f"ASK WHERE {{ wd:{person_qid} wdt:P106 wd:{occupation_qid} . }}"
-
-
-# NEW: detect if a Wikidata item is a human (wdt:P31 wd:Q5)
-def _is_human_qid(qid: str) -> Optional[bool]:
-    query = f"ASK WHERE {{ wd:{qid} wdt:P31 wd:Q5 . }}"
-    return _ask_sparql(query)
-
-
-# NEW: stronger linking — try multiple candidates if needed
-def _resolve_best_qids(label: str, max_k: int = 3) -> List[str]:
-    """
-    Returns up to max_k QIDs for label.
-    Uses multiple candidates to mitigate ambiguity (Jordan, works editions).
-    """
-    cands = wikidata_search_candidates(label, limit=max_k)
-    qids = []
-    for c in cands:
-        q = c.get("id")
-        if q and q not in qids:
-            qids.append(q)
-    # fallback to single search
-    if not qids:
-        q = wikidata_search_entity(label)
-        if q:
-            qids.append(q)
-    return qids[:max_k]
-def _resolve_best_qids_multi(labels: List[str], max_k: int = 3) -> List[str]:
-    qids = []
-    for label in labels:
-        for q in _resolve_best_qids(label, max_k=max_k):
-            if q not in qids:
-                qids.append(q)
-    return qids[:max_k]
-def _resolve_best_qids_for_work(label: str, max_k: int = 5) -> List[str]:
-    """
-    Prefer candidates that look like literary/dramatic works.
-    """
-    cands = wikidata_search_candidates(label, limit=max_k)
-    ranked = []
-    fallback = []
-
-    good_words = [
-        "play", "tragedy", "comedy", "dramatic work",
-        "literary work", "written work"
-    ]
-
-    for c in cands:
-        qid = c.get("id")
-        desc = (c.get("description") or "").lower()
-        if not qid:
-            continue
-        if any(w in desc for w in good_words):
-            ranked.append(qid)
-        else:
-            fallback.append(qid)
-
-    out = []
-    for q in ranked + fallback:
-        if q not in out:
-            out.append(q)
-
-    return out[:max_k]
-
-
-
-def _build_alias_ask(alias_text: str, canonical_qid: str) -> str:
-    """
-    Check whether a text appears as an English altLabel for a Wikidata item.
-    """
-    alias_text = alias_text.replace('"', '\\"').strip()
-    return f"""
-    ASK WHERE {{
-      wd:{canonical_qid} <http://www.w3.org/2004/02/skos/core#altLabel> \"{alias_text}\"@en .
-    }}
-    """.strip()
-
-
-def _is_ambiguous_linking(s_qids: List[str], o_qids: List[str], s_text: str, o_text: str) -> bool:
-    """
-    Conservative ambiguity detector.
-    We keep it narrow so obvious single-link cases like Paris/Germany or Sydney/Australia
-    do not incorrectly fall back to NEI, especially for negated facts.
-    """
-    if len(s_qids) > 1 or len(o_qids) > 1:
-        return True
-
-    ambiguous_terms = {
-        "mercury", "jordan", "shakspere", "shakespeare"
-    }
-
-    st = _normalize_entity_text(s_text).lower()
-    ot = _normalize_entity_text(o_text).lower()
-    return st in ambiguous_terms or ot in ambiguous_terms
-
-
-def _final_false_verdict(negated: bool, s_qids: List[str], o_qids: List[str], s_text: str, o_text: str, any_none: bool = False) -> str:
-    """
-    Centralized fallback when ASK queries found no supporting pair.
-
-    Negation rule:
-    - if the positive fact is false, and linking is confident, the negated claim is SUPPORTED
-    - if linking/querying is ambiguous or failed, return NEI
-    """
-   
-
-    # For negated facts, a false positive ASK means the negated statement is supported
-    # as long as linking is confident enough.
-    if negated and s_qids and o_qids:
-        return "SUPPORTED"
-
-    if any_none:
-        return "NEI"
-
-    if _is_ambiguous_linking(s_qids, o_qids, s_text, o_text):
-        return "NEI"
-
-    return "REFUTED"
-
-
-def _verify_alias_of(alias_text: str, canonical_text: str) -> Tuple[Optional[str], Optional[str], Optional[bool]]:
-    alias_text = _normalize_entity_text(alias_text).rstrip("'s").strip()
-    canonical_text = _normalize_entity_text(canonical_text).rstrip("'s").strip()
-
-    canonical_qids = _resolve_best_qids_multi_forms(canonical_text, max_k=5)
-    if not canonical_qids:
-        return (None, None, None)
-
-    # 1) Best case: alias is stored as altLabel on the canonical item
-    for cq in canonical_qids:
-        ask = _ask_sparql(_build_alias_ask(alias_text, cq))
-        if ask is True:
-            return (None, cq, True)
-
-    # 2) Fallback: if searching the alias returns the same canonical entity, accept it
-    alias_qids = _resolve_best_qids_multi_forms(alias_text, max_k=5)
-    for aq in alias_qids:
-        if aq in canonical_qids:
-            return (aq, aq, True)
-
-    return (None, canonical_qids[0], False)
-def _resolve_best_qids_contextual(label: str, context_text: str, max_k: int = 5) -> List[str]:
-    """
-    Resolve entity candidates using lightweight context-sensitive ranking.
-    This is especially useful for ambiguous labels like Mercury and Jordan.
-    """
-    forms = _candidate_entity_forms(label)
+def _rank_candidates_for_role(
+    label: str,
+    predicate: str,
+    is_subject: bool,
+    context_text: str,
+    max_k: int = 5
+) -> List[str]:
     raw_candidates: List[Dict[str, Any]] = []
-
-    for form in forms:
-        cands = wikidata_search_candidates(form, limit=max_k)
-        for c in cands:
+    for form in _candidate_entity_forms(label):
+        for c in wikidata_search_candidates(form, limit=max_k):
             if c not in raw_candidates:
                 raw_candidates.append(c)
 
     if not raw_candidates:
-        qids = _resolve_best_qids_multi_forms(label, max_k=max_k)
-        return qids[:max_k]
+        return []
 
-    ctx = (context_text or "").lower()
-    label_l = _normalize_entity_text(label).lower()
-
-    def score_candidate(c: Dict[str, Any]) -> int:
-        desc = (c.get("description") or "").lower()
-        score = 0
-
-        # Mercury disambiguation
-        if label_l == "mercury":
-            if "planet" in ctx and "planet" in desc:
-                score += 10
-            if "sun" in ctx and "planet" in desc:
-                score += 8
-            if "element" in ctx and "chemical element" in desc:
-                score += 10
-            if "symbol" in ctx and "chemical element" in desc:
-                score += 6
-            if "atomic number" in ctx and "chemical element" in desc:
-                score += 6
-
-        # Jordan disambiguation
-        if label_l == "jordan":
-            if "country" in ctx and "country" in desc:
-                score += 10
-            if "middle east" in ctx and "country" in desc:
-                score += 8
-            if "river" in ctx and "river" in desc:
-                score += 10
-            if "given name" in ctx and "given name" in desc:
-                score += 10
-            if "surname" in ctx and "surname" in desc:
-                score += 10
-
-        # Work/title preference
-        if any(w in ctx for w in ["novel", "book", "play", "literary work", "published", "author"]):
-            if any(w in desc for w in ["novel", "book", "play", "literary work", "written work"]):
-                score += 6
-
-        # Person preference
-        if any(w in ctx for w in ["born", "died", "poet", "playwright", "physicist", "author", "ceo"]):
-            if any(w in desc for w in ["writer", "poet", "playwright", "physicist", "businessman", "human"]):
-                score += 4
-
-        return score
-
-    ranked = sorted(raw_candidates, key=score_candidate, reverse=True)
+    ranked = sorted(
+        raw_candidates,
+        key=lambda c: (
+            _candidate_role_score(c, predicate, is_subject, context_text),
+            1 if (_label(c) == _normalize_entity_text(label).lower()) else 0
+        ),
+        reverse=True
+    )
 
     out: List[str] = []
     for c in ranked:
         qid = c.get("id")
         if qid and qid not in out:
             out.append(qid)
-
-    if not out:
-        out = _resolve_best_qids_multi_forms(label, max_k=max_k)
-
     return out[:max_k]
-def verify_triple(triple: Dict[str, Any], sleep_s: float = 0.2) -> Dict[str, Any]:
-    """
-    Verifies a single triple against Wikidata.
-    Returns the triple augmented with:
-      - verdict: "SUPPORTED" | "REFUTED" | "NEI"
-      - s_qid, o_qid, property_id
-      - ask_result: True/False/None (None means query failed)
 
-    Negation handling:
-      - If negated=False: ask=True -> SUPPORTED, ask=False -> REFUTED, None -> NEI
-      - If negated=True : ask=False -> SUPPORTED (negated claim supported), ask=True -> REFUTED
-    """
-    s_text = _normalize_entity_text(str(triple.get("s", "")))
-    p = str(triple.get("p", "")).strip().lower()
-    o_text = _normalize_entity_text(str(triple.get("o", "")))
-    negated = bool(triple.get("negated", False))
 
-    # initialize qids early to avoid UnboundLocalError
-    s_qid = None
-    o_qid = None
+def _resolve_subject_object_qids(
+    s: str,
+    o: str,
+    sentence: str,
+    predicate: str
+) -> Tuple[Optional[str], Optional[str]]:
+    context = f"{sentence} :: predicate={predicate} :: subject={s} :: object={o}"
 
-    out = dict(triple)  # copy so we don't mutate caller
-    out.update({"verdict": "NEI", "s_qid": None, "o_qid": None, "property_id": None, "ask_result": None})
+    subject_qids = _rank_candidates_for_role(s, predicate, True, context, max_k=5)
+    object_qids = _rank_candidates_for_role(o, predicate, False, context, max_k=5)
 
-    if _is_generic_placeholder(s_text) or _is_generic_placeholder(o_text):
-        return out
+    return (subject_qids[0] if subject_qids else None,
+            object_qids[0] if object_qids else None)
 
-    context_text = f"{s_text} {o_text} {triple.get('sentence', '')}"
+def _capital_counter_evidence(s_qid: str, o_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    evidence: List[Dict[str, str]] = []
 
-    # If we don't know how to map predicate -> property, we cannot verify => NEI
-    pid = _get_property_id(p)
-    out["property_id"] = pid
-    if not pid:
-        return out
+    # What capital does the object country/state have?
+    rows = _select_sparql(
+        f"SELECT ?capLabel WHERE {{ wd:{o_qid} wdt:P36 ?cap . "
+        f"SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3"
+    )
+    for r in rows:
+        if r.get("capLabel"):
+            evidence.append({
+                "predicate": "capital_of",
+                "subject": "object",
+                "relation": "has_capital",
+                "object": r.get("capLabel", "")
+            })
 
-    # ---------------------------
-    # NEW: automatic predicate repair based on object format
-    # - fixes your results: (Shakespeare, died_in, "April 23, 1616") should be date_of_death
-    # ---------------------------
-    year_in_o = _extract_year_anywhere(o_text)
-    if p in ("died_in", "born_in") and year_in_o:
-        # born_in/died_in are place predicates; if object looks like a date/year, re-route to date predicates
-        if p == "died_in":
-            p = "date_of_death"
-            pid = _get_property_id(p) or "P570"
-            out["property_id"] = pid
-        elif p == "born_in":
-            p = "date_of_birth"
-            pid = _get_property_id(p) or "P569"
-            out["property_id"] = pid
+    # Optionally: what countries/states is the city capital of?
+    rows2 = _select_sparql(
+        f"SELECT ?countryLabel WHERE {{ wd:{s_qid} wdt:P1376 ?country . "
+        f"SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3"
+    )
+    for r in rows2:
+        if r.get("countryLabel"):
+            evidence.append({
+                "predicate": "capital_of",
+                "subject": "subject",
+                "relation": "capital_of",
+                "object": r.get("countryLabel", "")
+            })
 
-    if p == "alias_of":
-        s_qid_alias, o_qid_alias, ask_alias = _verify_alias_of(s_text, o_text)
-        out["s_qid"] = s_qid_alias
-        out["o_qid"] = o_qid_alias
-        out["ask_result"] = ask_alias
-        if ask_alias is True:
-            out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-        elif ask_alias is False:
-            out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-        else:
-            out["verdict"] = "NEI"
-        time.sleep(sleep_s)
-        return out
-    if p == "ceo_of":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_contextual(o_text, context_text, max_k=5)
-        if not s_qids or not o_qids:
-            return out
+    explanation = None
+    if evidence:
+        explanation = f"Graph evidence includes capital relations such as {', '.join(e['object'] for e in evidence[:3])}."
+    return evidence, explanation
 
-        out["property_id"] = "P169"
 
-        # Try both directions:
-        # 1) company -> CEO   (wd:Apple wdt:P169 wd:Tim_Cook)
-        # 2) reverse input form person -> company, but same Wikidata fact
-        for sq in s_qids:
-            for oq in o_qids:
-                # forward: s is org, o is person
-                ask = _ask_sparql(_build_ask_query(sq, "P169", oq, reverse=False))
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
+def _founded_by_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?founderLabel WHERE {{ wd:{s_qid} wdt:P112 ?founder . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+    evidence = [{"predicate": "founded_by", "subject": "subject", "relation": "founded_by", "object": r.get("founderLabel", "")} for r in rows]
+    explanation = None
+    if evidence:
+        explanation = f"Refuted: the graph lists founders such as {', '.join(e['object'] for e in evidence[:3])}."
+    return evidence, explanation
 
-                # reverse interpretation: o is org, s is person
-                ask_rev = _ask_sparql(_build_ask_query(oq, "P169", sq, reverse=False))
-                if ask_rev is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
 
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text)
-        time.sleep(sleep_s)
-        return out
-    # ---- Year/date literal special cases ----
+def _headquarters_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P159 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3")
+    evidence = [{"predicate": "headquarters_in", "subject": "subject", "relation": "headquarters_in", "object": r.get("locLabel", "")} for r in rows]
+    explanation = f"Refuted: the graph places headquarters in {evidence[0]['object']}." if evidence else None
+    return evidence, explanation
 
-    # publication_year: check YEAR(P577) == year
-    if p in {"publication_year","publication_date", "founded_on"}:
-        date_pid = "P571" if p == "founded_on" else "P577"
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        year = _extract_year_anywhere(o_text) or _extract_year_anywhere(str(triple.get("sentence", "")))
-        if not year or not s_qids:
-            return out
 
-        out["property_id"] = date_pid
+def _year_counter_evidence(s_qid: str, pid: str, pred_name: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?dt WHERE {{ wd:{s_qid} p:{pid} ?st . ?st ps:{pid} ?dt . }} LIMIT 3")
+    evidence = []
+    for r in rows:
+        dt = r.get("dt", "")
+        m = _looks_like_year(dt)
+        if m:
+            evidence.append({"predicate": pred_name, "subject": "subject", "relation": pred_name, "object": m})
+    explanation = f"Refuted: the graph stores year {evidence[0]['object']}." if evidence else None
+    return evidence, explanation
 
-        for sq in s_qids:
-            query = _build_year_match_ask(sq, date_pid, year)
-            ask = _ask_sparql(query)
-            if ask is True:
-                out["s_qid"] = sq
-                out["ask_result"] = True
-                out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                time.sleep(sleep_s)
-                return out
 
-        out["s_qid"] = s_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-        time.sleep(sleep_s)
-        return out
+def _location_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    queries = [
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P131 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P17 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P30 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P361 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P206 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+        f"SELECT ?locLabel WHERE {{ wd:{s_qid} wdt:P276 ?loc . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 3",
+    ]
+    evidence: List[Dict[str, str]] = []
+    seen = set()
+    for q in queries:
+        for r in _select_sparql(q):
+            obj = r.get("locLabel", "")
+            if obj and obj not in seen:
+                seen.add(obj)
+                evidence.append({"predicate": "located_in", "subject": "subject", "relation": "located_in", "object": obj})
+    explanation = f" The graph instead connects the subject to places such as {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+    return evidence, explanation
 
-    # publication_date: same property P577, but accept “1847” etc by year match
-    if p == "publication_date":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        year = _extract_year_anywhere(o_text) or _extract_year_anywhere(str(triple.get("sentence", "")))
-        if not year or not s_qids:
-            return out
+def _instance_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?clsLabel WHERE {{ wd:{s_qid} wdt:P31 ?cls . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+    evidence = [{"predicate": "instance_of", "subject": "subject", "relation": "instance_of", "object": r.get("clsLabel", "")} for r in rows if r.get("clsLabel")]
+    explanation = f"Nearby graph types include {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+    return evidence, explanation
 
-        for sq in s_qids:
-            query = _build_year_match_ask(sq, "P577", year)
-            ask = _ask_sparql(query)
-            if ask is True:
-                out["s_qid"] = sq
-                out["ask_result"] = True
-                out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                time.sleep(sleep_s)
-                return out
+def _invented_by_counter_evidence(item_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?invLabel WHERE {{ wd:{item_qid} wdt:P61 ?inv . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+    evidence = [{"predicate": "invented_by", "subject": "item", "relation": "invented_by", "object": r.get("invLabel", "")} for r in rows if r.get("invLabel")]
+    explanation = f"Graph credits inventors such as {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+    return evidence, explanation
 
-        out["s_qid"] = s_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-        time.sleep(sleep_s)
-        return out
+def _educated_at_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    rows = _select_sparql(f"SELECT ?schoolLabel WHERE {{ wd:{s_qid} wdt:P69 ?school . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+    evidence = [{"predicate": "educated_at", "subject": "subject", "relation": "educated_at", "object": r.get("schoolLabel", "")} for r in rows if r.get("schoolLabel")]
+    explanation = f" Graph links the subject to institutions such as {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+    return evidence, explanation
 
-    # date_of_birth / date_of_death: match by YEAR to stay robust (your extraction may output "April 1564")
-    if p in ("date_of_birth", "date_of_death"):
-        date_pid = "P569" if p == "date_of_birth" else "P570"
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        year = _extract_year_anywhere(o_text) or _extract_year_anywhere(str(triple.get("sentence", "")))
-        if not year or not s_qids:
-            return out
+def _written_by_counter_evidence(work_qid: Optional[str], author_qid: Optional[str] = None) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    evidence: List[Dict[str, str]] = []
+    if work_qid:
+        rows = _select_sparql(f"SELECT ?authorLabel WHERE {{ wd:{work_qid} wdt:P50 ?author . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+        for r in rows:
+            if r.get("authorLabel"):
+                evidence.append({"predicate": "written_by", "subject": "subject", "relation": "written_by", "object": r.get("authorLabel", "")})
+    if not evidence and author_qid:
+        rows = _select_sparql(f"SELECT ?workLabel WHERE {{ ?work wdt:P50 wd:{author_qid} . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+        for r in rows:
+            if r.get("workLabel"):
+                evidence.append({"predicate": "written_by", "subject": "object", "relation": "author_of", "object": r.get("workLabel", "")})
+    explanation = f"The graph links the work/author neighborhood to {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+    return evidence, explanation
+def _norm_text(x: str) -> str:
+    x = _normalize_entity_text(x or "")
+    return re.sub(r"\s+", " ", x).strip().lower()
 
-        for sq in s_qids:
-            query = _build_year_match_ask(sq, date_pid, year)
-            ask = _ask_sparql(query)
-            if ask is True:
-                out["s_qid"] = sq
-                out["ask_result"] = True
-                out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                time.sleep(sleep_s)
-                return out
 
-        out["s_qid"] = s_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-        time.sleep(sleep_s)
-        return out
+def _evidence_contains_claimed_object(
+    evidence: List[Dict[str, str]],
+    claimed_object: str
+) -> bool:
+    target = _norm_text(claimed_object)
+    if not target:
+        return False
 
-    # founded_by BUT object looks like a YEAR -> treat as inception year (P571) instead of founder entity (P112)
-    if p == "founded_by":
-        year = _looks_like_year(o_text)
+    for e in evidence:
+        obj = _norm_text(e.get("object", ""))
+        if not obj:
+            continue
+
+        # exact match
+        if obj == target:
+            return True
+
+        # soft containment for cases like:
+        # "Stanford University" vs "Leland Stanford Junior University"
+        if target in obj or obj in target:
+            return True
+
+    return False
+def _should_emit_refuted(
+    predicate: str,
+    ask_result: Optional[bool],
+    evidence: List[Dict[str, str]],
+    claimed_object: str
+) -> bool:
+    if ask_result is not False:
+        return False
+
+    # Critical fix:
+    # if graph evidence already contains the claimed object,
+    # this is NOT refutation.
+    if _evidence_contains_claimed_object(evidence, claimed_object):
+        return False
+
+    if predicate in WEAK_REFUTATION_PREDICATES:
+        return bool(evidence)
+
+    return True
+
+def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
+    t = dict(triple)
+    s = _normalize_entity_text(t.get("s", ""))
+    p = str(t.get("p", "")).strip().lower()
+    o = _normalize_entity_text(t.get("o", ""))
+    sentence = str(t.get("sentence", ""))
+    negated = bool(t.get("negated", False))
+
+    t.setdefault("graph_evidence", [])
+    t.setdefault("explanation", None)
+
+    pid = t.get("property_id") or _get_property_id(p)
+    reverse = bool(t.get("reverse", False)) or (p in REVERSE_PREDICATES)
+    t["property_id"] = pid
+    t["reverse"] = reverse
+
+    if not s or not p or not o or not pid:
+        t["verdict"] = "NEI"
+        t["ask_result"] = None
+        t["s_qid"] = None
+        t["o_qid"] = None
+        return t
+
+    s_qid, o_qid = _resolve_subject_object_qids(s, o, sentence, p)
+    t["s_qid"] = s_qid
+    t["o_qid"] = o_qid
+
+    if not s_qid:
+        t["verdict"] = "NEI"
+        t["ask_result"] = False
+        t["graph_evidence"] = [{"type": "entity_linking_failure", "entity": s}]
+        t["explanation"] = "Subject could not be linked to the knowledge graph."
+        return t
+
+    ask_result: Optional[bool] = None
+
+    if p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
+        year = _looks_like_year(o) or _looks_like_year(sentence)
         if year:
-            s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-            out["property_id"] = "P571"  # inception
+            ask_result = _ask_sparql(_build_year_match_ask(s_qid, pid, year))
+        elif p == "capital_of":
+            if s_qid and o_qid:
+                # First try the direct city -> country relation if present in Wikidata
+                ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P1376 wd:{o_qid} . }}")
 
-            if not s_qids:
-                return out  # NEI
-
-            for sq in s_qids:
-                query = _build_year_match_ask(sq, "P571", year)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-            out["s_qid"] = s_qids[0]
-            out["ask_result"] = False
-            out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-            time.sleep(sleep_s)
-            return out
-
-    # Special handling for located_in
-    if p == "located_in":
-        # if object is vague like "northern France", mark NEI not REFUTED
-        if _looks_vague_region(o_text):
-            out["verdict"] = "NEI"
-            return out
-
-        # resolve entities first (multi-candidate to reduce ambiguity)
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_multi(_location_fallback_labels(o_text), max_k=3)
-
-        if not s_qids or not o_qids:
-            return out  # NEI
-
-        # NEW FIX: try multiple containment properties (P131/P17/P30/P361)
-        for sq in s_qids:
-            for oq in o_qids:
-                query = _build_located_in_multi_ask(sq, oq)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = "REFUTED" if not negated else "SUPPORTED"
-        time.sleep(sleep_s)
-        return out
-
-    if p == "part_of":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_contextual(o_text, context_text, max_k=5)
-        if not s_qids or not o_qids:
-            return out
-        for sq in s_qids:
-            for oq in o_qids:
-                for pid_try in ("P361", "P131", "P17"):
-                    query = _build_ask_query(sq, pid_try, oq, reverse=False)
-                    ask = _ask_sparql(query)
-                    if ask is True:
-                        out["s_qid"] = sq
-                        out["o_qid"] = oq
-                        out["property_id"] = pid_try
-                        out["ask_result"] = True
-                        out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                        time.sleep(sleep_s)
-                        return out
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text)
-        time.sleep(sleep_s)
-        return out
-
-    if p == "occupation":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_multi_forms(o_text, max_k=5)
-        if not s_qids or not o_qids:
-            return out
-
-        for sq in s_qids:
-            for oq in o_qids:
-                query = _build_human_occupation_ask(sq, oq)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["property_id"] = "P106"
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text)
-        time.sleep(sleep_s)
-        return out
-    # ---------------------------
-    # NEW: instance_of repair for humans -> occupation (P106)
-    # ---------------------------
-    if p == "instance_of":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_contextual(o_text, context_text, max_k=5)
-        if not s_qids or not o_qids:
-            return out
-
-        # 1) try true instance_of first
-        for sq in s_qids:
-            for oq in o_qids:
-                query = _build_ask_query(sq, "P31", oq, reverse=False)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["property_id"] = "P31"
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-        # 2) if subject is human, retry as occupation
-        for sq in s_qids:
-            is_human = _is_human_qid(sq)
-            if is_human is True:
-                for oq in o_qids:
-                    query = _build_human_occupation_ask(sq, oq)
-                    ask = _ask_sparql(query)
-                    if ask is True:
-                        out["s_qid"] = sq
-                        out["o_qid"] = oq
-                        out["property_id"] = "P106"  # occupation
-                        out["ask_result"] = True
-                        out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                        time.sleep(sleep_s)
-                        return out
-
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text)
-        time.sleep(sleep_s)
-        return out
-
-    # ---------------------------
-    # NEW: capital_of direction repair
-    # Your results show both:
-    # - (Paris, capital_of, France)  [city -> country]  should check P1376
-    # - (France, capital_of, Paris)  [country -> city]  should check P36
-    # ---------------------------
-    if p == "capital_of":
-        s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-        o_qids = _resolve_best_qids_contextual(o_text, context_text, max_k=5)
-        if not s_qids or not o_qids:
-            return out
-
-        # Try City -> Country: P1376
-        for sq in s_qids:
-            for oq in o_qids:
-                query = _build_ask_query(sq, "P1376", oq, reverse=False)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["property_id"] = "P1376"
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-        # Try Country -> City: P36
-        for sq in s_qids:
-            for oq in o_qids:
-                query = _build_ask_query(sq, "P36", oq, reverse=False)
-                ask = _ask_sparql(query)
-                if ask is True:
-                    out["s_qid"] = sq
-                    out["o_qid"] = oq
-                    out["property_id"] = "P36"
-                    out["ask_result"] = True
-                    out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                    time.sleep(sleep_s)
-                    return out
-
-        out["s_qid"] = s_qids[0]
-        out["o_qid"] = o_qids[0]
-        out["ask_result"] = False
-        out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text)
-        time.sleep(sleep_s)
-        return out
-
-    # ---- Entity-object cases ----
-
-    # Resolve entities (only if object is NOT a year literal)
-    # NEW: multi-candidate fallback to reduce false REFUTED due to ambiguity
-    s_qids = _resolve_best_qids_contextual(s_text, context_text, max_k=5)
-
-    if p == "notable_work":
-        work_candidates = _resolve_best_qids_for_work(o_text, max_k=5)
-        fallback_candidates = _resolve_best_qids_multi_forms(o_text, max_k=5)
-
-        o_qids = []
-        for q in work_candidates + fallback_candidates:
-            if q not in o_qids:
-                o_qids.append(q)
-        o_qids = o_qids[:5]
-    elif p in {"place_of_birth", "place_of_death", "located_at", "located_in"}:
-        o_qids = _resolve_best_qids_multi(_location_fallback_labels(o_text), max_k=3)
+                # Then try the canonical country -> capital relation
+                if ask_result is not True:
+                    ask_result = _ask_sparql(f"ASK WHERE {{ wd:{o_qid} wdt:P36 wd:{s_qid} . }}")
+                    if ask_result is True:
+                        t["property_id"] = "P36"
+    elif p == "instance_of":
+        if o_qid:
+            ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31/wdt:P279* wd:{o_qid} . }}")
+            if ask_result is not True:
+                ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31 ?type . ?type wdt:P279* wd:{o_qid} . }}")
+    elif p == "located_in":
+        if o_qid:
+            ask_result = _ask_sparql(_build_located_in_union_ask(s_qid, o_qid))
+    elif p == "invented_by":
+        if s_qid and o_qid:
+            ask_result = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=False))
+            if ask_result is not True:
+                ask_result = _ask_sparql(_build_ask_query(o_qid, pid, s_qid, reverse=False))
     else:
-        o_qids = _resolve_best_qids_multi_forms(o_text, max_k=5)
+        if o_qid:
+            ask_result = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=reverse))
 
-    if not s_qids or not o_qids:
-        # Could not link one/both entities => Not Enough Info
-        return out
+    t["ask_result"] = ask_result
+    if ask_result is None:
+        ask_result = False
+        t["ask_result"] = False
 
-    reverse = p in REVERSE_PREDICATES
+    if ask_result is True:
+        t["verdict"] = "REFUTED" if negated else "SUPPORTED"
+        return t
+    if negated and ask_result is False:
+        t["verdict"] = "SUPPORTED"
+        return t
 
-    # Try candidate pairs until one supports
-    any_none = False
-    for sq in s_qids:
-        for oq in o_qids:
-            query = _build_ask_query(sq, pid, oq, reverse=reverse)
-            ask = _ask_sparql(query)
-            if ask is True:
-                out["s_qid"] = sq
-                out["o_qid"] = oq
-                out["ask_result"] = True
-                out["verdict"] = "SUPPORTED" if not negated else "REFUTED"
-                time.sleep(sleep_s)
-                return out
-            if ask is None:
-                # keep trying; if all None, NEI
-                any_none = True
+    evidence: List[Dict[str, str]] = []
+    explanation: Optional[str] = None
 
-    # If we reach here, we got no True.
-    # Use first candidates for logging/debug.
-    out["s_qid"] = s_qids[0]
-    out["o_qid"] = o_qids[0]
-    out["ask_result"] = False
-    out["verdict"] = _final_false_verdict(negated, s_qids, o_qids, s_text, o_text, any_none=any_none)
+    if ask_result is False:
+        if p == "capital_of" and s_qid and o_qid:
+            evidence, explanation = _capital_counter_evidence(s_qid, o_qid)
+        elif p == "founded_by" and s_qid:
+            evidence, explanation = _founded_by_counter_evidence(s_qid)
+        elif p == "headquarters_in" and s_qid:
+            evidence, explanation = _headquarters_counter_evidence(s_qid)
+        elif p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"} and s_qid:
+            evidence, explanation = _year_counter_evidence(s_qid, pid, p)
+        elif p == "located_in" and s_qid:
+            evidence, explanation = _location_counter_evidence(s_qid)
+        elif p == "instance_of" and s_qid:
+            evidence, explanation = _instance_counter_evidence(s_qid)
+        elif p == "invented_by":
+            item_qid = s_qid if s_qid and _normalize_entity_text(s).lower() == s.lower() else s_qid
+            if item_qid or o_qid:
+                evidence, explanation = _invented_by_counter_evidence(item_qid or o_qid)
+        elif p == "educated_at" and s_qid:
+            evidence, explanation = _educated_at_counter_evidence(s_qid)
+        elif p == "written_by" and (s_qid or o_qid):
+            evidence, explanation = _written_by_counter_evidence(s_qid, o_qid)
 
-    time.sleep(sleep_s)
-    return out
+    t["graph_evidence"] = evidence
+    t["explanation"] = explanation
+    if ask_result is False and _evidence_contains_claimed_object(evidence, o):
+        t["verdict"] = "REFUTED" if negated else "SUPPORTED"
+        if not t["explanation"]:
+            t["explanation"] = "Supported: graph evidence contains the claimed object even though the exact ASK query failed."
+        return t
+
+    if _should_emit_refuted(p, ask_result, evidence, o):
+        t["verdict"] = "REFUTED"
+    else:
+        t["verdict"] = "NEI"
+    return t
 
 
-def verify_triples(triples: List[Dict[str, Any]], sleep_s: float = 0.2) -> List[Dict[str, Any]]:
-    """
-    Batch verification. Adds verdict to each triple.
-    sleep_s is a small delay to be polite to Wikidata endpoints.
-    """
-    results = []
+def verify_triples(triples: List[Dict[str, Any]], sleep_seconds: float = 0.1) -> List[Dict[str, Any]]:
+    out = []
     for t in triples:
-        results.append(verify_triple(t, sleep_s=sleep_s))
-    return results
+        out.append(verify_triple(t))
+        if sleep_seconds:
+            time.sleep(sleep_seconds)
+    return out

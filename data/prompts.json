@@ -1,8 +1,5 @@
 [
-  {"question": "Paris is the capital of Germany and is located in France. Verify this statement."},
-  {"question": "Google was founded in 1980 by Larry Page and Sergey Brin. Check each part of this statement."},
-  {"question": "Jordan is a country and a person. Explain and verify both meanings."},
-  {"question": "Is Albert Einstein the capital of Germany?"},
-  {"question": "Who wrote The Silent Empire of Mars and when was it published?"},
-  {"question": "Paris is not the capital of France. Is this correct?"}
+
+  {"question": "The Nile does not flow through Egypt but is the longest river in Africa. Check this."}
+
 ]

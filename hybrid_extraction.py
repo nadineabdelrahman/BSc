@@ -50,7 +50,7 @@ def _canonicalize_place_object(p: str, o: str) -> str:
     p = str(p or "").strip().lower()
     o = _clean_entity(o)
 
-    if p in {"place_of_birth", "place_of_death", "located_at","located_in"}:
+    if p in {"place_of_birth", "place_of_death", "located_at","located_in", "headquarters_in"}:
         if "," in o:
             first = o.split(",")[0].strip()
             if first:
@@ -136,12 +136,36 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
             return False
         if o_l in {"alexandria", "europe", "world"}:
             return False
+        if any(x in o_l for x in ["championship", "championships", "mvp", "award", "awards", "medalist", "medal", "player"]):
+            return False
 
     # founded_by should not have date-like or organization-reverse objects
     if p == "founded_by":
         if _looks_like_year(o_l):
             return False
         if "founded by" not in sent_l and "founded" not in sent_l:
+            return False
+
+    # founded_on/date/publication predicates must have year-like objects
+    if p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
+        if not _looks_like_year(o_l):
+            return False
+
+    # capital_of must connect entity-like names, not clause fragments
+    if p == "capital_of":
+        if any(x in s_l for x in ["capital of", "capital city of"]):
+            return False
+        if any(x in o_l for x in ["capital of", "capital city of", " is incorrect", " is true", " is false"]):
+            return False
+
+    # instance_of should not take descriptive clauses as objects
+    if p == "instance_of":
+        if len(o_l.split()) > 5 and not any(k in o_l for k in ["programming language", "chemical element"]):
+            return False
+
+    # alias_of should not be used for pure symbols/codes like Hg or JPY
+    if p == "alias_of":
+        if re.fullmatch(r"[A-Z]{1,5}", o.strip()):
             return False
 
     # part_of should not take long explanatory text
@@ -152,7 +176,7 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
             return False
 
     # located_in / located_at should not take vague/scenic objects
-    if p in {"located_in", "located_at"}:
+    if p in {"located_in", "located_at", "headquarters_in"}:
         bad_loc = {
             "world", "history", "culture", "civilization"
         }

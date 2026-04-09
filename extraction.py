@@ -76,7 +76,7 @@ def _safe_json_load(s: str) -> Any:
 # Example: your schema uses (city, capital_of, country) but Wikidata stores (country, P36, city).
 PREDICATE_TO_WIKIDATA: Dict[str, Tuple[str, bool]] = {
     # geography / containment
-    "capital_of": ("P36", True),          # Wikidata: (country P36 capitalCity)
+    "capital_of": ("P1376", False),          # Wikidata: (country P36 capitalCity)
     "located_in": ("P131", False),        # located in admin entity (often needs path queries)
     "part_of": ("P361", False),           # part of
 
@@ -104,7 +104,7 @@ PREDICATE_TO_WIKIDATA: Dict[str, Tuple[str, bool]] = {
     "notable_work": ("P800", False),      # notable work (person -> work)
 
     # inventions
-    "invented_by": ("P61", True),        # discoverer or inventor (item -> person)
+    "invented_by": ("P61", False),        # discoverer or inventor (item -> person)
 
     # country properties (stored on country in Wikidata)
     "currency_of": ("P38", False),        # Current extracted schema is usually (country, currency_of, currency)
@@ -213,6 +213,56 @@ def _is_unverifiable_predicate(p: str) -> bool:
         "described_as", "considered", "notable_for"
     }
     return p in BAD
+
+NON_HUMAN_INSTANCE_OBJECTS = {
+    "planet", "chemical element", "programming language", "river", "car brand",
+    "technology company", "fruit", "mountain", "city", "country", "tower",
+    "landmark", "novella", "novel", "book", "play", "company", "corporation",
+    "software", "species", "big cat", "wild cat", "element", "university",
+    "social networking site", "social media platform", "e-commerce platform",
+    "electric vehicle manufacturer", "electric car manufacturer"
+}
+
+def _maybe_remap_predicate_by_object(p: str, o: str) -> str:
+    """
+    Conservative repair: keep human professions as occupation,
+    but map obvious non-human type labels to instance_of.
+    """
+    p = str(p or "").strip().lower()
+    o_l = _clean_entity(o).lower()
+    if p == "occupation":
+        if o_l in NON_HUMAN_INSTANCE_OBJECTS:
+            return "instance_of"
+        if any(x in o_l for x in [
+            "programming language", "chemical element", "technology company", "car brand",
+            "social networking site", "social media platform", "e-commerce platform",
+            "electric vehicle manufacturer", "electric car manufacturer"
+        ]):
+            return "instance_of"
+    return p
+
+NON_HUMAN_INSTANCE_OBJECTS = {
+    "planet", "chemical element", "programming language", "river", "car brand",
+    "technology company", "fruit", "mountain", "city", "country", "tower",
+    "landmark", "novella", "novel", "book", "play", "company", "corporation",
+    "software", "species", "big cat", "wild cat", "element"
+}
+
+
+def _maybe_remap_predicate_by_object(p: str, o: str) -> str:
+    """
+    Conservative repair: keep human professions as occupation,
+    but map obvious non-human type labels to instance_of.
+    """
+    p = str(p or "").strip().lower()
+    o_l = _clean_entity(o).lower()
+    if p == "occupation":
+        if o_l in NON_HUMAN_INSTANCE_OBJECTS:
+            return "instance_of"
+        if any(x in o_l for x in ["programming language", "chemical element", "technology company", "car brand"]):
+            return "instance_of"
+    return p
+
 
 def _normalize_predicate(p: str) -> str:
     """
@@ -337,6 +387,7 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
             "If p is publication_year, o MUST be a 4-digit year like '1847'.",
             "If p is date_of_birth or date_of_death, o should be a date or year text (not a person).",
             "For human professions like physicist, poet, playwright, writer, use predicate 'occupation', not 'instance_of'.",
+            "For non-human types such as planet, chemical element, programming language, river, car brand, fruit, and technology company, use predicate 'instance_of', not 'occupation'.",
             "Use 'alias_of' only for true name or spelling variants of the same entity.",
 "Do NOT use 'alias_of' for abbreviations, symbols, acronyms, or codes such as JPY, USD, Hg, or ¥.",
         ],
@@ -379,6 +430,7 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         s = _clean_entity(obj.get("s", ""))
         p = _normalize_predicate(obj.get("p", ""))
         o = _clean_entity(obj.get("o", ""))
+        p = _maybe_remap_predicate_by_object(p, o)
         sentence = str(obj.get("sentence", "")).strip()
         sentence_l = sentence.lower()
           # Drop bibliography/reference lines from factual claim extraction
@@ -443,6 +495,7 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         if repaired is None:
             continue
         p, o = repaired
+        p = _maybe_remap_predicate_by_object(p, o)
 
         # NEW: optionally enforce some direction/format consistency
         t = {

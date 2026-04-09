@@ -17,7 +17,9 @@ INLINE_CITATION_PATTERNS = [
     r"\([A-Z][A-Za-z\-]+(?: et al\.)?,\s*\d{4}\)",         # (Smith, 2020), (Kolli et al., 2025)
     r"\[[0-9]+\]",                                         # [1], [2]
     r"\bdoi:\s*10\.\d{4,9}/[-._;()/:A-Z0-9]+\b",           # DOI
-    r"https?://doi\.org/10\.\d{4,9}/[-._;()/:A-Z0-9]+"     # DOI URL
+    r"https?://doi\.org/10\.\d{4,9}/[-._;()/:A-Z0-9]+" ,   # DOI URL
+    r"https?://arxiv\.org/abs/[0-9]{4}\.[0-9]{4,5}(?:v\d+)?",
+    r"\barxiv:\s*[0-9]{4}\.[0-9]{4,5}(?:v\d+)?\b"   
 ]
 
 def has_reference_signals(text: str) -> bool:
@@ -50,7 +52,9 @@ def extract_reference_like_lines(text: str) -> List[str]:
         r"^\[[0-9]+\]\s+",
         r"^[A-Z][A-Za-z\-]+.*\(\d{4}\)",
         r"^.+doi:\s*10\.",
-        r"^.+https?://doi\.org/10\."
+        r"^.+https?://doi\.org/10\.",
+        r"^.+https?://arxiv\.org/abs/[0-9]{4}\.[0-9]{4,5}(?:v\d+)?",
+        r"^.+\barxiv:\s*[0-9]{4}\.[0-9]{4,5}(?:v\d+)?\b"
     ]
 
     for line in lines:
