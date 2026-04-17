@@ -24,6 +24,7 @@ from extraction import (
     _is_unverifiable_predicate,
     ALLOWED_PREDICATES,
 )
+from predicate_schema import canonicalize_predicate_with_metadata
 
 from extraction_spacy import extract_triples_spacy
 
@@ -85,6 +86,9 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
     sent_l = str(sentence).strip().lower()
 
     if not s_l or not p or not o_l:
+        return False
+
+    if _has_clause_fragment_markers(s) or _has_clause_fragment_markers(o):
         return False
 
     # Generic placeholders
@@ -241,6 +245,8 @@ def _is_generic_entity(text: str) -> bool:
     return t in {"it", "he", "she", "they", "this", "that", "book", "novel", "work", "city", "country", "person", "name"}
 def _normalize_entity_phrase(text: str) -> str:
     t = _clean_entity(text).strip()
+    if re.search(r"\b(?:not|but|however|although|rather than|instead of)\b", t, flags=re.IGNORECASE):
+        t = re.split(r"\b(?:not|but|however|although|rather than|instead of)\b", t, maxsplit=1, flags=re.IGNORECASE)[0].strip(" ,;:-")
     t = re.sub(r"^(?:the|a|an)\s+", "", t, flags=re.IGNORECASE)
 
     weak_prefixes = [
@@ -271,9 +277,99 @@ def _normalize_entity_phrase(text: str) -> str:
                 break
 
     return t
+
+
+def _has_clause_fragment_markers(text: str) -> bool:
+    t = str(text or '').strip().lower()
+    if not t:
+        return True
+    bad_patterns = [
+        r"\b(?:and|or)\s+is\b",
+        r"\b(?:and|or)\s+the\b",
+        r"\b(?:and|or)\s+was\b",
+        r"\b(?:and|or)\s+are\b",
+        r"\bnot\s+[A-Z]",
+        r",\s*not\s+",
+        r"\b(?:because|which|that|who)\b",
+        r"\bis\s+(?:correct|incorrect|true|false)\b",
+    ]
+    return any(re.search(p, str(text or ''), flags=re.IGNORECASE) for p in bad_patterns)
+
+
+def _split_prompt_into_atomic_clauses(prompt_text: str) -> List[str]:
+    text = str(prompt_text or '').strip()
+    if not text:
+        return []
+    text = re.sub(r"[?!.]+$", "", text).strip()
+    m = re.match(r"^(?P<s>.+?)\s+is\s+(?P<o1>.+?)\s+and\s+is\s+the\s+capital\s+of\s+(?P<o2>.+)$", text, flags=re.I)
+    if m:
+        s = m.group('s').strip()
+        return [f"{s} is {m.group('o1').strip()}", f"{s} is the capital of {m.group('o2').strip()}"]
+    m = re.match(r"^(?P<s>.+?)\s+is\s+the\s+capital\s+of\s+(?P<o1>.+?)\s+and\s+(?P<o2>.+)$", text, flags=re.I)
+    if m:
+        s = m.group('s').strip()
+        rest = m.group('o2').strip()
+        if re.match(r"^(?:is|was|are|were)\b", rest, flags=re.I):
+            rest = re.sub(r"^(?:is|was|are|were)\s+", "", rest, flags=re.I)
+            return [f"{s} is the capital of {m.group('o1').strip()}", f"{s} is {rest.strip()}"]
+    return [text]
+
+
+def _extract_atomic_prompt_claims(prompt_text: str) -> List[Dict[str, Any]]:
+    clauses = _split_prompt_into_atomic_clauses(prompt_text)
+    out: List[Dict[str, Any]] = []
+    for clause in clauses:
+        c = clause.strip()
+        if not c:
+            continue
+        m = re.match(r"^(?P<s>.+?)\s+is\s+the\s+capital\s+of\s+(?P<o>.+)$", c, flags=re.I)
+        if m:
+            s = _normalize_entity_phrase(m.group('s'))
+            o = _normalize_entity_phrase(m.group('o'))
+            if s and o and not _has_clause_fragment_markers(s) and not _has_clause_fragment_markers(o):
+                pid, reverse = _map_predicate_to_wikidata('capital_of')
+                out.append({
+                    's': s, 'p': 'capital_of', 'o': o, 'sentence': c, 'confidence': 0.97,
+                    'negated': False, 'property_id': pid, 'reverse': reverse,
+                    'source': ['prompt_rule']
+                })
+            continue
+        m = re.match(r"^(?P<s>.+?)\s+is\s+in\s+(?P<o>.+)$", c, flags=re.I)
+        if m:
+            s = _normalize_entity_phrase(m.group('s'))
+            o = _normalize_entity_phrase(m.group('o'))
+            if s and o and not _has_clause_fragment_markers(s) and not _has_clause_fragment_markers(o):
+                pid, reverse = _map_predicate_to_wikidata('located_in')
+                out.append({
+                    's': s, 'p': 'located_in', 'o': o, 'sentence': c, 'confidence': 0.96,
+                    'negated': False, 'property_id': pid, 'reverse': reverse,
+                    'source': ['prompt_rule']
+                })
+            continue
+    return out
+
+def _triple_relevant_to_focus(t: Dict[str, Any], prompt_text: str | None) -> bool:
+    if not prompt_text:
+        return True
+    prompt_l = str(prompt_text or "").lower()
+    pieces = [str(t.get("s", "")), str(t.get("o", "")), str(t.get("sentence", ""))]
+    for piece in pieces:
+        piece_l = piece.lower()
+        if piece_l and piece_l in prompt_l:
+            return True
+    prompt_tokens = {w for w in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]+", prompt_l) if len(w) >= 4}
+    claim_tokens = {w for w in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]+", " ".join(pieces).lower()) if len(w) >= 4}
+    if not (prompt_tokens & claim_tokens):
+        return False
+    # Strongly prefer prompt-focused claims over background elaboration.
+    important_entities = [str(t.get("s", "")).lower(), str(t.get("o", "")).lower()]
+    return any(e and e in prompt_l for e in important_entities) or len(prompt_tokens & claim_tokens) >= 2
+
 def _normalize_llm_triple(t: dict) -> dict | None:
     s = _normalize_entity_phrase(t.get("s", ""))
-    p = _normalize_predicate(t.get("p", ""))
+    p_raw = str(t.get("p", "")).strip()
+    meta = canonicalize_predicate_with_metadata(p_raw, sentence=str(t.get("sentence", "")), s=s, o=t.get("o", ""))
+    p = meta["p_canonical"]
     o = _normalize_entity_phrase(t.get("o", ""))
     sentence = str(t.get("sentence", "")).strip()
     negated = bool(t.get("negated", False))
@@ -307,8 +403,13 @@ def _normalize_llm_triple(t: dict) -> dict | None:
         o = year
     if not _semantically_valid_triple(s, p, o, sentence):
         return None
-    pid, reverse = _map_predicate_to_wikidata(p)
-
+    pid = meta.get("property_id")
+    reverse = meta.get("reverse", False)
+    if not pid and p:
+        pid = meta.get("property_id")
+    reverse = meta.get("reverse", False)
+    if not pid and p:
+        pid, reverse = _map_predicate_to_wikidata(p)
 
     return {
         "s": s,
@@ -320,6 +421,8 @@ def _normalize_llm_triple(t: dict) -> dict | None:
         "property_id": pid,
         "reverse": reverse,
         "source": ["llm"],
+        "p_raw": meta.get("p_raw", p_raw),
+        "verification_strategy": meta.get("strategy", "direct"),
     }
 def _repair_birth_death_predicate(p: str, o: str, sentence: str) -> tuple[str, str] | None:
     p = str(p or "").strip().lower()
@@ -425,7 +528,8 @@ def _normalize_spacy_triple(t: Dict[str, Any], default_confidence: float = 0.60)
     if not s or not raw_p or not o or not sentence:
         return None
 
-    p = _normalize_spacy_predicate(raw_p, sentence, o)
+    meta = canonicalize_predicate_with_metadata(raw_p, sentence=sentence, s=s, o=o)
+    p = meta["p_canonical"] or _normalize_spacy_predicate(raw_p, sentence, o)
 
     # Publication year repair: object must be a year
     if p == "publication_year":
@@ -464,6 +568,8 @@ def _normalize_spacy_triple(t: Dict[str, Any], default_confidence: float = 0.60)
         "reverse": reverse,
         "mapped": mapped,
         "source": ["spacy"],
+        "p_raw": meta.get("p_raw", raw_p),
+        "verification_strategy": meta.get("strategy", "direct"),
     }
 
 
@@ -500,6 +606,8 @@ def _keep_spacy_triple(t: Dict[str, Any]) -> bool:
     if _too_long_entity(s) or _too_long_entity(o):
         return False
     if _is_generic_entity(s) or _is_generic_entity(o):
+        return False
+    if _has_clause_fragment_markers(s) or _has_clause_fragment_markers(o):
         return False
     # Drop weak descriptive location triples like:
     # Paris located_in Seine River
@@ -634,17 +742,99 @@ def merge_triples(
     #- normalize/filter spaCy triples
     #- merge and deduplicate
    
+
+
+
+def _finalize_triples(triples: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Final thesis-safe cleanup:
+    - drop exact duplicate claims
+    - prefer prompt_rule as the visible provenance when present
+    - keep ordering stable
+    """
+    seen = set()
+    clean: List[Dict[str, Any]] = []
+
+    for t in triples:
+        key = (
+            str(t.get("s", "")).strip().lower(),
+            str(t.get("p", "")).strip().lower(),
+            str(t.get("o", "")).strip().lower(),
+            bool(t.get("negated", False)),
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+
+        t2 = dict(t)
+        src = t2.get("source", [])
+        if isinstance(src, str):
+            src = [src]
+        if "prompt_rule" in src:
+            t2["source"] = ["prompt_rule"]
+        elif src:
+            t2["source"] = list(dict.fromkeys(src))
+        clean.append(t2)
+
+    return clean
+
+def _prepare_prompt_claims(prompt_text: str | None, max_triples_llm: int) -> List[Dict[str, Any]]:
+    """
+    Prefer extracting the verification targets from the prompt itself rather than from the
+    answer's corrective explanation. Use a tiny deterministic prompt parser first for
+    coordinated clauses such as "Tokyo is in Japan and is the capital of China".
+    """
+    if not prompt_text or not str(prompt_text).strip():
+        return []
+
+    prompt_text = str(prompt_text).strip()
+    rule_claims = _extract_atomic_prompt_claims(prompt_text)
+
+    prompt_llm: List[Dict[str, Any]] = []
+    prompt_spacy: List[Dict[str, Any]] = []
+
+    for clause in _split_prompt_into_atomic_clauses(prompt_text):
+        raw_prompt = extract_triples_llm(clause, max_triples=max_triples_llm, prompt_text=clause)
+        for t in raw_prompt:
+            nt = _normalize_llm_triple(t)
+            if nt is not None and _triple_relevant_to_focus(nt, clause):
+                nt = dict(nt)
+                nt["source"] = ["prompt", "llm"]
+                prompt_llm.append(nt)
+
+        for t in extract_triples_spacy(clause):
+            nt = _normalize_spacy_triple(t)
+            if nt and _keep_spacy_triple(nt) and _triple_relevant_to_focus(nt, clause):
+                nt = dict(nt)
+                nt["source"] = ["prompt", "spacy"]
+                prompt_spacy.append(nt)
+
+    merged = merge_triples(rule_claims, merge_triples(prompt_llm, prompt_spacy))
+    extra_triples: List[Dict[str, Any]] = []
+    for t in merged:
+        extra = _extract_extra_date_fact(t)
+        if extra is not None:
+            extra_triples.append(extra)
+    return _finalize_triples(merge_triples(merged, extra_triples))
+
 def extract_triples_hybrid(
     answer_text: str,
     max_triples_llm: int = 12,
     include_spacy: bool = True,
+    prompt_text: str | None = None,
 ) -> List[Dict[str, Any]]:
-    raw_llm = extract_triples_llm(answer_text, max_triples=max_triples_llm)
+    # When a prompt is available, prefer extracting the claim to verify from the prompt
+    # itself instead of from the answer's corrective explanation.
+    prompt_claims = _prepare_prompt_claims(prompt_text, max_triples_llm)
+    if prompt_claims:
+        return prompt_claims
+
+    raw_llm = extract_triples_llm(answer_text, max_triples=max_triples_llm, prompt_text=prompt_text)
 
     llm_triples: List[Dict[str, Any]] = []
     for t in raw_llm:
         nt = _normalize_llm_triple(t)
-        if nt is not None:
+        if nt is not None and _triple_relevant_to_focus(nt, prompt_text):
             llm_triples.append(nt)
 
     raw_spacy = []
@@ -655,7 +845,7 @@ def extract_triples_hybrid(
 
         for t in raw_spacy:
             nt = _normalize_spacy_triple(t)
-            if nt and _keep_spacy_triple(nt):
+            if nt and _keep_spacy_triple(nt) and _triple_relevant_to_focus(nt, prompt_text):
                 normalized_spacy.append(nt)
 
     # First merge LLM + spaCy

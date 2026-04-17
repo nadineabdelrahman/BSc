@@ -37,7 +37,7 @@ def run_batch(questions: Iterable[str]) -> None:
 
         try:
             answer = generate_answer(question)
-            triples = extract_triples_hybrid(answer)
+            triples = extract_triples_hybrid(answer, prompt_text=question)
             verified = verify_triples(triples)
 
             log_results(question, answer, verified)

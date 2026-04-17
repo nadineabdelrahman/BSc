@@ -3,6 +3,13 @@ import time
 from typing import Dict, Any, Optional, List, Tuple
 
 import requests
+from predicate_schema import (
+    CANONICAL_PREDICATE_CONFIG,
+    REVERSE_PREDICATES as SCHEMA_REVERSE_PREDICATES,
+    canonicalize_predicate_with_metadata,
+    get_predicate_strategy,
+    map_predicate_to_wikidata as schema_map_predicate_to_wikidata,
+)
 
 WIKIDATA_SPARQL_URL = "https://query.wikidata.org/sparql"
 WIKIDATA_SEARCH_URL = "https://www.wikidata.org/w/api.php"
@@ -45,9 +52,9 @@ PREDICATE_TO_PROPERTY = {
     "located_at": "P276",
 }
 
-REVERSE_PREDICATES = {"author_of", "founder_of", "president_of", "child_of"}
+REVERSE_PREDICATES = set(SCHEMA_REVERSE_PREDICATES)
 WEAK_REFUTATION_PREDICATES = {"located_in", "part_of","instance_of", "occupation", "notable_work", "educated_at", "located_at"}
-
+ENTITY_CACHE = {}
 _entity_cache: Dict[str, Optional[str]] = {}
 _entity_candidates_cache: Dict[str, List[Dict[str, Any]]] = {}
 
@@ -63,6 +70,8 @@ def _normalize_entity_text(x: str) -> str:
     x = x.replace('"', '').replace('“', '').replace('”', '').replace('*', '').strip()
     x = re.sub(r"^[-•*]+\s*", "", x)
     x = re.sub(r"^(?:the|a|an)\s+", "", x, flags=re.I)
+    x = re.split(r"\s*(?:,|;)\s*not\s+", x, maxsplit=1, flags=re.I)[0]
+    x = re.split(r"\b(?:however|although|rather than|instead of)\b", x, maxsplit=1, flags=re.I)[0]
     x = re.sub(r"\s+", " ", x).strip()
     return x
 
@@ -177,10 +186,12 @@ def _resolve_best_qids_contextual(label: str, context_text: str, max_k: int = 5)
 
         if label_l == "tokyo":
             if any(k in ctx for k in ["capital", "japan", "city"]):
-                if any(k in desc for k in ["capital city", "metropolis", "prefecture", "city"]):
-                    score += 15
+                if any(k in desc for k in ["capital city", "capital of japan", "metropolis", "prefecture", "city"]):
+                    score += 35
                 if "japan" in desc:
-                    score += 10
+                    score += 20
+                if any(k in desc for k in ["song", "film", "album", "disambiguation"]):
+                    score -= 30
 
         if label_l.startswith("facebook"):
             if any(k in ctx for k in ["company", "launched", "mark zuckerberg", "technology"]):
@@ -194,8 +205,8 @@ def _resolve_best_qids_contextual(label: str, context_text: str, max_k: int = 5)
         if any(k in ctx for k in ["country", "capital", "continent", "middle east"]):
             if any(k in desc for k in ["country", "city", "capital", "territory"]):
                 score += 5
-        if any(k in ctx for k in ["player", "basketball", "scientist", "poet", "author"]):
-            if any(k in desc for k in ["player", "scientist", "poet", "writer", "human"]):
+        if any(k in ctx for k in ["player", "basketball", "scientist", "poet", "author", "physicist", "inventor", "ceo", "language"]):
+            if any(k in desc for k in ["player", "scientist", "poet", "writer", "human", "inventor", "language"]):
                 score += 5
 
         # Prefer exact label match.
@@ -227,79 +238,109 @@ def _candidate_role_score(c: Dict[str, Any], predicate: str, is_subject: bool, c
     ctx = (context_text or "").lower()
     score = 0
 
-    # capital_of: subject should be city/capital, object should be country/state
+    # -------- capital_of --------
     if pred == "capital_of":
         if is_subject:
-            if any(k in desc for k in ["city", "capital", "commune", "metropolis"]):
+            if any(k in desc for k in ["city", "capital", "commune", "metropolis", "municipality"]):
                 score += 25
-            if "country" in desc:
-                score -= 10
+            if any(k in desc for k in ["country", "state", "sovereign state", "kingdom", "republic"]):
+                score -= 12
         else:
             if any(k in desc for k in ["country", "state", "sovereign state", "republic", "kingdom"]):
                 score += 25
-            if any(k in desc for k in ["city", "capital", "commune"]):
-                score -= 10
+            if any(k in desc for k in ["city", "capital", "commune", "metropolis"]):
+                score -= 12
 
-    # located_in: subject often physical entity/place; object must be place-like
+    # -------- located_in --------
     elif pred == "located_in":
         if is_subject:
             if any(k in desc for k in [
                 "river", "city", "town", "village", "building", "museum", "mountain",
-                "university", "airport", "bridge", "lake", "country", "region", "island"
+                "university", "airport", "bridge", "lake", "country", "region", "island",
+                "company", "organization", "corporation", "business", "enterprise", "public company"
             ]):
-                score += 20
+                score += 22
         else:
             if any(k in desc for k in [
                 "country", "continent", "city", "state", "province", "region",
-                "administrative territorial entity", "territory"
+                "administrative territorial entity", "territory", "county"
             ]):
                 score += 25
 
+    # -------- educated_at --------
     elif pred == "educated_at":
         if is_subject:
-            if any(k in desc for k in ["physicist", "scientist", "writer", "human", "person", "businessperson", "entrepreneur"]):
-                score += 15
+            if any(k in desc for k in [
+                "human", "person", "scientist", "writer", "businessperson", "entrepreneur",
+                "physicist", "mathematician", "engineer"
+            ]):
+                score += 18
         else:
             if any(k in desc for k in ["university", "college", "school", "educational institution"]):
-                score += 30
+                score += 32
 
+    # -------- written_by --------
     elif pred == "written_by":
         if is_subject:
             if any(k in desc for k in ["book", "novel", "work", "poem", "play", "literary work", "film"]):
-                score += 25
+                score += 28
             if "human" in desc:
-                score -= 10
+                score -= 12
         else:
             if any(k in desc for k in ["human", "writer", "author", "poet", "novelist"]):
-                score += 25
+                score += 28
 
+    # -------- founded_by --------
     elif pred == "founded_by":
         if is_subject:
-            if any(k in desc for k in ["company", "organization", "corporation", "business"]):
-                score += 25
+            if any(k in desc for k in ["company", "organization", "corporation", "business", "enterprise"]):
+                score += 28
         else:
             if any(k in desc for k in ["human", "businessperson", "entrepreneur", "person"]):
-                score += 20
+                score += 22
 
+    # -------- founded_on --------
+    elif pred == "founded_on":
+        if is_subject:
+            if any(k in desc for k in ["company", "organization", "corporation", "business", "enterprise"]):
+                score += 24
+
+    # -------- invented_by --------
     elif pred == "invented_by":
         if is_subject:
-            if any(k in desc for k in ["device", "invention", "telephone", "technology", "object", "artifact"]):
-                score += 20
+            if any(k in desc for k in ["device", "invention", "artifact", "object", "technology", "instrument"]):
+                score += 22
             if "human" in desc:
-                score -= 10
+                score -= 12
         else:
             if any(k in desc for k in ["human", "inventor", "scientist", "engineer", "person"]):
-                score += 25
+                score += 26
 
+    # -------- instance_of --------
     elif pred == "instance_of":
-        if not is_subject:
+        if is_subject:
             if any(k in desc for k in [
-                "class", "type", "category", "Wikimedia disambiguation page",
-                "concept", "country", "city", "river", "human", "fictional country"
+                "planet", "river", "chemical element", "company", "country",
+                "city", "human", "species", "animal", "brand", "corporation"
             ]):
-                score += 15
+                score += 12
+        else:
+            if any(k in desc for k in [
+                "class", "type", "category", "concept", "country", "city",
+                "river", "human", "fictional country", "chemical element", "planet", "species"
+            ]):
+                score += 18
 
-    # extra boost from text itself
+    # -------- occupation --------
+    elif pred == "occupation":
+        if is_subject:
+            if "human" in desc or "person" in desc:
+                score += 18
+        else:
+            if any(k in desc for k in ["occupation", "profession"]):
+                score += 8
+
+    # Context-sensitive boosts
     if pred == "located_in" and "river" in ctx and "river" in desc:
         score += 20
     if pred == "capital_of" and "capital" in ctx and any(k in desc for k in ["city", "capital"]):
@@ -307,12 +348,212 @@ def _candidate_role_score(c: Dict[str, Any], predicate: str, is_subject: bool, c
     if pred == "educated_at" and any(k in ctx for k in ["student", "phd", "university"]):
         if any(k in desc for k in ["university", "school", "college"]):
             score += 10
+    if pred in {"founded_by", "founded_on", "located_in"} and any(k in ctx for k in ["company", "corporation", "headquartered", "based in"]):
+        if any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise"]):
+            score += 10
 
-    # prefer exact label
+    # High-value ambiguity patches
+    label_norm = _normalize_entity_text(lab).lower()
+
+    if label_norm in {"amazon", "amazon.com, inc.", "amazon.com"}:
+        if any(k in ctx for k in ["company", "founded", "jeff bezos", "based in", "technology", "e-commerce", "headquartered"]):
+            if any(k in desc for k in ["company", "corporation", "business", "technology company", "public company"]):
+                score += 35
+            if any(k in desc for k in ["river", "album", "region", "rainforest"]):
+                score -= 25
+
+    if label_norm in {"amazon river", "amazon"}:
+        if any(k in ctx for k in ["river", "south america", "brazil", "peru", "colombia"]):
+            if "river" in desc:
+                score += 35
+            if any(k in desc for k in ["company", "album", "brand"]):
+                score -= 25
+
+    if label_norm == "jordan":
+        if any(k in ctx for k in ["country", "amman", "middle east", "capital city"]):
+            if any(k in desc for k in ["country", "hashemite kingdom", "sovereign state"]):
+                score += 35
+            if any(k in desc for k in ["given name", "surname", "basketball", "person"]):
+                score -= 25
+        if any(k in ctx for k in ["basketball", "nba", "bulls", "mvp", "player", "michael jordan"]):
+            if any(k in desc for k in ["basketball", "player", "human"]):
+                score += 30
+            if "country" in desc:
+                score -= 20
+
+    if label_norm == "mercury":
+        if any(k in ctx for k in ["planet", "solar system", "sun", "orbit"]):
+            if "planet" in desc:
+                score += 35
+            if any(k in desc for k in ["trademark", "brand", "division", "car brand"]):
+                score -= 30
+        if any(k in ctx for k in ["chemical element", "hg", "atomic number 80", "thermometer", "metal"]):
+            if any(k in desc for k in ["chemical element", "metal", "element"]):
+                score += 35
+            if any(k in desc for k in ["trademark", "brand", "division", "car brand"]):
+                score -= 30
+
+    if label_norm in {"jaguar", "jaguars"}:
+        if any(k in ctx for k in ["car brand", "automobile", "vehicle", "company"]):
+            if any(k in desc for k in ["car brand", "automobile marque", "brand", "company"]):
+                score += 30
+            if any(k in desc for k in ["musical group", "sports team", "band"]):
+                score -= 25
+        if any(k in ctx for k in ["species", "animal", "feline", "cat", "americas"]):
+            if any(k in desc for k in ["species", "mammal", "feline", "animal"]):
+                score += 30
+            if any(k in desc for k in ["musical group", "car brand", "sports team"]):
+                score -= 25
+
+    if label_norm == "paris":
+        if any(k in ctx for k in ["france", "capital", "city"]):
+            if any(k in desc for k in ["city in france", "capital city in france", "commune in france"]):
+                score += 30
+            if any(k in desc for k in ["mythology", "trojan", "person", "disambiguation"]):
+                score -= 20
+
+    if label_norm in {"nile", "nile river"}:
+        if any(k in ctx for k in ["river", "egypt", "uganda", "sudan", "africa", "flows through"]):
+            if "river" in desc and ("africa" in desc or "egypt" in desc):
+                score += 35
+            elif "river" in desc:
+                score += 20
+            if any(k in desc for k in ["tasmania", "australia", "locality", "district"]):
+                score -= 30
+
+
+    if label_norm == "petra":
+        if any(k in ctx for k in ["archaeology", "jordan", "ancient city", "unesco", "rock-cut", "site"]):
+            if any(k in desc for k in ["archaeological", "historical and archaeological city", "ancient city", "site"]):
+                score += 35
+            if any(k in desc for k in ["human", "given name", "surname"]):
+                score -= 30
+
+    if label_norm in {"eiffel tower", "tour eiffel"}:
+        if any(k in ctx for k in ["paris", "landmark", "tower", "france"]):
+            if any(k in desc for k in ["tower", "landmark", "wrought-iron lattice tower"]):
+                score += 35
+
+    if pred == "ceo_of":
+        if is_subject:
+            if any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise", "public company"]):
+                score += 28
+            if "human" in desc:
+                score -= 10
+        else:
+            if any(k in desc for k in ["human", "person", "businessperson", "executive", "chief executive officer"]):
+                score += 28
+
+    if pred == "language_of":
+        if is_subject:
+            if any(k in desc for k in ["country", "state", "territory", "region"]):
+                score += 25
+        else:
+            if any(k in desc for k in ["language", "dialect", "official language"]):
+                score += 25
+
+    if pred == "founded_on":
+        if is_subject and any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise", "university", "institution"]):
+            score += 26
+
+    if pred == "publication_year":
+        if is_subject and any(k in desc for k in ["book", "novel", "work", "poem", "play", "film", "literary work", "album", "song"]):
+            score += 26
+
+    if pred in {"date_of_birth", "date_of_death"}:
+        if is_subject and any(k in desc for k in ["human", "person", "writer", "scientist", "businessperson", "politician", "artist"]):
+            score += 26
+
+    # Prefer exact label match a little, not too much
     if lab == _normalize_entity_text(c.get("label", "")).lower():
         score += 1
 
     return score
+def _candidate_matches_expected_role(c: Dict[str, Any], predicate: str, is_subject: bool) -> bool:
+    desc = _desc(c)
+    pred = (predicate or "").strip().lower()
+
+    if pred == "capital_of":
+        if is_subject:
+            return any(k in desc for k in ["city", "capital", "commune", "metropolis", "municipality"])
+        return any(k in desc for k in ["country", "state", "sovereign state", "republic", "kingdom"])
+
+    if pred == "located_in":
+        if is_subject:
+            return any(k in desc for k in [
+                "river", "city", "town", "building", "mountain", "lake", "country",
+                "region", "island", "company", "organization", "corporation", "business"
+            ])
+        return any(k in desc for k in [
+            "country", "continent", "city", "state", "province", "region",
+            "administrative territorial entity", "territory"
+        ])
+
+    if pred == "educated_at":
+        if is_subject:
+            return any(k in desc for k in ["human", "person", "scientist", "writer", "businessperson"])
+        return any(k in desc for k in ["university", "college", "school", "educational institution"])
+
+    if pred == "written_by":
+        if is_subject:
+            return any(k in desc for k in ["book", "novel", "work", "poem", "play", "film", "literary work"])
+        return any(k in desc for k in ["human", "writer", "author", "poet", "novelist"])
+
+    if pred == "founded_by":
+        if is_subject:
+            return any(k in desc for k in ["company", "organization", "corporation", "business", "enterprise"])
+        return any(k in desc for k in ["human", "businessperson", "entrepreneur", "person"])
+
+    if pred == "invented_by":
+        if is_subject:
+            return any(k in desc for k in ["device", "invention", "artifact", "technology", "object"])
+        return any(k in desc for k in ["human", "inventor", "scientist", "engineer", "person"])
+
+    if pred == "instance_of":
+        if is_subject:
+            return not any(k in desc for k in ["disambiguation page"])
+        return True
+
+    if pred == "occupation":
+        if is_subject:
+            return any(k in desc for k in ["human", "person"])
+        return True
+
+    if pred == "ceo_of":
+        if is_subject:
+            return any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise"])
+        return any(k in desc for k in ["human", "person", "businessperson", "executive", "chief executive officer"])
+
+    if pred == "language_of":
+        if is_subject:
+            return any(k in desc for k in ["country", "state", "territory", "region"])
+        return any(k in desc for k in ["language", "dialect", "official language"])
+
+    if pred == "founded_on":
+        if is_subject:
+            return any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise", "university", "institution"])
+        return True
+
+    if pred == "publication_year":
+        if is_subject:
+            return any(k in desc for k in ["book", "novel", "work", "poem", "play", "film", "literary work", "album", "song"])
+        return True
+
+    if pred in {"date_of_birth", "date_of_death"}:
+        if is_subject:
+            return any(k in desc for k in ["human", "person", "writer", "scientist", "businessperson", "politician", "artist"])
+        return True
+
+    return True
+
+
+def _prefer_role_consistent_candidates(
+    ranked_candidates: List[Dict[str, Any]],
+    predicate: str,
+    is_subject: bool
+) -> List[Dict[str, Any]]:
+    good = [c for c in ranked_candidates if _candidate_matches_expected_role(c, predicate, is_subject)]
+    return good if good else ranked_candidates
 def _ask_sparql(query: str) -> Optional[bool]:
     headers = {"User-Agent": USER_AGENT, "Accept": "application/sparql-results+json"}
     try:
@@ -361,8 +602,19 @@ def _build_located_in_union_ask(s_qid: str, o_qid: str) -> str:
     """.strip()
 
 
+
+def _build_occupation_ask(s_qid: str, o_qid: str) -> str:
+    return f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . ?occ wdt:P279* wd:{o_qid} . }}"
+
+def _build_language_of_ask(s_qid: str, o_qid: str) -> str:
+    return f"ASK WHERE {{ wd:{s_qid} wdt:P37 wd:{o_qid} . }}"
+
+def _build_ceo_of_ask(org_qid: str, person_qid: str) -> str:
+    return f"ASK WHERE {{ wd:{org_qid} wdt:P169 wd:{person_qid} . }}"
+
 def _get_property_id(predicate: str) -> Optional[str]:
-    return PREDICATE_TO_PROPERTY.get((predicate or "").strip().lower())
+    pid, _ = schema_map_predicate_to_wikidata((predicate or "").strip().lower())
+    return pid or PREDICATE_TO_PROPERTY.get((predicate or "").strip().lower())
 
 
 def _rank_candidates_for_role(
@@ -381,14 +633,18 @@ def _rank_candidates_for_role(
     if not raw_candidates:
         return []
 
+    norm_label = _normalize_entity_text(label).lower()
     ranked = sorted(
         raw_candidates,
         key=lambda c: (
             _candidate_role_score(c, predicate, is_subject, context_text),
-            1 if (_label(c) == _normalize_entity_text(label).lower()) else 0
+            1 if (_label(c) == norm_label) else 0,
+            1 if _label(c).startswith(norm_label) else 0
         ),
         reverse=True
     )
+
+    ranked = _prefer_role_consistent_candidates(ranked, predicate, is_subject)
 
     out: List[str] = []
     for c in ranked:
@@ -396,7 +652,6 @@ def _rank_candidates_for_role(
         if qid and qid not in out:
             out.append(qid)
     return out[:max_k]
-
 
 def _resolve_subject_object_qids(
     s: str,
@@ -542,18 +797,23 @@ def _evidence_contains_claimed_object(
     if not target:
         return False
 
+    target_tokens = {tok for tok in re.findall(r"[a-z0-9]+", target) if tok not in {"the", "of", "and", "in", "for", "city", "state"}}
+
     for e in evidence:
         obj = _norm_text(e.get("object", ""))
         if not obj:
             continue
 
-        # exact match
         if obj == target:
             return True
 
-        # soft containment for cases like:
-        # "Stanford University" vs "Leland Stanford Junior University"
         if target in obj or obj in target:
+            return True
+
+        obj_tokens = {tok for tok in re.findall(r"[a-z0-9]+", obj) if tok not in {"the", "of", "and", "in", "for", "city", "state"}}
+        if target_tokens and obj_tokens and (target_tokens <= obj_tokens or obj_tokens <= target_tokens):
+            return True
+        if len(target_tokens & obj_tokens) >= max(1, min(len(target_tokens), len(obj_tokens))):
             return True
 
     return False
@@ -577,19 +837,101 @@ def _should_emit_refuted(
 
     return True
 
+
+def _predicate_ask(predicate: str, s_qid: str, o_qid: str, pid: Optional[str], reverse: bool, strategy: str) -> Optional[bool]:
+    p = (predicate or "").strip().lower()
+    if not s_qid or not o_qid:
+        return None
+
+    if strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
+        return None
+    if strategy == "capital" or p == "capital_of":
+        # Support both canonical orientations:
+        # city --P1376--> country
+        # country --P36--> city
+        r = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P1376 wd:{o_qid} . }}")
+        if r is not True:
+            r = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P36 wd:{o_qid} . }}")
+        return r
+    if p == "occupation":
+        return _ask_sparql(_build_occupation_ask(s_qid, o_qid))
+    if p == "language_of":
+        r = _ask_sparql(_build_language_of_ask(s_qid, o_qid))
+        if r is not True:
+            r = _ask_sparql(_build_language_of_ask(o_qid, s_qid))
+        return r
+    if p == "ceo_of":
+        r = _ask_sparql(_build_ceo_of_ask(s_qid, o_qid))
+        if r is not True:
+            r = _ask_sparql(_build_ceo_of_ask(o_qid, s_qid))
+        return r
+    if strategy == "subclass" or p == "instance_of":
+        r = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31/wdt:P279* wd:{o_qid} . }}")
+        if r is not True:
+            r = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31 ?type . ?type wdt:P279* wd:{o_qid} . }}")
+        return r
+    if strategy == "location_union" or p == "located_in":
+        return _ask_sparql(_build_located_in_union_ask(s_qid, o_qid))
+    if p == "invented_by":
+        r = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=False))
+        if r is not True and pid:
+            r = _ask_sparql(_build_ask_query(o_qid, pid, s_qid, reverse=False))
+        return r
+    if pid:
+        return _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=reverse))
+    return None
+
+
+def _best_subject_qid_for_year(subject_text: str, year: str, predicate: str, sentence: str, pid: str, max_k: int = 5) -> Optional[str]:
+    context = f"{sentence} :: predicate={predicate} :: subject={subject_text} :: object={year}"
+    for sq in _rank_candidates_for_role(subject_text, predicate, True, context, max_k=max_k):
+        r = _ask_sparql(_build_year_match_ask(sq, pid, year))
+        if r is True:
+            return sq
+    ranked = _rank_candidates_for_role(subject_text, predicate, True, context, max_k=max_k)
+    return ranked[0] if ranked else None
+
+def _best_qid_pair_by_graph(s: str, o: str, sentence: str, predicate: str, pid: Optional[str], reverse: bool, strategy: str, max_k: int = 3) -> Tuple[Optional[str], Optional[str], Optional[bool]]:
+    subject_qids = _rank_candidates_for_role(s, predicate, True, f"{sentence} :: predicate={predicate} :: subject={s} :: object={o}", max_k=max_k)
+    object_qids = _rank_candidates_for_role(o, predicate, False, f"{sentence} :: predicate={predicate} :: subject={s} :: object={o}", max_k=max_k)
+
+    if not subject_qids and not object_qids:
+        return None, None, None
+
+    best_s = subject_qids[0] if subject_qids else None
+    best_o = object_qids[0] if object_qids else None
+    best_result: Optional[bool] = None
+
+    for sq in (subject_qids or [None]):
+        for oq in (object_qids or [None]):
+            if not sq or not oq:
+                continue
+            r = _predicate_ask(predicate, sq, oq, pid, reverse, strategy)
+            if r is True:
+                return sq, oq, True
+            if best_result is None:
+                best_s, best_o, best_result = sq, oq, r
+
+    return best_s, best_o, best_result
+
 def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
     t = dict(triple)
     s = _normalize_entity_text(t.get("s", ""))
-    p = str(t.get("p", "")).strip().lower()
+    raw_p = str(t.get("p_raw", t.get("p", ""))).strip()
     o = _normalize_entity_text(t.get("o", ""))
     sentence = str(t.get("sentence", ""))
+    pred_meta = canonicalize_predicate_with_metadata(raw_p, sentence=sentence, s=s, o=o)
+    p = pred_meta["p_canonical"] or str(t.get("p", "")).strip().lower()
+    t["p"] = p
+    t["p_raw"] = pred_meta.get("p_raw", raw_p)
     negated = bool(t.get("negated", False))
 
     t.setdefault("graph_evidence", [])
     t.setdefault("explanation", None)
 
-    pid = t.get("property_id") or _get_property_id(p)
-    reverse = bool(t.get("reverse", False)) or (p in REVERSE_PREDICATES)
+    pid = t.get("property_id") or pred_meta.get("property_id") or _get_property_id(p)
+    reverse = bool(t.get("reverse", False)) or bool(pred_meta.get("reverse", False)) or (p in REVERSE_PREDICATES)
+    t["verification_strategy"] = t.get("verification_strategy") or pred_meta.get("strategy") or get_predicate_strategy(p)
     t["property_id"] = pid
     t["reverse"] = reverse
 
@@ -600,7 +942,18 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         t["o_qid"] = None
         return t
 
-    s_qid, o_qid = _resolve_subject_object_qids(s, o, sentence, p)
+    strategy = str(t.get("verification_strategy") or get_predicate_strategy(p))
+    if strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
+        year = _looks_like_year(o) or _looks_like_year(sentence)
+        s_qid = _best_subject_qid_for_year(s, year, p, sentence, pid, max_k=5) if year else None
+        o_qid = None
+        pair_ask = None
+    else:
+        s_qid, o_qid, pair_ask = _best_qid_pair_by_graph(s, o, sentence, p, pid, reverse, strategy, max_k=3)
+        if s_qid is None and o_qid is None:
+            s_qid, o_qid = _resolve_subject_object_qids(s, o, sentence, p)
+            pair_ask = None
+
     t["s_qid"] = s_qid
     t["o_qid"] = o_qid
 
@@ -611,37 +964,48 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         t["explanation"] = "Subject could not be linked to the knowledge graph."
         return t
 
-    ask_result: Optional[bool] = None
+    ask_result: Optional[bool] = pair_ask
 
-    if p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
+    if ask_result is not True and (strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}):
         year = _looks_like_year(o) or _looks_like_year(sentence)
         if year:
             ask_result = _ask_sparql(_build_year_match_ask(s_qid, pid, year))
-        elif p == "capital_of":
-            if s_qid and o_qid:
-                # First try the direct city -> country relation if present in Wikidata
-                ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P1376 wd:{o_qid} . }}")
 
-                # Then try the canonical country -> capital relation
-                if ask_result is not True:
-                    ask_result = _ask_sparql(f"ASK WHERE {{ wd:{o_qid} wdt:P36 wd:{s_qid} . }}")
-                    if ask_result is True:
-                        t["property_id"] = "P36"
-    elif p == "instance_of":
+    elif ask_result is not True and (strategy == "capital" or p == "capital_of"):
+        if s_qid and o_qid:
+            ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P1376 wd:{o_qid} . }}")
+            if ask_result is not True:
+                ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P36 wd:{o_qid} . }}")
+                if ask_result is True:
+                    t["property_id"] = "P36"
+    elif ask_result is not True and p == "occupation":
+        if o_qid:
+            ask_result = _ask_sparql(_build_occupation_ask(s_qid, o_qid))
+    elif ask_result is not True and p == "language_of":
+        if s_qid and o_qid:
+            ask_result = _ask_sparql(_build_language_of_ask(s_qid, o_qid))
+            if ask_result is not True:
+                ask_result = _ask_sparql(_build_language_of_ask(o_qid, s_qid))
+    elif ask_result is not True and p == "ceo_of":
+        if s_qid and o_qid:
+            ask_result = _ask_sparql(_build_ceo_of_ask(s_qid, o_qid))
+            if ask_result is not True:
+                ask_result = _ask_sparql(_build_ceo_of_ask(o_qid, s_qid))
+    elif ask_result is not True and (strategy == "subclass" or p == "instance_of"):
         if o_qid:
             ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31/wdt:P279* wd:{o_qid} . }}")
             if ask_result is not True:
                 ask_result = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P31 ?type . ?type wdt:P279* wd:{o_qid} . }}")
-    elif p == "located_in":
+    elif ask_result is not True and (strategy == "location_union" or p == "located_in"):
         if o_qid:
             ask_result = _ask_sparql(_build_located_in_union_ask(s_qid, o_qid))
-    elif p == "invented_by":
+    elif ask_result is not True and p == "invented_by":
         if s_qid and o_qid:
             ask_result = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=False))
             if ask_result is not True:
                 ask_result = _ask_sparql(_build_ask_query(o_qid, pid, s_qid, reverse=False))
     else:
-        if o_qid:
+        if ask_result is not True and o_qid:
             ask_result = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=reverse))
 
     t["ask_result"] = ask_result
@@ -672,7 +1036,7 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
             evidence, explanation = _location_counter_evidence(s_qid)
         elif p == "instance_of" and s_qid:
             evidence, explanation = _instance_counter_evidence(s_qid)
-        elif p == "invented_by":
+        elif ask_result is not True and p == "invented_by":
             item_qid = s_qid if s_qid and _normalize_entity_text(s).lower() == s.lower() else s_qid
             if item_qid or o_qid:
                 evidence, explanation = _invented_by_counter_evidence(item_qid or o_qid)
@@ -683,6 +1047,7 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
 
     t["graph_evidence"] = evidence
     t["explanation"] = explanation
+
     if ask_result is False and _evidence_contains_claimed_object(evidence, o):
         t["verdict"] = "REFUTED" if negated else "SUPPORTED"
         if not t["explanation"]:
@@ -693,6 +1058,22 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         t["verdict"] = "REFUTED"
     else:
         t["verdict"] = "NEI"
+
+    # Generic NEI fallback:
+    if t["verdict"] == "NEI" and not t.get("explanation"):
+        if not s_qid:
+            t["graph_evidence"] = [{"type": "entity_linking_failure", "entity": s}]
+            t["explanation"] = "Subject could not be linked to the knowledge graph."
+        elif not o_qid:
+            t["graph_evidence"] = [{"type": "entity_linking_failure", "entity": o}]
+            t["explanation"] = "Object could not be confidently linked to the knowledge graph."
+        elif ask_result is False and evidence:
+            t["explanation"] = "The exact graph check failed, and nearby graph evidence was not strong enough to support or fully refute the claim."
+        elif ask_result is False:
+            t["explanation"] = "The exact graph check failed and no strong supporting or refuting graph evidence was found."
+        else:
+            t["explanation"] = "The claim could not be verified confidently from the knowledge graph."
+
     return t
 
 

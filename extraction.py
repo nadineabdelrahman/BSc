@@ -2,6 +2,15 @@ import os
 import json
 import re
 from typing import List, Dict, Any, Tuple
+
+from predicate_schema import (
+    ALLOWED_PREDICATES,
+    canonicalize_predicate,
+    canonicalize_predicate_with_metadata,
+    is_unverifiable_predicate as schema_is_unverifiable_predicate,
+    map_predicate_to_wikidata as schema_map_predicate_to_wikidata,
+    maybe_remap_predicate_by_object as schema_maybe_remap_predicate_by_object,
+)
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -15,42 +24,7 @@ TEMPERATURE = 0
 #so here i used an aproach of giving my llm a list to choose which is the closest to the predicate
 #in following code i will make the predicate related_to if it doesnot exist in this allowed predicate list
 #i will change this option to Map this predicate to the closest Wikidata property ID.
-ALLOWED_PREDICATES = [
-    "capital_of",
-    "located_in",
-    "part_of",
-    "instance_of",
-    "born_in",
-    "died_in",
-    "founded_by",
-    "founder_of",
-    "ceo_of",
-    "president_of",
-    "author_of",
-    "written_by",
-    "invented_by",
-    "currency_of",
-    "language_of",
-    "publication_year",
-    "publication_date",
-    "date_of_birth",
-    "date_of_death",
-    "place_of_birth",
-    "place_of_death",
-    "headquarters_in",
-    "country_of_origin",
-    "genre",
-    "spouse",
-    "child_of",
-    "educated_at",
-    "occupation",
-    "population_of",
-    "area_of",
-    "located_at",
-    "notable_work",
-    "alias_of",
-    "founded_on",
-]
+ALLOWED_PREDICATES = list(ALLOWED_PREDICATES)
 
 #defines a function to safely parse json (crashes if json format is wrong)
 #Makes the pipeline robust, prevents your experiment runs from breaking.
@@ -138,11 +112,7 @@ PREDICATE_TO_WIKIDATA: Dict[str, Tuple[str, bool]] = {
 }
 
 def _map_predicate_to_wikidata(p: str) -> Tuple[str | None, bool]:
-    """
-    NEW: Map a predicate label to a Wikidata property ID and direction.
-    Returns: (property_id or None, reverse_flag)
-    """
-    return PREDICATE_TO_WIKIDATA.get(p, (None, False))
+    return schema_map_predicate_to_wikidata(p)
 
 def _extract_json_array_from_text(text: str) -> Any:
     """
@@ -169,29 +139,54 @@ def _extract_json_array_from_text(text: str) -> Any:
     return None
 
 def _clean_entity(text: str) -> str:
-    """
-    NEW: Clean entities to improve Wikidata linking.
-    - removes surrounding quotes/markdown emphasis
-    - removes trailing punctuation
-    - collapses whitespace
-    """
     t = str(text or "").strip()
 
-    # remove markdown emphasis like *Wuthering Heights*
+    # remove markdown / quotes
     t = re.sub(r"^\*+(.*?)\*+$", r"\1", t)
-
-    # strip common quote chars
     t = t.strip().strip("“”\"'`")
 
-    # remove simple leading articles that hurt entity linking (e.g., "the Eiffel Tower")
+    # remove articles
     t = re.sub(r"^(?:the|a|an)\s+", "", t, flags=re.IGNORECASE)
 
-    # remove unmatched trailing punctuation (common from model outputs)
-    t = t.rstrip(".,;:!?)\"”’`")
+    # 🔥 remove instruction tails (CRITICAL FOR THESIS)
+    t = re.split(
+        r"\b(?:verify|check|analyze|validate|confirm|assess)\b.*",
+        t,
+        maxsplit=1,
+        flags=re.IGNORECASE
+    )[0]
 
-    # collapse whitespace
+    # remove contrast clauses
+    t = re.split(r"\s*,\s*not\s+", t, maxsplit=1, flags=re.IGNORECASE)[0]
+    t = re.split(r"\s+but\s+not\s+", t, maxsplit=1, flags=re.IGNORECASE)[0]
+
+    # remove punctuation
+    t = t.rstrip(".,;:!?)\"”’`")
     t = re.sub(r"\s+", " ", t).strip()
+
     return t
+
+def _looks_like_clause_fragment(text: str) -> bool:
+    t = str(text or "").strip().lower()
+    if not t:
+        return True
+    if re.search(r"\b(?:not|but|however|although|rather than|instead of|which is|that is|because)\b", t):
+        return True
+    if len(t.split()) > 9:
+        return True
+    return False
+
+def _triple_relevant_to_prompt(s: str, o: str, sentence: str, prompt_text: str | None) -> bool:
+    if not prompt_text:
+        return True
+    prompt_l = str(prompt_text or "").lower()
+    for piece in (s, o, sentence):
+        piece_l = str(piece or "").lower()
+        if piece_l and piece_l in prompt_l:
+            return True
+    prompt_tokens = {w for w in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]+", prompt_l) if len(w) >= 4}
+    claim_tokens = {w for w in re.findall(r"[a-zA-Z][a-zA-Z0-9_-]+", f"{s} {o} {sentence}".lower()) if len(w) >= 4}
+    return bool(prompt_tokens & claim_tokens)
 
 def _looks_like_year(text: str) -> str | None:
     """
@@ -202,17 +197,7 @@ def _looks_like_year(text: str) -> str | None:
     return m.group(0) if m else None
 
 def _is_unverifiable_predicate(p: str) -> bool:
-    """
-    NEW: your thesis pipeline becomes stronger if you don't flood verification with
-    soft claims like 'known_for'. We only keep predicates we can verify (or 'related_to' if you insist).
-    """
-    # add more here if the LLM keeps inventing them
-    BAD = {
-        "known_for", "know_for", "famous_for", "renowned_for", "celebrated_for",
-        "inspire", "inspired", "captivate", "explore", "lead_to", "contrast",
-        "described_as", "considered", "notable_for"
-    }
-    return p in BAD
+    return schema_is_unverifiable_predicate(p)
 
 NON_HUMAN_INSTANCE_OBJECTS = {
     "planet", "chemical element", "programming language", "river", "car brand",
@@ -224,22 +209,7 @@ NON_HUMAN_INSTANCE_OBJECTS = {
 }
 
 def _maybe_remap_predicate_by_object(p: str, o: str) -> str:
-    """
-    Conservative repair: keep human professions as occupation,
-    but map obvious non-human type labels to instance_of.
-    """
-    p = str(p or "").strip().lower()
-    o_l = _clean_entity(o).lower()
-    if p == "occupation":
-        if o_l in NON_HUMAN_INSTANCE_OBJECTS:
-            return "instance_of"
-        if any(x in o_l for x in [
-            "programming language", "chemical element", "technology company", "car brand",
-            "social networking site", "social media platform", "e-commerce platform",
-            "electric vehicle manufacturer", "electric car manufacturer"
-        ]):
-            return "instance_of"
-    return p
+    return schema_maybe_remap_predicate_by_object(p, o)
 
 NON_HUMAN_INSTANCE_OBJECTS = {
     "planet", "chemical element", "programming language", "river", "car brand",
@@ -250,32 +220,11 @@ NON_HUMAN_INSTANCE_OBJECTS = {
 
 
 def _maybe_remap_predicate_by_object(p: str, o: str) -> str:
-    """
-    Conservative repair: keep human professions as occupation,
-    but map obvious non-human type labels to instance_of.
-    """
-    p = str(p or "").strip().lower()
-    o_l = _clean_entity(o).lower()
-    if p == "occupation":
-        if o_l in NON_HUMAN_INSTANCE_OBJECTS:
-            return "instance_of"
-        if any(x in o_l for x in ["programming language", "chemical element", "technology company", "car brand"]):
-            return "instance_of"
-    return p
+    return schema_maybe_remap_predicate_by_object(p, o)
 
 
 def _normalize_predicate(p: str) -> str:
-    """
-    NEW: normalize predicate formatting and enforce allowed set.
-    """
-    p2 = str(p or "").strip().lower().replace(" ", "_")
-    # fix a common typo you had in results: know_for -> known_for
-    if p2 == "know_for":
-        p2 = "known_for"
-    # if predicate isn’t allowed, set it to "related_to"
-    if p2 not in ALLOWED_PREDICATES :
-        p2 = ""
-    return p2
+    return canonicalize_predicate(p)
 
 def _is_generic_entity_phrase(text: str) -> bool:
     """
@@ -335,20 +284,110 @@ def _repair_or_drop_time_role_misextraction(s: str, p: str, o: str, sentence: st
 
 def _direction_fix(triple: Dict[str, Any]) -> Dict[str, Any]:
     """
-    NEW (heuristic): enforce some consistent subject/object directions.
-    This is optional, but it prevents mismatches like (Berlin, capital_of, Germany) vs
-    verification expecting (Germany, capital, Berlin).
-    Since you currently use 'capital_of' as (CITY, capital_of, COUNTRY), we keep that.
-    You can extend with more rules later.
+    Conservative direction repair.
+    Only fix cases that are very likely reversed.
+    Do NOT aggressively rewrite working triples.
     """
-    # ✅ NEW NOTE: Direction is now *explicitly represented* via "reverse" in the output
-    # based on the Wikidata mapping table. So this function can stay small.
-    return triple
+    t = dict(triple)
+    s = _clean_entity(t.get("s", ""))
+    p = str(t.get("p", "")).strip().lower()
+    o = _clean_entity(t.get("o", ""))
+    sent = str(t.get("sentence", "")).strip().lower()
+
+    if not s or not p or not o:
+        return t
+
+    def swap() -> Dict[str, Any]:
+        t["s"], t["o"] = o, s
+        return t
+
+    s_l = s.lower()
+    o_l = o.lower()
+
+    # 1) capital_of:
+    # keep canonical direction as (city, capital_of, country)
+    # fix only when subject looks like country and object looks like city,
+    # or the sentence explicitly says "capital of X is Y"
+    country_like = {
+        "country", "kingdom", "republic", "state", "nation", "federation", "empire"
+    }
+    city_like = {
+        "city", "capital", "town", "municipality", "metropolis"
+    }
+
+    if p == "capital_of":
+        if "capital of" in sent and " is " in sent:
+            # "The capital of Jordan is Amman" often becomes Jordan capital_of Amman
+            # canonicalize to Amman capital_of Jordan
+            if s_l in sent and o_l in sent:
+                # if the subject appears after "capital of" and object appears after "is", swap
+                m = re.search(r"capital(?: city)? of\s+(.+?)\s+is\s+(.+)", sent)
+                if m:
+                    left = _clean_entity(m.group(1)).lower()
+                    right = _clean_entity(m.group(2)).lower()
+                    if s_l == left and o_l.startswith(right):
+                        return swap()
+
+    # 2) written_by / author_of
+    # canonical forms:
+    # written_by: (work, written_by, person)
+    # author_of:  (person, author_of, work)
+    if p == "written_by":
+        # if subject looks like person and object looks like title/work, swap
+        if any(k in s_l for k in ["mr ", "mrs ", "dr ", "prof "]) and len(o.split()) <= 8:
+            return swap()
+
+    if p == "author_of":
+        # if subject looks like a work title and object looks like a person, swap
+        if (
+            ("book" in s_l or "novel" in s_l or "poem" in s_l or "play" in s_l)
+            and len(o.split()) <= 4
+        ):
+            return swap()
+
+    # 3) invented_by
+    # canonical form: (item, invented_by, person)
+    if p == "invented_by":
+        # if subject looks like person and object looks like an item/device, swap
+        item_hints = {"telephone", "light bulb", "lamp", "radio", "airplane", "computer", "internet"}
+        if o_l in item_hints and len(s.split()) <= 4:
+            return swap()
+
+    # 4) ceo_of and language_of
+    # canonical forms:
+    # ceo_of: (organization, ceo_of, person)
+    # language_of: (country/region, language_of, language)
+    if p == "ceo_of":
+        if any(k in sent for k in ["ceo of", "chief executive officer of", "chief executive of"]):
+            if len(s.split()) <= 4 and any(x in o_l for x in ["inc", "corp", "company", "group", "university", "organization", "ltd", "llc"]):
+                return swap()
+
+    if p == "language_of":
+        if any(x in s_l for x in ["english", "arabic", "french", "german", "spanish", "japanese", "chinese", "urdu", "hindi"]):
+            return swap()
+
+    # 5) founder_of / founded_by
+    # canonical forms:
+    # founded_by: (organization, founded_by, person)
+    # founder_of: (person, founder_of, organization)
+    if p == "founded_by":
+        if _looks_like_year(o):
+            return t  # never swap year mistakes here
+        # if subject is clearly a person and object looks like an org, swap
+        if any(x in o_l for x in ["inc", "corp", "company", "university", "organization"]):
+            return swap()
+
+    if p == "founder_of":
+        # if subject looks like org and object looks like person, swap
+        if any(x in s_l for x in ["inc", "corp", "company", "university", "organization"]):
+            return swap()
+
+    return t
 
 
 # takes generated answer and a limit number of triples to be produced
 #and outputs a list of dictionaries representing triplets
-def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[str, Any]]:
+def extract_triples_llm(answer_text: str, max_triples: int = 12, prompt_text: str | None = None) -> List[Dict[str, Any]]:
     """
     Extract factual triples from an LLM-generated answer using an LLM and return:
       [{"s": "...", "p": "...", "o": "...", "sentence": "...", "confidence": 0.xx}, ...]
@@ -380,6 +419,8 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
             f"Return at most {max_triples} triples.",
             "Keep entities short (e.g., 'Paris', 'Germany', 'Wuthering Heights'). No long clauses.",
             "Do NOT use vague subjects like it, book, novel, work, city, country, person, or name unless a specific entity is explicit.",
+            "If prompt_text is given, focus on the entities and propositions the user asked to verify. Do not add side facts that are merely extra background.",
+            "Do not output clause fragments such as France, not Germany or Riyadh, not Cairo as entities.",
             "For spelling variants like Shakspere/Shakespeare, use predicate alias_of.",
             "Do NOT turn role-tenure years into birth/publication facts. For example, never extract Tim Cook date_of_birth 2011 from CEO tenure text.",
             "Do NOT use founded_by with a year unless the sentence explicitly says founded on/in that year.",
@@ -391,7 +432,8 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
             "Use 'alias_of' only for true name or spelling variants of the same entity.",
 "Do NOT use 'alias_of' for abbreviations, symbols, acronyms, or codes such as JPY, USD, Hg, or ¥.",
         ],
-        "answer_text": answer_text
+        "answer_text": answer_text,
+        "prompt_text": prompt_text or "",
     }
 
     # user_prompt convert the dictionary(user_prompt) into a JSON string before sending.
@@ -428,7 +470,9 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         
         #Convert to string and strip whitespace.
         s = _clean_entity(obj.get("s", ""))
-        p = _normalize_predicate(obj.get("p", ""))
+        p_raw = str(obj.get("p", "")).strip()
+        meta = canonicalize_predicate_with_metadata(p_raw, sentence=str(obj.get("sentence", "")), s=s, o=obj.get("o", ""))
+        p = meta["p_canonical"]
         o = _clean_entity(obj.get("o", ""))
         p = _maybe_remap_predicate_by_object(p, o)
         sentence = str(obj.get("sentence", "")).strip()
@@ -472,13 +516,17 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         # Basic validation,skip if incomplete triples
         if not s or not p or not o or not sentence:
             continue
+        if _looks_like_clause_fragment(s) or _looks_like_clause_fragment(o):
+            continue
+        if prompt_text and not _triple_relevant_to_prompt(s, o, sentence, prompt_text):
+            continue
         if conf < 0:
             conf = 0.0
         if conf > 1:
             conf = 1.0
 
         # NEW: hard filter for obviously unverifiable predicates (reduces NEI noise)
-        if _is_unverifiable_predicate(p):
+        if _is_unverifiable_predicate(p_raw) or _is_unverifiable_predicate(p):
             continue
 
         # NEW: fix common extraction failure:
@@ -511,7 +559,10 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         # ✅ FIX MAPPING ISSUE: attach Wikidata property_id + reverse direction at extraction time.
         # This makes verification consistent and prevents "REFUTED" due to wrong direction.
         # If we cannot map predicate -> property_id, mark as related_to (and set property_id None).
-        pid, reverse = _map_predicate_to_wikidata(t["p"])
+        pid = meta.get("property_id")
+        reverse = meta.get("reverse", False)
+        if not pid and t["p"]:
+            pid, reverse = _map_predicate_to_wikidata(t["p"])
         if t["p"] == "related_to":
             pid, reverse = (None, False)
 
@@ -521,6 +572,8 @@ def extract_triples_llm(answer_text: str, max_triples: int = 12) -> List[Dict[st
         # Here we keep it BUT clearly mark it as unmapped.
         t["property_id"] = pid
         t["reverse"] = reverse
+        t["p_raw"] = meta.get("p_raw", p_raw)
+        t["verification_strategy"] = meta.get("strategy", "direct")
 
         #Add validated triple to output list.
         cleaned.append(t)
