@@ -39,8 +39,23 @@ def run_batch(questions: Iterable[str]) -> None:
             answer = generate_answer(question)
             triples = extract_triples_hybrid(answer, prompt_text=question)
             verified = verify_triples(triples)
+            if not verified:
+                answer_label = "NO_CLAIMS"
+            else:
+                labels = {c.get("final_label") for c in verified}
 
-            log_results(question, answer, verified)
+                if "HALLUCINATION" in labels or "FALSE" in labels:
+                    answer_label = "HALLUCINATED"
+                elif labels == {"TRUE"}:
+                    answer_label = "CLEAN"
+                else:
+                    answer_label = "UNVERIFIABLE"
+            log_results(
+                question,
+                answer,
+                verified,
+                reference_only_label=answer_label
+            )
 
             print(f"  Done. Extracted {len(triples)} triples, verified {len(verified)} triples.")
         except Exception as e:

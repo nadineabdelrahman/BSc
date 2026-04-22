@@ -148,22 +148,23 @@ def _clean_entity(text: str) -> str:
     # remove articles
     t = re.sub(r"^(?:the|a|an)\s+", "", t, flags=re.IGNORECASE)
 
-    # 🔥 remove instruction tails (CRITICAL FOR THESIS)
+    # remove instruction tails
     t = re.split(
-        r"\b(?:verify|check|analyze|validate|confirm|assess)\b.*",
+        r"\b(?:verify|check|analyze|validate|confirm|assess|explain)\b.*",
         t,
         maxsplit=1,
         flags=re.IGNORECASE
     )[0]
 
-    # remove contrast clauses
+    # remove obvious contrast tails
     t = re.split(r"\s*,\s*not\s+", t, maxsplit=1, flags=re.IGNORECASE)[0]
     t = re.split(r"\s+but\s+not\s+", t, maxsplit=1, flags=re.IGNORECASE)[0]
+    t = re.split(r"\b(?:however|although|rather than|instead of)\b", t, maxsplit=1, flags=re.IGNORECASE)[0]
 
-    # remove punctuation
+    # remove trailing punctuation
     t = t.rstrip(".,;:!?)\"”’`")
-    t = re.sub(r"\s+", " ", t).strip()
 
+    t = re.sub(r"\s+", " ", t).strip()
     return t
 
 def _looks_like_clause_fragment(text: str) -> bool:
@@ -316,17 +317,22 @@ def _direction_fix(triple: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     if p == "capital_of":
+        # Case 1: "The capital of Jordan is Amman"
         if "capital of" in sent and " is " in sent:
-            # "The capital of Jordan is Amman" often becomes Jordan capital_of Amman
-            # canonicalize to Amman capital_of Jordan
-            if s_l in sent and o_l in sent:
-                # if the subject appears after "capital of" and object appears after "is", swap
-                m = re.search(r"capital(?: city)? of\s+(.+?)\s+is\s+(.+)", sent)
-                if m:
-                    left = _clean_entity(m.group(1)).lower()
-                    right = _clean_entity(m.group(2)).lower()
-                    if s_l == left and o_l.startswith(right):
-                        return swap()
+            m = re.search(r"capital(?: city)? of\s+(.+?)\s+is\s+(.+)", sent)
+            if m:
+                left = _clean_entity(m.group(1)).lower()   # country
+                right = _clean_entity(m.group(2)).lower()  # city
+                if s_l == left and o_l.startswith(right):
+                    return swap()
+
+        # Case 2: prompt/fragment style: "Name the capital of France"
+        # If extraction produced France capital_of Paris, swap to Paris capital_of France
+        m = re.search(r"capital(?: city)? of\s+(.+)", sent)
+        if m:
+            country_text = _clean_entity(m.group(1)).lower()
+            if s_l == country_text:
+                return swap()
 
     # 2) written_by / author_of
     # canonical forms:
@@ -373,8 +379,16 @@ def _direction_fix(triple: Dict[str, Any]) -> Dict[str, Any]:
     if p == "founded_by":
         if _looks_like_year(o):
             return t  # never swap year mistakes here
-        # if subject is clearly a person and object looks like an org, swap
-        if any(x in o_l for x in ["inc", "corp", "company", "university", "organization"]):
+
+        org_hints = ["inc", "corp", "company", "university", "organization", "group", "ltd", "llc"]
+        subject_looks_like_person = len(s.split()) in {2, 3, 4} and all(part[:1].isupper() for part in s.split() if part)
+        object_looks_like_org = (
+            any(x in o_l for x in org_hints)
+            or o[:1].isupper()
+        )
+
+        # Example: Robert Noyce founded_by Intel  -> swap to Intel founded_by Robert Noyce
+        if subject_looks_like_person and object_looks_like_org:
             return swap()
 
     if p == "founder_of":

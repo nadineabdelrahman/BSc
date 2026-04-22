@@ -80,6 +80,50 @@ def _is_reference_sentence(sentence: str) -> bool:
 def _looks_like_reference_entity(text: str) -> bool:
     t = (text or "").strip()
     return bool(re.search(r"\bet al\.?\b", t, flags=re.IGNORECASE)) or bool(re.search(r"\(\d{4}\)", t))
+def _is_bad_entity_fragment(text: str) -> bool:
+    t = str(text or "").strip()
+    if not t:
+        return True
+
+    tl = t.lower()
+
+    if tl in {
+        "it", "he", "she", "they", "this", "that",
+        "book", "novel", "work", "city", "country", "person", "name", "world","answer", "statement", "claim", "result", "information"
+    }:
+        return True
+
+    if len(t.split()) > 8:
+        return True
+
+    if ":" in t or "\n" in t:
+        return True
+
+    if re.search(r"\b(?:because|which|that|who)\b", tl):
+        return True
+
+    if re.search(r"\b(?:true|false|correct|incorrect)\b", tl):
+        return True
+
+    if re.search(r"\s*,\s*not\s+", tl):
+        return True
+
+    if re.search(r"\b(?:however|although|rather than|instead of|but not)\b", tl):
+        return True
+
+    if tl.startswith(("capital of ", "capital city of ", "statement", "claim", "conclusion")):
+        return True
+
+    if tl.endswith((" is incorrect", " is true", " is false")):
+        return True
+
+    return False
+def _looks_like_generic_company_subject(text: str) -> bool:
+    t = str(text or "").strip().lower()
+    return any(x in t for x in [
+        "inc", "corp", "corporation", "company", "ltd", "llc",
+        "systems", "solutions", "dynamics", "technologies", "labs"
+    ])
 def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
     s_l = str(s).strip().lower()
     o_l = str(o).strip().lower()
@@ -91,99 +135,112 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
     if _has_clause_fragment_markers(s) or _has_clause_fragment_markers(o):
         return False
 
-    # Generic placeholders
+    # do not extract from uncertainty / refusal / fallback sentences
+    uncertainty_markers = [
+        "i don't know", "i do not know", "i'm not sure", "i am not sure",
+        "i don't have access", "i do not have access",
+        "you might want to check", "check the latest information",
+        "fictional place", "fictional company", "fictional entity",
+        "does not exist", "not a real", "no real-world"
+    ]
+    if any(m in sent_l for m in uncertainty_markers):
+        return False
+
     bad_entities = {
-        "it", "he", "she", "they", "this", "that", "book", "novel",
-        "work", "city", "country", "person", "name", "world"
+        "it", "he", "she", "they", "this", "that",
+        "book", "novel", "work", "city", "country",
+        "person", "name", "world", "company", "organization",
+        "someone", "something", "anything", "everything"
     }
     if s_l in bad_entities or o_l in bad_entities:
         return False
 
-    # population must be numeric-ish, not descriptive text
+    # generic WH-fragments / noisy objects
+    bad_fragments = {
+        "what", "which", "who", "where", "when", "why", "how",
+        "what occupation", "what company", "what country", "what city",
+        "main argument", "historical impact", "business model",
+        "market impact", "key themes", "overview"
+    }
+    if s_l in bad_fragments or o_l in bad_fragments:
+        return False
+
+    # numeric predicates
     if p == "population_of":
         if not re.search(r"\d", o_l):
             return False
         if any(x in o_l for x in ["km", "kilometer", "mile", "meter", "square"]):
             return False
 
-    # area must be numeric-ish
     if p == "area_of":
         if not re.search(r"\d", o_l):
             return False
 
-    # occupation should be profession-like, not descriptive phrases
+    # occupation must look like a profession, not commentary
     if p == "occupation":
         bad_occ = {
             "cultural hub", "economic hub", "port city", "largest city",
-            "second-largest city", "ph.d. student"
+            "second-largest city", "ph.d. student", "major trade hub",
+            "technology company", "research project", "consumer electronics"
         }
         if o_l in bad_occ:
             return False
 
-        # allow short clean profession labels, including negated ones
-        allowed_occ = {
-            "physicist", "theoretical physicist", "playwright", "poet", "writer",
-            "author", "scientist", "mathematician", "chemist", "biologist",
+        allowed_occ_heads = {
+            "physicist", "playwright", "poet", "writer", "author",
+            "scientist", "mathematician", "chemist", "biologist",
             "philosopher", "engineer", "composer", "artist", "painter",
             "musician", "actor", "director", "inventor", "politician"
         }
-
-        if o_l in allowed_occ:
+        if o_l in {"theoretical physicist"}:
             return True
 
         if len(o_l.split()) > 3:
             return False
 
-    # notable_work should usually point from person -> work title, not place/entity fragments
-    if p == "notable_work":
-        if any(x in o_l for x in ["city", "country", "history", "culture"]):
-            return False
-        if o_l in {"alexandria", "europe", "world"}:
-            return False
-        if any(x in o_l for x in ["championship", "championships", "mvp", "award", "awards", "medalist", "medal", "player"]):
+        if o_l.split()[-1] not in allowed_occ_heads:
             return False
 
-    # founded_by should not have date-like or organization-reverse objects
+    # notable_work should be reserved for real work titles, not product categories
+    if p == "notable_work":
+        company_markers = {
+            "inc", "corp", "corporation", "company", "ltd", "llc",
+            "systems", "solutions", "dynamics", "technologies", "labs"
+        }
+        if _looks_like_generic_company_subject(s):
+            return False
+
+        # reject lower-case descriptive product/domain phrases
+        if len(o_l.split()) >= 2 and o == o.lower():
+            return False
+
+        if any(x in o_l for x in [
+            "solutions", "systems", "technology", "technologies",
+            "platform", "platforms", "products", "services",
+            "business model", "market impact", "innovation", "innovations"
+        ]):
+            return False
+
+        if o_l in {"alexandria", "europe", "world"}:
+            return False
+
+    # founded_by must actually be founder relation, not loose explanation
     if p == "founded_by":
         if _looks_like_year(o_l):
             return False
         if "founded by" not in sent_l and "founded" not in sent_l:
             return False
 
-    # founded_on/date/publication predicates must have year-like objects
-    if p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
-        if not _looks_like_year(o_l):
-            return False
-
-    # capital_of must connect entity-like names, not clause fragments
-    if p == "capital_of":
-        if any(x in s_l for x in ["capital of", "capital city of"]):
-            return False
-        if any(x in o_l for x in ["capital of", "capital city of", " is incorrect", " is true", " is false"]):
-            return False
-
-    # instance_of should not take descriptive clauses as objects
-    if p == "instance_of":
-        if len(o_l.split()) > 5 and not any(k in o_l for k in ["programming language", "chemical element"]):
-            return False
-
-    # alias_of should not be used for pure symbols/codes like Hg or JPY
-    if p == "alias_of":
-        if re.fullmatch(r"[A-Z]{1,5}", o.strip()):
-            return False
-
-    # part_of should not take long explanatory text
+    # part_of must stay short and structural
     if p == "part_of":
         if len(o_l.split()) > 4:
             return False
         if any(x in o_l for x in ["history", "result", "reason", "because"]):
             return False
 
-    # located_in / located_at should not take vague/scenic objects
+    # location-style relations should not take scenic/vague phrases
     if p in {"located_in", "located_at", "headquarters_in"}:
-        bad_loc = {
-            "world", "history", "culture", "civilization"
-        }
+        bad_loc = {"world", "history", "culture", "civilization"}
         if o_l in bad_loc:
             return False
         if any(x in o_l for x in [
@@ -194,7 +251,6 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
             return False
 
     return True
-
 def _extract_extra_date_fact(t: Dict[str, Any]) -> Dict[str, Any] | None:
     """
     If a sentence already produced place_of_birth/place_of_death but also contains a year,
@@ -334,6 +390,13 @@ def _extract_atomic_prompt_claims(prompt_text: str) -> List[Dict[str, Any]]:
                     'source': ['prompt_rule']
                 })
             continue
+        m = re.match(r"^(?:name|what is|tell me|give me)\s+the\s+capital(?:\s+city)?\s+of\s+(?P<country>.+)$", c, flags=re.I)
+        if m:
+            country = _normalize_entity_phrase(m.group('country'))
+            if country and not _has_clause_fragment_markers(country):
+                # We do not know the city from the prompt alone, so do not emit a prompt_rule triple here.
+                # Let the answer extraction provide the city, and let extraction.py normalize direction later.
+                continue
         m = re.match(r"^(?P<s>.+?)\s+is\s+in\s+(?P<o>.+)$", c, flags=re.I)
         if m:
             s = _normalize_entity_phrase(m.group('s'))
@@ -402,6 +465,9 @@ def _normalize_llm_triple(t: dict) -> dict | None:
             return None
         o = year
     if not _semantically_valid_triple(s, p, o, sentence):
+        return None
+
+    if not _final_noise_filter(s, p, o):
         return None
     pid = meta.get("property_id")
     reverse = meta.get("reverse", False)
@@ -554,6 +620,9 @@ def _normalize_spacy_triple(t: Dict[str, Any], default_confidence: float = 0.60)
     if _is_unverifiable_predicate(p):
         return None
     if not _semantically_valid_triple(s, p, o, sentence):
+        return None
+
+    if not _final_noise_filter(s, p, o):
         return None
     pid, reverse = _map_predicate_to_wikidata(p)
 
@@ -816,7 +885,29 @@ def _prepare_prompt_claims(prompt_text: str | None, max_triples_llm: int) -> Lis
         if extra is not None:
             extra_triples.append(extra)
     return _finalize_triples(merge_triples(merged, extra_triples))
+def _final_noise_filter(s: str, p: str, o: str) -> bool:
+    s_l = str(s).lower().strip()
+    o_l = str(o).lower().strip()
 
+    bad_words = {
+        "what", "which", "who", "where", "when",
+        "thing", "something", "anything"
+    }
+
+    # kill obvious garbage
+    if s_l in bad_words or o_l in bad_words:
+        return False
+
+    # kill "what occupation what" type
+    if len(s_l.split()) <= 1 and len(o_l.split()) <= 1:
+        if s_l == o_l:
+            return False
+
+    # kill too short meaningless tokens
+    if len(s_l) <= 2 or len(o_l) <= 2:
+        return False
+
+    return True
 def extract_triples_hybrid(
     answer_text: str,
     max_triples_llm: int = 12,
@@ -859,4 +950,6 @@ def extract_triples_hybrid(
             extra_triples.append(extra)
 
     # Merge again so duplicates are removed safely
-    return merge_triples(merged, extra_triples)
+    return _finalize_triples(
+        merge_triples(merged, extra_triples)
+    )
