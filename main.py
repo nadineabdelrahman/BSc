@@ -6,7 +6,7 @@ from hybrid_extraction import extract_triples_hybrid
 from verification import verify_triples
 from logger import log_results
 from generation import generate_answer
-
+from correction import apply_correction_loop
 
 PROMPTS_FILE = "data/prompts.json"
 
@@ -39,6 +39,33 @@ def run_batch(questions: Iterable[str]) -> None:
             answer = generate_answer(question)
             triples = extract_triples_hybrid(answer, prompt_text=question)
             verified = verify_triples(triples)
+
+            # -------------------------
+            # NEW: Correction Loop (System-2)
+            # -------------------------
+            corrected_answer = None
+
+            if verified:
+                needs_correction = any(
+                    c.get("verdict") in {"REFUTED", "NEI"} 
+                    for c in verified
+                )
+
+                if needs_correction:
+                    corrected_answer = apply_correction_loop(
+                        question,
+                        answer,
+                        verified
+                    )
+                    print("  Corrected answer:")
+                    print(corrected_answer)
+                    # Re-run extraction + verification on corrected answer
+                    triples_corrected = extract_triples_hybrid(corrected_answer, prompt_text=question)
+                    verified_corrected = verify_triples(triples_corrected)
+
+                    # Replace results
+                    answer = corrected_answer
+                    verified = verified_corrected
             if not verified:
                 answer_label = "NO_CLAIMS"
             else:

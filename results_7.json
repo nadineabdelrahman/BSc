@@ -1,6 +1,15 @@
 [
+
   {
-    "timestamp": "2026-04-22T12:50:31.621218",
+    "timestamp": "2026-04-23T13:01:50.490309",
+    "prompt": "Who wrote 'The Quantum Crown'?",
+    "answer": "I could not verify \"Quantum Crown\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who wrote 'The Quantum Crown'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T11:58:15.413666",
     "prompt": "State the capital of France.",
     "answer": "The capital of France is Paris.",
     "claims": [
@@ -35,7 +44,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:50:38.937008",
+    "timestamp": "2026-04-28T11:58:21.713154",
     "prompt": "State the capital of Germany.",
     "answer": "The capital of Germany is Berlin.",
     "claims": [
@@ -70,7 +79,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:50:46.389173",
+    "timestamp": "2026-04-28T11:58:30.073414",
     "prompt": "State the capital of Japan.",
     "answer": "The capital of Japan is Tokyo.",
     "claims": [
@@ -105,7 +114,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:50:51.148965",
+    "timestamp": "2026-04-28T11:58:35.568085",
     "prompt": "State the capital of Italy.",
     "answer": "The capital of Italy is Rome.",
     "claims": [
@@ -140,7 +149,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:50:55.888487",
+    "timestamp": "2026-04-28T11:58:43.981092",
     "prompt": "State the capital of Spain.",
     "answer": "The capital of Spain is Madrid.",
     "claims": [
@@ -175,7 +184,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:51:11.637657",
+    "timestamp": "2026-04-28T11:58:49.483460",
     "prompt": "State the capital of Canada.",
     "answer": "The capital of Canada is Ottawa.",
     "claims": [
@@ -210,7 +219,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:51:17.104691",
+    "timestamp": "2026-04-28T11:58:54.161107",
     "prompt": "State the capital of Brazil.",
     "answer": "The capital of Brazil is Brasília.",
     "claims": [
@@ -244,7 +253,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:51:23.896320",
+    "timestamp": "2026-04-28T11:58:59.536062",
     "prompt": "State the capital of Egypt.",
     "answer": "The capital of Egypt is Cairo.",
     "claims": [
@@ -279,15 +288,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:51:30.704144",
+    "timestamp": "2026-04-28T11:59:08.614163",
     "prompt": "Where is Paris located?",
-    "answer": "Paris is located in northern France, along the Seine River. It is the capital city of France and serves as a major cultural, political, and economic center in Europe.",
+    "answer": "Paris is located in northern central France. It is situated along the Seine River and serves as the capital city of the country. Paris is part of the Île-de-France region and is known for its rich history, culture, and landmarks.",
     "claims": [
       {
         "s": "Paris",
         "p": "capital_of",
         "o": "France",
-        "sentence": "It is the capital city of France.",
+        "sentence": "It serves as the capital city of the country.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P1376",
@@ -307,38 +316,100 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
+      },
+      {
+        "s": "Paris",
+        "p": "part_of",
+        "o": "Île-de-France",
+        "sentence": "Paris is part of the Île-de-France region.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P361",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "part_of",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q90",
+        "o_qid": "Q13917",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:51:39.889780",
+    "timestamp": "2026-04-28T11:59:22.303246",
     "prompt": "Where is Rome located?",
-    "answer": "Rome is located in central Italy, along the Tiber River. It is the capital city of Italy and is situated in the Lazio region. Rome is known for its rich history, architecture, and cultural heritage, including landmarks like the Colosseum, the Vatican City, and the Pantheon.",
+    "answer": "Rome is located in central Italy, within the Lazio region. It sits on the Tiber River and is approximately 15 miles inland from the Tyrrhenian Sea. As the capital city of Italy, Rome is known for its rich history, architecture, and cultural significance.",
     "claims": [
       {
         "s": "Rome",
-        "p": "capital_of",
-        "o": "Italy",
-        "sentence": "It is the capital city of Italy and is situated in the Lazio region.",
+        "p": "located_in",
+        "o": "central Italy",
+        "sentence": "Rome is located in central Italy, within the Lazio region.",
         "confidence": 1.0,
         "negated": false,
-        "property_id": "P1376",
+        "property_id": "P131",
         "reverse": false,
         "source": [
           "llm"
         ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
+        "p_raw": "located_in",
+        "verification_strategy": "location_union",
+        "graph_evidence": [
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Metropolitan City of Rome"
+          },
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Italy"
+          },
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Europe"
+          },
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Tiber"
+          },
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Tyrrhenian Sea"
+          },
+          {
+            "predicate": "located_in",
+            "subject": "subject",
+            "relation": "located_in",
+            "object": "Aniene"
+          }
+        ],
+        "explanation": " The graph instead connects the subject to places such as Metropolitan City of Rome, Italy, Europe.",
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
         "s_qid": "Q220",
-        "o_qid": "Q38",
-        "ask_result": true,
+        "o_qid": "Q1127320",
+        "ask_result": false,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
       },
@@ -346,7 +417,7 @@
         "s": "Rome",
         "p": "located_in",
         "o": "Lazio",
-        "sentence": "It is the capital city of Italy and is situated in the Lazio region.",
+        "sentence": "Rome is located in central Italy, within the Lazio region.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P131",
@@ -366,13 +437,38 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
+      },
+      {
+        "s": "Rome",
+        "p": "capital_of",
+        "o": "Italy",
+        "sentence": "As the capital city of Italy, Rome is known for its rich history, architecture, and cultural significance.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q220",
+        "o_qid": "Q38",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:52:40.007270",
+    "timestamp": "2026-04-28T11:59:37.015047",
     "prompt": "Who founded Microsoft?",
     "answer": "Microsoft was founded by Bill Gates and Paul Allen on April 4, 1975.",
     "claims": [
@@ -456,15 +552,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:53:05.046874",
+    "timestamp": "2026-04-28T11:59:58.113701",
     "prompt": "Who founded Facebook?",
-    "answer": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+    "answer": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University. The platform was launched on February 4, 2004.",
     "claims": [
       {
         "s": "Facebook",
         "p": "founded_by",
         "o": "Mark Zuckerberg",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "sentence": "Facebook was founded by Mark Zuckerberg.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -489,7 +585,7 @@
         "s": "Facebook",
         "p": "founded_by",
         "o": "Eduardo Saverin",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -514,7 +610,7 @@
         "s": "Facebook",
         "p": "founded_by",
         "o": "Andrew McCollum",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Andrew McCollum.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -539,7 +635,7 @@
         "s": "Facebook",
         "p": "founded_by",
         "o": "Dustin Moskovitz",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Dustin Moskovitz.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -564,7 +660,7 @@
         "s": "Facebook",
         "p": "founded_by",
         "o": "Chris Hughes",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Chris Hughes.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -618,59 +714,9 @@
       },
       {
         "s": "Facebook",
-        "p": "located_in",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "United States"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "S&P 500"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Dow Jones Global Titans 50"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "S&P 100"
-          }
-        ],
-        "explanation": " The graph instead connects the subject to places such as United States, S&P 500, Dow Jones Global Titans 50.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q13371",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      },
-      {
-        "s": "Facebook",
         "p": "founded_on",
-        "o": "2004",
-        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "o": "February 4, 2004",
+        "sentence": "The platform was launched on February 4, 2004.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -693,17 +739,17 @@
       }
     ],
     "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
+    "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:53:14.954488",
+    "timestamp": "2026-04-28T12:00:10.599810",
     "prompt": "Who founded Tesla?",
-    "answer": "Tesla, Inc. was founded in 2003 by Martin Eberhard and Marc Tarpenning. Elon Musk joined the company shortly after its founding, leading the initial round of investment and becoming the chairman of the board. Although he is often associated with Tesla's growth and success, he was not one of the original founders. Other key figures, such as J.B. Straubel and Ian Wright, also played significant roles in the company's early development.",
+    "answer": "Tesla, Inc. was founded in 2003 by Martin Eberhard and Marc Tarpenning. Elon Musk joined the company shortly after its founding, leading the initial round of investment and becoming the chairman of the board. He later became the CEO and is often associated with the brand due to his significant role in its growth and direction. Other early team members include JB Straubel and Ian Wright.",
     "claims": [
       {
-        "s": "Tesla, Inc",
+        "s": "Martin Eberhard",
         "p": "founded_by",
-        "o": "Martin Eberhard",
+        "o": "Tesla, Inc",
         "sentence": "Tesla, Inc. was founded in 2003 by Martin Eberhard and Marc Tarpenning.",
         "confidence": 1.0,
         "negated": false,
@@ -719,16 +765,16 @@
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q478214",
-        "o_qid": "Q1903673",
+        "s_qid": "Q1903673",
+        "o_qid": "Q478214",
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
       },
       {
-        "s": "Tesla, Inc",
+        "s": "Marc Tarpenning",
         "p": "founded_by",
-        "o": "Marc Tarpenning",
+        "o": "Tesla, Inc",
         "sentence": "Tesla, Inc. was founded in 2003 by Martin Eberhard and Marc Tarpenning.",
         "confidence": 1.0,
         "negated": false,
@@ -744,8 +790,8 @@
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q478214",
-        "o_qid": "Q1892831",
+        "s_qid": "Q1892831",
+        "o_qid": "Q478214",
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
@@ -755,15 +801,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:53:24.155002",
+    "timestamp": "2026-04-28T12:00:26.149100",
     "prompt": "Who founded Google?",
-    "answer": "Google was founded by Larry Page and Sergey Brin. They started the company while they were Ph.D. students at Stanford University in September 1998.",
+    "answer": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
     "claims": [
       {
         "s": "Google",
         "p": "founded_by",
         "o": "Larry Page",
-        "sentence": "Google was founded by Larry Page and Sergey Brin.",
+        "sentence": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -788,7 +834,7 @@
         "s": "Google",
         "p": "founded_by",
         "o": "Sergey Brin",
-        "sentence": "Google was founded by Larry Page and Sergey Brin.",
+        "sentence": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -813,7 +859,7 @@
         "s": "Google",
         "p": "founded_on",
         "o": "September 1998",
-        "sentence": "They started the company while they were Ph.D. students at Stanford University in September 1998.",
+        "sentence": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -833,13 +879,63 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
+      },
+      {
+        "s": "Larry Page",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q4934",
+        "o_qid": "Q41506",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Sergey Brin",
+        "p": "educated_at",
+        "o": "Stanford University",
+        "sentence": "Google was founded by Larry Page and Sergey Brin in September 1998 while they were Ph.D. students at Stanford University.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q92764",
+        "o_qid": "Q41506",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:53:29.047997",
+    "timestamp": "2026-04-28T12:00:32.315853",
     "prompt": "When was Microsoft founded?",
     "answer": "Microsoft was founded on April 4, 1975.",
     "claims": [
@@ -873,15 +969,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:53:55.162763",
+    "timestamp": "2026-04-28T12:00:45.272119",
     "prompt": "When was Google founded?",
-    "answer": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+    "answer": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
     "claims": [
       {
         "s": "Google",
         "p": "founded_on",
         "o": "September 4, 1998",
-        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -906,7 +1002,7 @@
         "s": "Google",
         "p": "founded_by",
         "o": "Larry Page",
-        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -931,7 +1027,7 @@
         "s": "Google",
         "p": "founded_by",
         "o": "Sergey Brin",
-        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -956,7 +1052,7 @@
         "s": "Larry Page",
         "p": "educated_at",
         "o": "Stanford University",
-        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P69",
@@ -981,7 +1077,7 @@
         "s": "Sergey Brin",
         "p": "educated_at",
         "o": "Stanford University",
-        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were PhD students at Stanford University.",
+        "sentence": "Google was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P69",
@@ -1007,15 +1103,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:00.914928",
+    "timestamp": "2026-04-28T12:00:55.023210",
     "prompt": "When was Facebook founded?",
-    "answer": "Facebook was founded on February 4, 2004.",
+    "answer": "Facebook was founded on February 4, 2004, by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes.",
     "claims": [
       {
         "s": "Facebook",
         "p": "founded_on",
         "o": "February 4, 2004",
-        "sentence": "Facebook was founded on February 4, 2004.",
+        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -1035,13 +1131,38 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Mark Zuckerberg",
+        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q36215",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:07.104571",
+    "timestamp": "2026-04-28T12:01:03.570191",
     "prompt": "When was Amazon founded?",
     "answer": "Amazon was founded on July 5, 1994, by Jeff Bezos.",
     "claims": [
@@ -1049,7 +1170,7 @@
         "s": "Amazon",
         "p": "founded_on",
         "o": "July 5, 1994",
-        "sentence": "Amazon was founded on July 5, 1994.",
+        "sentence": "Amazon was founded on July 5, 1994, by Jeff Bezos.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -1074,7 +1195,7 @@
         "s": "Amazon",
         "p": "founded_by",
         "o": "Jeff Bezos",
-        "sentence": "Amazon was founded by Jeff Bezos.",
+        "sentence": "Amazon was founded on July 5, 1994, by Jeff Bezos.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -1100,7 +1221,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:11.547116",
+    "timestamp": "2026-04-28T12:01:11.228623",
     "prompt": "Where is Microsoft headquartered?",
     "answer": "Microsoft is headquartered in Redmond, Washington, USA.",
     "claims": [
@@ -1135,7 +1256,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:15.954339",
+    "timestamp": "2026-04-28T12:01:18.574460",
     "prompt": "Where is IBM headquartered?",
     "answer": "IBM is headquartered in Armonk, New York, USA.",
     "claims": [
@@ -1170,7 +1291,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:21.176309",
+    "timestamp": "2026-04-28T12:01:25.425521",
     "prompt": "Where is Intel headquartered?",
     "answer": "Intel is headquartered in Santa Clara, California, USA.",
     "claims": [
@@ -1205,9 +1326,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:29.506205",
+    "timestamp": "2026-04-28T12:01:33.431285",
     "prompt": "What is Albert Einstein’s occupation?",
-    "answer": "Albert Einstein was a theoretical physicist. He is best known for developing the theory of relativity, particularly the equation \\(E=mc^2\\), which describes the equivalence of mass and energy. Throughout his career, he made significant contributions to various areas of physics, including quantum mechanics and statistical mechanics. In addition to his research, he also worked as a professor and lecturer at several universities.",
+    "answer": "Albert Einstein was a theoretical physicist, best known for his contributions to the understanding of the photoelectric effect, the theory of relativity, and his famous equation \\(E=mc^2\\). He also held various academic positions, including professor roles at several universities.",
     "claims": [
       {
         "s": "Albert Einstein",
@@ -1219,8 +1340,7 @@
         "property_id": "P106",
         "reverse": false,
         "source": [
-          "llm",
-          "spacy"
+          "llm"
         ],
         "p_raw": "occupation",
         "verification_strategy": "direct",
@@ -1240,93 +1360,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:54:57.944698",
-    "prompt": "What is Isaac Newton’s occupation?",
-    "answer": "Isaac Newton was a mathematician, physicist, astronomer, and author. He is best known for his work in mathematics (especially calculus), physics (particularly the laws of motion and universal gravitation), and optics. Newton also served as the Lucasian Professor of Mathematics at the University of Cambridge and later became the Master of the Royal Mint. His contributions laid the foundation for many areas of modern science.",
-    "claims": [
-      {
-        "s": "Isaac Newton",
-        "p": "occupation",
-        "o": "mathematician",
-        "sentence": "Isaac Newton was a mathematician, physicist, astronomer, and author.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P106",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "occupation",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q935",
-        "o_qid": "Q170790",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Isaac Newton",
-        "p": "occupation",
-        "o": "physicist",
-        "sentence": "Isaac Newton was a mathematician, physicist, astronomer, and author.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P106",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "occupation",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": "No supporting graph evidence found",
-        "reason": "No supporting graph evidence found",
-        "nei_type": "unknown",
-        "likely_hallucination": false,
-        "s_qid": "Q935",
-        "o_qid": "Q169470",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "UNVERIFIABLE"
-      },
-      {
-        "s": "Isaac Newton",
-        "p": "occupation",
-        "o": "author",
-        "sentence": "Isaac Newton was a mathematician, physicist, astronomer, and author.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P106",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "occupation",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q935",
-        "o_qid": "Q482980",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "UNVERIFIABLE"
-  },
-  {
-    "timestamp": "2026-04-22T12:55:37.947700",
+    "timestamp": "2026-04-28T12:02:33.489870",
     "prompt": "What is Nikola Tesla’s occupation?",
-    "answer": "Nikola Tesla was an inventor, electrical engineer, mechanical engineer, and physicist. He is best known for his contributions to the development of alternating current (AC) electrical systems, including the AC motor and transformer, as well as his work on wireless communication and energy transmission. Tesla's innovations laid the groundwork for many modern electrical technologies.",
+    "answer": "Nikola Tesla was an inventor, electrical engineer, mechanical engineer, and physicist. He is best known for his contributions to the development of alternating current (AC) electrical systems. Tesla also worked on various other technologies, such as radio, wireless communication, and electromagnetism. His innovative ideas have had a lasting impact on modern electrical engineering and technology.",
     "claims": [
       {
         "s": "Nikola Tesla",
@@ -1433,9 +1469,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:55:57.271181",
+    "timestamp": "2026-04-28T12:03:12.518646",
     "prompt": "Where is the Eiffel Tower located?",
-    "answer": "The Eiffel Tower is located in Paris, France. Specifically, it stands on the Champ de Mars near the Seine River in the 7th arrondissement of the city.",
+    "answer": "The Eiffel Tower is located in Paris, France. However, the specific details about its location, such as being on the Champ de Mars or in the 7th arrondissement, could not be verified.",
     "claims": [
       {
         "s": "Eiffel Tower",
@@ -1487,77 +1523,28 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
-      },
-      {
-        "s": "Eiffel Tower",
-        "p": "located_at",
-        "o": "Champ de Mars",
-        "sentence": "Specifically, it stands on the Champ de Mars near the Seine River in the 7th arrondissement of the city.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P276",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q243",
-        "o_qid": "Q217925",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Eiffel Tower",
-        "p": "located_at",
-        "o": "7th arrondissement",
-        "sentence": "Specifically, it stands on the Champ de Mars near the Seine River in the 7th arrondissement of the city.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P276",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": "No supporting graph evidence found",
-        "reason": "No supporting graph evidence found",
-        "nei_type": "unknown",
-        "likely_hallucination": false,
-        "s_qid": "Q243",
-        "o_qid": "Q259463",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "UNVERIFIABLE"
       }
     ],
     "verified_references": [],
-    "reference_only_label": "UNVERIFIABLE"
+    "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:56:04.775488",
+    "timestamp": "2026-04-28T12:03:20.106600",
     "prompt": "Where is the Colosseum located?",
-    "answer": "The Colosseum is located in the center of Rome, Italy. It is one of the most iconic landmarks of the city and is situated just east of the Roman Forum.",
+    "answer": "The Colosseum is located in Rome, Italy. It is an iconic ancient amphitheater and one of the most famous landmarks in the city.",
     "claims": [
       {
         "s": "Colosseum",
         "p": "located_in",
         "o": "Rome",
-        "sentence": "The Colosseum is located in the center of Rome, Italy.",
+        "sentence": "The Colosseum is located in Rome, Italy.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P131",
         "reverse": false,
         "source": [
-          "llm"
+          "llm",
+          "spacy"
         ],
         "p_raw": "located_in",
         "verification_strategy": "location_union",
@@ -1576,7 +1563,7 @@
         "s": "Colosseum",
         "p": "located_in",
         "o": "Italy",
-        "sentence": "The Colosseum is located in the center of Rome, Italy.",
+        "sentence": "The Colosseum is located in Rome, Italy.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P131",
@@ -1602,9 +1589,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:56:21.656485",
+    "timestamp": "2026-04-28T12:03:41.627026",
     "prompt": "Where is the Statue of Liberty located?",
-    "answer": "The Statue of Liberty is located on Liberty Island in New York Harbor, New York City, USA. It stands as a symbol of freedom and democracy and is a popular tourist attraction.",
+    "answer": "The Statue of Liberty is located on Liberty Island in New York Harbor, New York City, USA. It is situated near the entrance to the harbor and is a symbol of freedom and democracy.",
     "claims": [
       {
         "s": "Statue of Liberty",
@@ -1730,7 +1717,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:59:04.662765",
+    "timestamp": "2026-04-28T12:03:54.698086",
     "prompt": "Was Google founded in 1980?",
     "answer": "No, Google was not founded in 1980. It was founded on September 4, 1998, by Larry Page and Sergey Brin while they were Ph.D. students at Stanford University.",
     "claims": [
@@ -1814,15 +1801,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:59:35.195894",
+    "timestamp": "2026-04-28T12:04:02.771013",
     "prompt": "Was Facebook founded in 2010?",
-    "answer": "No, Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
+    "answer": "No, Facebook was not founded in 2010. It was created by Mark Zuckerberg and his college roommates in February 2004.",
     "claims": [
       {
         "s": "Facebook",
         "p": "founded_on",
-        "o": "February 4, 2004",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
+        "o": "February 2004",
+        "sentence": "It was created by Mark Zuckerberg and his college roommates in February 2004.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -1845,300 +1832,37 @@
       },
       {
         "s": "Facebook",
-        "p": "founded_by",
+        "p": "founder_of",
         "o": "Mark Zuckerberg",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
+        "sentence": "It was created by Mark Zuckerberg and his college roommates in February 2004.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
-        "reverse": false,
+        "reverse": true,
         "source": [
           "llm"
         ],
-        "p_raw": "founded_by",
+        "p_raw": "founder_of",
         "verification_strategy": "direct",
         "graph_evidence": [],
         "explanation": null,
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q380",
+        "s_qid": "Q355",
         "o_qid": "Q36215",
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
-      },
-      {
-        "s": "Facebook",
-        "p": "founded_by",
-        "o": "Eduardo Saverin",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q312663",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Facebook",
-        "p": "founded_by",
-        "o": "Andrew McCollum",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q4757939",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Facebook",
-        "p": "founded_by",
-        "o": "Dustin Moskovitz",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q370217",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Facebook",
-        "p": "founded_by",
-        "o": "Chris Hughes",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "predicate": "founded_by",
-            "subject": "subject",
-            "relation": "founded_by",
-            "object": "Mark Zuckerberg"
-          },
-          {
-            "predicate": "founded_by",
-            "subject": "subject",
-            "relation": "founded_by",
-            "object": "Eduardo Saverin"
-          },
-          {
-            "predicate": "founded_by",
-            "subject": "subject",
-            "relation": "founded_by",
-            "object": "Dustin Moskovitz"
-          },
-          {
-            "predicate": "founded_by",
-            "subject": "subject",
-            "relation": "founded_by",
-            "object": "Chris Hughes"
-          },
-          {
-            "predicate": "founded_by",
-            "subject": "subject",
-            "relation": "founded_by",
-            "object": "بن منشلين"
-          }
-        ],
-        "explanation": "Refuted: the graph lists founders such as Mark Zuckerberg, Eduardo Saverin, Dustin Moskovitz.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q911923",
-        "ask_result": false,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Mark Zuckerberg",
-        "p": "educated_at",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P69",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "educated_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q36215",
-        "o_qid": "Q13371",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Eduardo Saverin",
-        "p": "educated_at",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P69",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "educated_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q312663",
-        "o_qid": "Q13371",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Andrew McCollum",
-        "p": "educated_at",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P69",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "educated_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q4757939",
-        "o_qid": "Q13371",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Dustin Moskovitz",
-        "p": "educated_at",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P69",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "educated_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q370217",
-        "o_qid": "Q13371",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Chris Hughes",
-        "p": "educated_at",
-        "o": "Harvard University",
-        "sentence": "Facebook was founded on February 4, 2004, by Mark Zuckerberg along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes while they were students at Harvard University.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P69",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "educated_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "predicate": "educated_at",
-            "subject": "subject",
-            "relation": "educated_at",
-            "object": "Emanuel School"
-          }
-        ],
-        "explanation": " Graph links the subject to institutions such as Emanuel School.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q911923",
-        "o_qid": "Q13371",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
       }
     ],
     "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
+    "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:59:44.642467",
+    "timestamp": "2026-04-28T12:04:13.212420",
     "prompt": "Was Microsoft founded in 1990?",
-    "answer": "No, Microsoft was founded on April 4, 1975, by Bill Gates and Paul Allen. The company initially focused on developing software for the Altair 8800 microcomputer.",
+    "answer": "No, Microsoft was founded on April 4, 1975, by Bill Gates and Paul Allen. It became widely known for its software products, particularly the Windows operating system and Microsoft Office suite.",
     "claims": [
       {
         "s": "Microsoft",
@@ -2214,38 +1938,13 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
-      },
-      {
-        "s": "Microsoft",
-        "p": "instance_of",
-        "o": "software company",
-        "sentence": "The company initially focused on developing software for the Altair 8800 microcomputer.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P31",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "instance_of",
-        "verification_strategy": "subclass",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q2283",
-        "o_qid": "Q1058914",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:59:52.381384",
+    "timestamp": "2026-04-28T12:04:19.202661",
     "prompt": "Is Paris the capital of Germany?",
     "answer": "No, Paris is not the capital of Germany. Paris is the capital of France. The capital of Germany is Berlin.",
     "claims": [
@@ -2306,7 +2005,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T12:59:58.216118",
+    "timestamp": "2026-04-28T12:04:27.932709",
     "prompt": "Is Berlin the capital of France?",
     "answer": "No, Berlin is not the capital of France; it is the capital of Germany. The capital of France is Paris.",
     "claims": [
@@ -2366,7 +2065,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:00:04.531245",
+    "timestamp": "2026-04-28T12:04:35.238257",
     "prompt": "Is Cairo the capital of Saudi Arabia?",
     "answer": "No, Cairo is not the capital of Saudi Arabia; it is the capital of Egypt. The capital of Saudi Arabia is Riyadh.",
     "claims": [
@@ -2426,22 +2125,21 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:00:15.446292",
+    "timestamp": "2026-04-28T12:04:48.805634",
     "prompt": "Is Tokyo the capital of China?",
-    "answer": "No, Tokyo is not the capital of China. Tokyo is the capital of Japan. The capital of China is Beijing.",
+    "answer": "No, Tokyo is not the capital of China; it is the capital of Japan. The capital of China is Beijing.",
     "claims": [
       {
         "s": "Tokyo",
         "p": "capital_of",
         "o": "Japan",
-        "sentence": "Tokyo is the capital of Japan.",
+        "sentence": "it is the capital of Japan.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P1376",
         "reverse": false,
         "source": [
-          "llm",
-          "spacy"
+          "llm"
         ],
         "p_raw": "capital_of",
         "verification_strategy": "capital",
@@ -2487,672 +2185,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:00:22.269356",
-    "prompt": "Who wrote the book 'Silent Empire of Mars'?",
-    "answer": "\"Silent Empire of Mars\" was written by the author **Robert L. Forward**. If you have any specific questions about the book or its themes, feel free to ask!",
-    "claims": [
-      {
-        "s": "Silent Empire of Mars",
-        "p": "written_by",
-        "o": "Robert L. Forward",
-        "sentence": "\"Silent Empire of Mars\" was written by the author **Robert L. Forward**.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Silent Empire of Mars"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q2000229",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:00:37.151032",
-    "prompt": "Who wrote the novel 'Shadows of Orion'?",
-    "answer": "The novel 'Shadows of Orion' was written by David A. McKeown. If you need more information about the book or its themes, feel free to ask!",
-    "claims": [
-      {
-        "s": "Shadows of Orion",
-        "p": "written_by",
-        "o": "David A. McKeown",
-        "sentence": "The novel 'Shadows of Orion' was written by David A. McKeown.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Shadows of Orion"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:00:43.138882",
-    "prompt": "Who directed the film 'Shadow Reef'?",
-    "answer": "The film 'Shadow Reef' was directed by David J. Smith. If you have any more questions about the film or its director, feel free to ask!",
-    "claims": [],
-    "verified_references": [],
-    "reference_only_label": "NO_CLAIMS"
-  },
-  {
-    "timestamp": "2026-04-22T13:00:58.866518",
-    "prompt": "What is the main idea of the paper 'Neural Horizons in Quantum AI'?",
-    "answer": "The paper \"Neural Horizons in Quantum AI\" explores the intersection of quantum computing and artificial intelligence, focusing on how neural networks can be enhanced through quantum principles. The main idea revolves around leveraging quantum mechanics to improve AI models, particularly in terms of efficiency, processing power, and the ability to handle complex data structures. The authors discuss potential applications, theoretical frameworks, and the implications of integrating quantum technologies into AI systems. Overall, the paper highlights the transformative potential of combining these two fields to advance computational capabilities.",
-    "claims": [
-      {
-        "s": "Neural Horizons in Quantum AI",
-        "p": "notable_work",
-        "o": "Neural Horizons in Quantum AI",
-        "sentence": "The paper \"Neural Horizons in Quantum AI\" explores the intersection of quantum computing and artificial intelligence.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P800",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "notable_work",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Neural Horizons in Quantum AI"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:11:28.894046",
-    "prompt": "Who authored the paper 'Neural Horizons in Quantum AI'?",
-    "answer": "The paper \"Neural Horizons in Quantum AI\" was authored by John M. D. H. F. O’Donnell, R. B. E. H. C. B. R. H. M. T. D. G. Y. and was published in 2023. If you need more information about the paper or its content, feel free to ask!",
-    "claims": [
-      {
-        "s": "Neural Horizons in Quantum AI",
-        "p": "written_by",
-        "o": "John M. D. H. F. O’Donnell",
-        "sentence": "The paper \"Neural Horizons in Quantum AI\" was authored by John M. D. H. F. O’Donnell, R. B. E. H. C. B. R. H. M. T. D. G. Y. and was published in 2023.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Neural Horizons in Quantum AI"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Neural Horizons in Quantum AI",
-        "p": "publication_year",
-        "o": "2023",
-        "sentence": "The paper \"Neural Horizons in Quantum AI\" was authored by John M. D. H. F. O’Donnell, R. B. E. H. C. B. R. H. M. T. D. G. Y. and was published in 2023.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P577",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "publication_year",
-        "verification_strategy": "year",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Neural Horizons in Quantum AI"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:11:36.234892",
-    "prompt": "Who authored the paper 'Deep Learning Beyond Reality'?",
-    "answer": "The paper \"Deep Learning Beyond Reality\" was authored by Michael J. Black, et al. If you need more information about the paper or its contents, feel free to ask!",
-    "claims": [
-      {
-        "s": "Deep Learning Beyond Reality",
-        "p": "written_by",
-        "o": "Michael J. Black",
-        "sentence": "The paper \"Deep Learning Beyond Reality\" was authored by Michael J. Black, et al.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Deep Learning Beyond Reality"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q84323673",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:11:43.874313",
-    "prompt": "Who authored the paper 'Synthetic Minds and Reasoning'?",
-    "answer": "The paper \"Synthetic Minds and Reasoning\" was authored by John McCarthy. If you need more information about the paper or its content, feel free to ask!",
-    "claims": [
-      {
-        "s": "Synthetic Minds and Reasoning",
-        "p": "written_by",
-        "o": "John McCarthy",
-        "sentence": "The paper \"Synthetic Minds and Reasoning\" was authored by John McCarthy.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Synthetic Minds and Reasoning"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q113800107",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:03.345465",
-    "prompt": "Who authored the paper 'Quantum Networks for AI Systems'?",
-    "answer": "The paper titled \"Quantum Networks for AI Systems\" was authored by several researchers, including J. L. H. F. M. van der Meer, C. H. M. W. D. M. van der Zwan, and others. If you need more specific details or context about the paper, let me know!",
-    "claims": [
-      {
-        "s": "Quantum Networks for AI Systems",
-        "p": "written_by",
-        "o": "J. L. H. F. M. van der Meer",
-        "sentence": "The paper titled \"Quantum Networks for AI Systems\" was authored by several researchers, including J. L. H. F. M. van der Meer.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Quantum Networks for AI Systems"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Quantum Networks for AI Systems",
-        "p": "written_by",
-        "o": "C. H. M. W. D. M. van der Zwan",
-        "sentence": "The paper titled \"Quantum Networks for AI Systems\" was authored by several researchers, including C. H. M. W. D. M. van der Zwan.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Quantum Networks for AI Systems"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:12.269376",
-    "prompt": "Who authored the paper 'Emergent Intelligence in Machines'?",
-    "answer": "The paper \"Emergent Intelligence in Machines\" was authored by Eliezer Yudkowsky. If you need more information about the paper or its concepts, feel free to ask!",
-    "claims": [
-      {
-        "s": "Emergent Intelligence in Machines",
-        "p": "written_by",
-        "o": "Eliezer Yudkowsky",
-        "sentence": "The paper \"Emergent Intelligence in Machines\" was authored by Eliezer Yudkowsky.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Emergent Intelligence in Machines"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q704195",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:20.539050",
-    "prompt": "Who authored the paper 'Cognitive Architectures in AI'?",
-    "answer": "The paper \"Cognitive Architectures in AI\" was authored by David L. Poole and Alan K. Mackworth. It discusses various cognitive architectures and their implications for artificial intelligence. If you need more specific information or insights from the paper, feel free to ask!",
-    "claims": [
-      {
-        "s": "Cognitive Architectures in AI",
-        "p": "written_by",
-        "o": "David L. Poole",
-        "sentence": "The paper \"Cognitive Architectures in AI\" was authored by David L. Poole and Alan K. Mackworth.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Cognitive Architectures in AI"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q112457155",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Cognitive Architectures in AI",
-        "p": "written_by",
-        "o": "Alan K. Mackworth",
-        "sentence": "The paper \"Cognitive Architectures in AI\" was authored by David L. Poole and Alan K. Mackworth.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Cognitive Architectures in AI"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q4707215",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:36.005128",
-    "prompt": "Who authored the paper 'Adaptive Neural Worlds'?",
-    "answer": "The paper \"Adaptive Neural Worlds\" was authored by **David F. McLeod** and **David J. C. MacKay**. If you need more details about the paper or its content, feel free to ask!",
-    "claims": [
-      {
-        "s": "Adaptive Neural Worlds",
-        "p": "written_by",
-        "o": "David F. McLeod",
-        "sentence": "The paper \"Adaptive Neural Worlds\" was authored by **David F. McLeod** and **David J. C. MacKay**.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Adaptive Neural Worlds"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Adaptive Neural Worlds",
-        "p": "written_by",
-        "o": "David J. C. MacKay",
-        "sentence": "The paper \"Adaptive Neural Worlds\" was authored by **David F. McLeod** and **David J. C. MacKay**.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Adaptive Neural Worlds"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q446862",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:43.946529",
-    "prompt": "Who authored the paper 'Parallel Thinking Models'?",
-    "answer": "The paper \"Parallel Thinking Models\" was authored by Edward de Bono. He is well-known for his work in the field of creative thinking and problem-solving, particularly for developing the concept of \"lateral thinking.\" If you need more specific information about the paper or its content, feel free to ask!",
-    "claims": [
-      {
-        "s": "Parallel Thinking Models",
-        "p": "written_by",
-        "o": "Edward de Bono",
-        "sentence": "The paper \"Parallel Thinking Models\" was authored by Edward de Bono.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Parallel Thinking Models"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q41322",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:12:50.431702",
-    "prompt": "Who authored the paper 'Artificial Reasoning Engines'?",
-    "answer": "The paper \"Artificial Reasoning Engines\" was authored by Stephen Pulman. If you need more information about the paper or its contents, feel free to ask!",
-    "claims": [
-      {
-        "s": "Artificial Reasoning Engines",
-        "p": "written_by",
-        "o": "Stephen Pulman",
-        "sentence": "The paper \"Artificial Reasoning Engines\" was authored by Stephen Pulman.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Artificial Reasoning Engines"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q97331618",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:13:08.291837",
-    "prompt": "Who authored the paper 'Neural Structures in Autonomous Systems'?",
-    "answer": "The paper 'Neural Structures in Autonomous Systems' was authored by Joseph M. A. Decker and Andreas H. E. H. Decker. If you need more information about the paper or its content, feel free to ask!",
-    "claims": [
-      {
-        "s": "Neural Structures in Autonomous Systems",
-        "p": "written_by",
-        "o": "Joseph M. A. Decker",
-        "sentence": "The paper 'Neural Structures in Autonomous Systems' was authored by Joseph M. A. Decker and Andreas H. E. H. Decker.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Neural Structures in Autonomous Systems"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Neural Structures in Autonomous Systems",
-        "p": "written_by",
-        "o": "Andreas H. E. H. Decker",
-        "sentence": "The paper 'Neural Structures in Autonomous Systems' was authored by Joseph M. A. Decker and Andreas H. E. H. Decker.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Neural Structures in Autonomous Systems"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-22T13:22:52.688747",
+    "timestamp": "2026-04-28T12:04:55.125284",
     "prompt": "Which country is Madrid located in?",
     "answer": "Madrid is located in Spain. It is the capital and largest city of the country.",
     "claims": [
@@ -3176,7 +2209,7 @@
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q116170766",
+        "s_qid": "Q2807",
         "o_qid": "Q29",
         "ask_result": true,
         "verdict": "SUPPORTED",
@@ -3212,7 +2245,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:23:30.596905",
+    "timestamp": "2026-04-28T12:05:01.857679",
     "prompt": "Which country is Ottawa located in?",
     "answer": "Ottawa is located in Canada. It is the capital city of the country.",
     "claims": [
@@ -3272,7 +2305,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:23:42.665632",
+    "timestamp": "2026-04-28T12:05:11.300921",
     "prompt": "Which country is Brasília located in?",
     "answer": "Brasília is located in Brazil. It is the capital city of the country and was officially inaugurated in 1960.",
     "claims": [
@@ -3356,158 +2389,87 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:23:56.725565",
-    "prompt": "Who wrote the novel 'The Glass Throne of Europa'?",
-    "answer": "The novel \"The Glass Throne of Europa\" was written by the author **S.G. M. McGowan**. If you have more questions about the book or its themes, feel free to ask!",
-    "claims": [
-      {
-        "s": "Glass Throne of Europa",
-        "p": "written_by",
-        "o": "S.G. M. McGowan",
-        "sentence": "The novel \"The Glass Throne of Europa\" was written by the author **S.G. M. McGowan**.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Glass Throne of Europa"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
+    "timestamp": "2026-04-28T12:05:22.870763",
+    "prompt": "Who wrote the book 'Silent Empire of Mars'?",
+    "answer": "I could not verify \"Silent Empire of Mars\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who wrote the book 'Silent Empire of Mars'?",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-22T13:24:06.320816",
-    "prompt": "Who wrote the book 'Chronicles of the Iron Nebula'?",
-    "answer": "The book 'Chronicles of the Iron Nebula' was written by **K. J. Parker**. If you have any specific questions or need more information about the book or the author, feel free to ask!",
-    "claims": [
-      {
-        "s": "Chronicles of the Iron Nebula",
-        "p": "written_by",
-        "o": "K. J. Parker",
-        "sentence": "The book 'Chronicles of the Iron Nebula' was written by **K. J. Parker**.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Chronicles of the Iron Nebula"
-          }
-        ],
-        "explanation": "Entity not found in Wikidata",
-        "reason": "Entity not found in Wikidata",
-        "nei_type": "unknown",
-        "likely_hallucination": false,
-        "s_qid": null,
-        "o_qid": "Q321185",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "UNVERIFIABLE"
-      }
-    ],
+    "timestamp": "2026-04-28T12:05:38.530648",
+    "prompt": "Who wrote the novel 'Shadows of Orion'?",
+    "answer": "I could not verify \"Shadows of Orion\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who wrote the novel 'Shadows of Orion'?",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "UNVERIFIABLE"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-22T13:49:14.362632",
-    "prompt": "Who founded Intel?",
-    "answer": "Intel was founded by Robert Noyce and Gordon Moore in July 1968. They were later joined by Andrew Grove, who played a significant role in the company's growth and development.",
+    "timestamp": "2026-04-28T12:05:43.548421",
+    "prompt": "Who directed the film 'Shadow Reef'?",
+    "answer": "The film 'Shadow Reef' was directed by Michael K. Arnold. If you need more information about the film or its themes, feel free to ask!",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:05:54.062484",
+    "prompt": "What is the main idea of the paper 'Neural Horizons in Quantum AI'?",
+    "answer": "\"Neural Horizons in Quantum AI\" explores the intersection of neural networks and quantum computing, proposing innovative methodologies to enhance artificial intelligence capabilities through quantum mechanics. The paper discusses how quantum algorithms can improve machine learning processes, potentially leading to breakthroughs in efficiency and problem-solving that classical systems cannot achieve. It also examines the theoretical and practical implications of integrating quantum technologies into AI frameworks, suggesting future research directions and applications. Overall, the main idea emphasizes the transformative potential of combining neural architectures with quantum principles in advancing AI.",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:06:05.944241",
+    "prompt": "State what JavaScript is and the year it was first released.",
+    "answer": "JavaScript is a high-level, dynamic, and interpreted programming language primarily used for creating interactive and dynamic content on the web. It enables developers to implement complex features on web pages, such as animations, form validations, and real-time updates. JavaScript was first released in 1995.",
     "claims": [
       {
-        "s": "Intel",
-        "p": "founded_by",
-        "o": "Robert Noyce",
-        "sentence": "Intel was founded by Robert Noyce and Gordon Moore in July 1968.",
+        "s": "JavaScript",
+        "p": "instance_of",
+        "o": "programming language",
+        "sentence": "JavaScript is a high-level, dynamic, and interpreted programming language primarily used for creating interactive and dynamic content on the web.",
         "confidence": 1.0,
         "negated": false,
-        "property_id": "P112",
+        "property_id": "P31",
         "reverse": false,
         "source": [
           "llm"
         ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
+        "p_raw": "instance_of",
+        "verification_strategy": "subclass",
         "graph_evidence": [],
         "explanation": null,
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q248",
-        "o_qid": "Q241735",
+        "s_qid": "Q2005",
+        "o_qid": "Q9143",
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
       },
       {
-        "s": "Intel",
-        "p": "founded_by",
-        "o": "Gordon Moore",
-        "sentence": "Intel was founded by Robert Noyce and Gordon Moore in July 1968.",
+        "s": "JavaScript",
+        "p": "publication_year",
+        "o": "1995",
+        "sentence": "JavaScript was first released in 1995.",
         "confidence": 1.0,
         "negated": false,
-        "property_id": "P112",
+        "property_id": "P577",
         "reverse": false,
         "source": [
           "llm"
         ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q248",
-        "o_qid": "Q243969",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Intel",
-        "p": "founded_on",
-        "o": "July 1968",
-        "sentence": "Intel was founded by Robert Noyce and Gordon Moore in July 1968.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
+        "p_raw": "publication_year",
         "verification_strategy": "year",
         "graph_evidence": [],
         "explanation": null,
         "reason": null,
         "nei_type": null,
         "likely_hallucination": false,
-        "s_qid": "Q248",
+        "s_qid": "Q2005",
         "o_qid": null,
         "ask_result": true,
         "verdict": "SUPPORTED",
@@ -3518,102 +2480,87 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-22T13:49:51.429054",
-    "prompt": "Where is Facebook headquartered?",
-    "answer": "Facebook, now known as Meta Platforms, Inc., is headquartered in Menlo Park, California, USA.",
-    "claims": [
-      {
-        "s": "Facebook",
-        "p": "headquarters_in",
-        "o": "Menlo Park",
-        "sentence": "Facebook, now known as Meta Platforms, Inc., is headquartered in Menlo Park, California, USA.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P159",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "headquarters_in",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q380",
-        "o_qid": "Q74195",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
+    "timestamp": "2026-04-28T12:06:13.252900",
+    "prompt": "Who authored the paper 'Neural Horizons in Quantum AI'?",
+    "answer": "The paper 'Neural Horizons in Quantum AI' was authored by R. G. Baraniuk, A. G. M. M. D. et al. If you need more information or a summary from the paper, feel free to ask!",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "CLEAN"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-22T13:57:34.143909",
-    "prompt": "Name the capital of France and the country in which Lyon is located.",
-    "answer": "The capital of France is Paris, and Lyon is also located in France.",
-    "claims": [
-      {
-        "s": "Paris",
-        "p": "capital_of",
-        "o": "France",
-        "sentence": "Name the capital of France",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "prompt",
-          "llm"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q90",
-        "o_qid": "Q142",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Lyon",
-        "p": "located_in",
-        "o": "France",
-        "sentence": "the country in which Lyon is located",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "prompt",
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q456",
-        "o_qid": "Q142",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
+    "timestamp": "2026-04-28T12:06:35.161412",
+    "prompt": "Who authored the paper 'Deep Learning Beyond Reality'?",
+    "answer": "I could not verify \"Deep Learning Beyond Reality\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Deep Learning Beyond Reality'?",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "CLEAN"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-23T11:16:53.110560",
+    "timestamp": "2026-04-28T12:06:44.582636",
+    "prompt": "Who authored the paper 'Synthetic Minds and Reasoning'?",
+    "answer": "I could not verify \"Synthetic Minds and Reasoning\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Synthetic Minds and Reasoning'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:11.762556",
+    "prompt": "Who authored the paper 'Quantum Networks for AI Systems'?",
+    "answer": "I could not verify \"Quantum Networks for AI Systems\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Quantum Networks for AI Systems'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:18.093713",
+    "prompt": "Who authored the paper 'Emergent Intelligence in Machines'?",
+    "answer": "The paper \"Emergent Intelligence in Machines\" was authored by researchers from Google DeepMind, including **M. G. K. D. S. G. T. S. K. S. A. R. A. M. H. M.**. If you need more specific details or a summary of the paper, feel free to ask!",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:28.027406",
+    "prompt": "Who authored the paper 'Cognitive Architectures in AI'?",
+    "answer": "I could not verify \"Cognitive Architectures in AI\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Cognitive Architectures in AI'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:38.573434",
+    "prompt": "Who authored the paper 'Adaptive Neural Worlds'?",
+    "answer": "I could not verify \"Adaptive Neural Worlds\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Adaptive Neural Worlds'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:48.302798",
+    "prompt": "Who authored the paper 'Parallel Thinking Models'?",
+    "answer": "I could not verify \"Parallel Thinking Models\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Parallel Thinking Models'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:12:58.955621",
+    "prompt": "Who authored the paper 'Artificial Reasoning Engines'?",
+    "answer": "I could not verify \"Artificial Reasoning Engines\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Artificial Reasoning Engines'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:13:11.957695",
+    "prompt": "Who authored the paper 'Neural Structures in Autonomous Systems'?",
+    "answer": "I could not verify \"Neural Structures in Autonomous Systems\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who authored the paper 'Neural Structures in Autonomous Systems'?",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:13:18.246093",
     "prompt": "State the capital of the United Kingdom.",
     "answer": "The capital of the United Kingdom is London.",
     "claims": [
@@ -3621,14 +2568,14 @@
         "s": "London",
         "p": "capital_of",
         "o": "United Kingdom",
-        "sentence": "State the capital of the United Kingdom",
+        "sentence": "The capital of the United Kingdom is London.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P1376",
         "reverse": false,
         "source": [
-          "prompt",
-          "llm"
+          "llm",
+          "spacy"
         ],
         "p_raw": "capital_of",
         "verification_strategy": "capital",
@@ -3648,7 +2595,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:07.555607",
+    "timestamp": "2026-04-28T12:13:26.158445",
     "prompt": "State the capital of South Korea.",
     "answer": "The capital of South Korea is Seoul.",
     "claims": [
@@ -3683,7 +2630,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:13.831397",
+    "timestamp": "2026-04-28T12:13:31.697162",
     "prompt": "State the capital of Mexico.",
     "answer": "The capital of Mexico is Mexico City.",
     "claims": [
@@ -3718,7 +2665,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:19.476476",
+    "timestamp": "2026-04-28T12:13:37.433221",
     "prompt": "State the capital of Turkey.",
     "answer": "The capital of Turkey is Ankara.",
     "claims": [
@@ -3753,15 +2700,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:29.192204",
+    "timestamp": "2026-04-28T12:13:47.473581",
     "prompt": "Who founded Netflix?",
-    "answer": "Netflix was founded by Reed Hastings and Marc Randolph in August 1997. They originally started the company as a DVD rental service by mail before eventually transitioning into streaming and becoming a major player in the entertainment industry.",
+    "answer": "Netflix was founded by Reed Hastings and Marc Randolph in 1997. They started the company as a DVD rental service by mail before it evolved into the streaming giant we know today.",
     "claims": [
       {
         "s": "Netflix",
         "p": "founded_by",
         "o": "Reed Hastings",
-        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in August 1997.",
+        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in 1997.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -3786,7 +2733,7 @@
         "s": "Netflix",
         "p": "founded_by",
         "o": "Marc Randolph",
-        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in August 1997.",
+        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in 1997.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P112",
@@ -3810,8 +2757,8 @@
       {
         "s": "Netflix",
         "p": "founded_on",
-        "o": "August 1997",
-        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in August 1997.",
+        "o": "1997",
+        "sentence": "Netflix was founded by Reed Hastings and Marc Randolph in 1997.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P571",
@@ -3837,9 +2784,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:37.053032",
+    "timestamp": "2026-04-28T12:13:56.217294",
     "prompt": "Who founded SpaceX?",
-    "answer": "SpaceX was founded by Elon Musk in March 2002. Musk aimed to reduce space transportation costs and enable the colonization of Mars.",
+    "answer": "SpaceX was founded by Elon Musk in March 2002.",
     "claims": [
       {
         "s": "SpaceX",
@@ -3896,10 +2843,984 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:17:50.192328",
+    "timestamp": "2026-04-28T12:14:23.207101",
     "prompt": "Who founded Oracle?",
-    "answer": "Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates. The company initially focused on developing a relational database management system and has since grown to become a major player in enterprise software and cloud solutions.",
+    "answer": "Oracle was founded in 1977, but the specific details about its founding and the development of a relational database management system could not be verified.",
     "claims": [
+      {
+        "s": "Oracle",
+        "p": "founded_on",
+        "o": "1977",
+        "sentence": "Oracle was founded in 1977",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q19900",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:14:49.356281",
+    "prompt": "Who founded Samsung?",
+    "answer": "Samsung was founded in 1969. The company is located in South Korea and has diversified into various sectors, including electronics.",
+    "claims": [
+      {
+        "s": "Samsung",
+        "p": "founded_on",
+        "o": "1969",
+        "sentence": "Samsung was founded in 1969.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q20718",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:14:56.128108",
+    "prompt": "When was Netflix founded?",
+    "answer": "Netflix was founded on August 29, 1997.",
+    "claims": [
+      {
+        "s": "Netflix",
+        "p": "founded_on",
+        "o": "August 29, 1997",
+        "sentence": "Netflix was founded on August 29, 1997.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q116452644",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:15:03.189844",
+    "prompt": "When was SpaceX founded?",
+    "answer": "SpaceX was founded on March 14, 2002, by Elon Musk.",
+    "claims": [
+      {
+        "s": "SpaceX",
+        "p": "founded_on",
+        "o": "March 14, 2002",
+        "sentence": "SpaceX was founded on March 14, 2002, by Elon Musk.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q193701",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "SpaceX",
+        "p": "founded_by",
+        "o": "Elon Musk",
+        "sentence": "SpaceX was founded on March 14, 2002, by Elon Musk.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q193701",
+        "o_qid": "Q317521",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:15:07.949104",
+    "prompt": "When was Oracle founded?",
+    "answer": "Oracle was founded in 1977.",
+    "claims": [
+      {
+        "s": "Oracle",
+        "p": "founded_on",
+        "o": "1977",
+        "sentence": "Oracle was founded in 1977.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q19900",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:15:29.275566",
+    "prompt": "When was Samsung founded?",
+    "answer": "Samsung was founded in 1969. It is located in South Korea and has expanded into various sectors, including electronics, shipbuilding, and construction, eventually becoming a global leader in technology.",
+    "claims": [
+      {
+        "s": "Samsung",
+        "p": "founded_on",
+        "o": "1969",
+        "sentence": "Samsung was founded in 1969.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q20718",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:15:34.399516",
+    "prompt": "Where is Netflix headquartered?",
+    "answer": "Netflix is headquartered in Los Gatos, California, USA.",
+    "claims": [
+      {
+        "s": "Netflix",
+        "p": "headquarters_in",
+        "o": "Los Gatos",
+        "sentence": "Netflix is headquartered in Los Gatos, California, USA.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P159",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "headquarters_in",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q907311",
+        "o_qid": "Q747509",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:15:59.388815",
+    "prompt": "Where is SpaceX headquartered?",
+    "answer": "SpaceX is headquartered in Brownsville, Texas, USA.",
+    "claims": [
+      {
+        "s": "SpaceX",
+        "p": "headquarters_in",
+        "o": "Brownsville",
+        "sentence": "SpaceX is headquartered in Brownsville, Texas, USA.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P159",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "headquarters_in",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q193701",
+        "o_qid": "Q51693",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:16:06.926612",
+    "prompt": "Where is Oracle headquartered?",
+    "answer": "Oracle Corporation is headquartered in Austin, Texas, USA.",
+    "claims": [
+      {
+        "s": "Oracle Corporation",
+        "p": "headquarters_in",
+        "o": "Austin",
+        "sentence": "Oracle Corporation is headquartered in Austin, Texas, USA.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P159",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "headquarters_in",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q19900",
+        "o_qid": "Q16559",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:16:53.962640",
+    "prompt": "Where is Samsung headquartered?",
+    "answer": "Samsung is headquartered in Suwon, South Korea. However, the specific location of its main office could not be verified.",
+    "claims": [
+      {
+        "s": "Samsung",
+        "p": "headquarters_in",
+        "o": "Suwon",
+        "sentence": "Samsung is headquartered in Suwon, South Korea.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P159",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "headquarters_in",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q20718",
+        "o_qid": "Q20714",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:17:07.880267",
+    "prompt": "What is Elon Musk’s occupation?",
+    "answer": "Elon Musk is an entrepreneur and business magnate. He is the CEO and lead designer of SpaceX, CEO and product architect of Tesla, Inc., and has been involved in various other ventures, including co-founding Neuralink and The Boring Company. Additionally, he was a co-founder of PayPal and Zip2. His work primarily focuses on space exploration, electric vehicles, renewable energy, and advanced technology.",
+    "claims": [
+      {
+        "s": "Elon Musk",
+        "p": "ceo_of",
+        "o": "SpaceX",
+        "sentence": "He is the CEO and lead designer of SpaceX.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P169",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "ceo_of",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q317521",
+        "o_qid": "Q193701",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Elon Musk",
+        "p": "ceo_of",
+        "o": "Tesla, Inc",
+        "sentence": "He is the CEO and product architect of Tesla, Inc.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P169",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "ceo_of",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q317521",
+        "o_qid": "Q478214",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:17:16.579996",
+    "prompt": "What is Bill Gates’s occupation?",
+    "answer": "Bill Gates is primarily known as a co-founder of Microsoft Corporation, where he served as CEO and later as chairman and chief software architect. He is also an author, philanthropist, and public speaker. In recent years, he has focused on his philanthropic work through the Bill & Melinda Gates Foundation, which addresses global health, education, and poverty issues.",
+    "claims": [
+      {
+        "s": "Bill Gates",
+        "p": "occupation",
+        "o": "author",
+        "sentence": "He is also an author, philanthropist, and public speaker.",
+        "confidence": 0.8,
+        "negated": false,
+        "property_id": "P106",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "occupation",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q5284",
+        "o_qid": "Q482980",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:17:33.176532",
+    "prompt": "Where is the Empire State Building located?",
+    "answer": "The location of the Empire State Building could not be verified.",
+    "claims": [],
+    "verified_references": [],
+    "reference_only_label": "NO_CLAIMS"
+  },
+  {
+    "timestamp": "2026-04-28T12:17:53.565779",
+    "prompt": "Where is the Sydney Opera House located?",
+    "answer": "The Sydney Opera House is located in Sydney, Australia. However, the specific location on Bennelong Point could not be verified.",
+    "claims": [
+      {
+        "s": "Sydney Opera House",
+        "p": "located_in",
+        "o": "Sydney",
+        "sentence": "The Sydney Opera House is located in Sydney, Australia.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "located_in",
+        "verification_strategy": "location_union",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q45178",
+        "o_qid": "Q3130",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Sydney Opera House",
+        "p": "located_in",
+        "o": "Australia",
+        "sentence": "The Sydney Opera House is located in Sydney, Australia.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "located_in",
+        "verification_strategy": "location_union",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q45178",
+        "o_qid": "Q408",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:18:40.798295",
+    "prompt": "Where is the Taj Mahal located?",
+    "answer": "The Taj Mahal is located in Agra, India. It is situated on the banks of the Yamuna River and is a UNESCO World Heritage Site, renowned for its stunning architecture and historical significance.",
+    "claims": [
+      {
+        "s": "Taj Mahal",
+        "p": "located_in",
+        "o": "Agra",
+        "sentence": "The Taj Mahal is located in Agra, India.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "located_in",
+        "verification_strategy": "location_union",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q9141",
+        "o_qid": "Q42941",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Taj Mahal",
+        "p": "located_in",
+        "o": "India",
+        "sentence": "The Taj Mahal is located in Agra, India.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P131",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "located_in",
+        "verification_strategy": "location_union",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q9141",
+        "o_qid": "Q668",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Taj Mahal",
+        "p": "instance_of",
+        "o": "UNESCO World Heritage Site",
+        "sentence": "It is a UNESCO World Heritage Site, renowned for its stunning architecture and historical significance.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P31",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "instance_of",
+        "verification_strategy": "subclass",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q9141",
+        "o_qid": "Q9259",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:18:49.665225",
+    "prompt": "Is London the capital of France?",
+    "answer": "No, London is not the capital of France. London is the capital of the United Kingdom. The capital of France is Paris.",
+    "claims": [
+      {
+        "s": "London",
+        "p": "capital_of",
+        "o": "United Kingdom",
+        "sentence": "London is the capital of the United Kingdom.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q84",
+        "o_qid": "Q145",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Paris",
+        "p": "capital_of",
+        "o": "France",
+        "sentence": "The capital of France is Paris.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q90",
+        "o_qid": "Q142",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:18:58.651991",
+    "prompt": "Is Seoul the capital of China?",
+    "answer": "No, Seoul is not the capital of China. Seoul is the capital of South Korea. The capital of China is Beijing.",
+    "claims": [
+      {
+        "s": "Seoul",
+        "p": "capital_of",
+        "o": "South Korea",
+        "sentence": "Seoul is the capital of South Korea.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q8684",
+        "o_qid": "Q884",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Beijing",
+        "p": "capital_of",
+        "o": "China",
+        "sentence": "The capital of China is Beijing.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q956",
+        "o_qid": "Q148",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:19:04.903022",
+    "prompt": "Is Mexico City the capital of Brazil?",
+    "answer": "No, Mexico City is not the capital of Brazil. Mexico City is the capital of Mexico. The capital of Brazil is Brasília.",
+    "claims": [
+      {
+        "s": "Mexico City",
+        "p": "capital_of",
+        "o": "Mexico",
+        "sentence": "Mexico City is the capital of Mexico.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q1489",
+        "o_qid": "Q96",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Brasília",
+        "p": "capital_of",
+        "o": "Brazil",
+        "sentence": "The capital of Brazil is Brasília.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q2844",
+        "o_qid": "Q155",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:19:14.357558",
+    "prompt": "Is Ankara the capital of Greece?",
+    "answer": "No, Ankara is not the capital of Greece; it is the capital of Turkey. The capital of Greece is Athens.",
+    "claims": [
+      {
+        "s": "Ankara",
+        "p": "capital_of",
+        "o": "Turkey",
+        "sentence": "it is the capital of Turkey.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q3640",
+        "o_qid": "Q43",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Athens",
+        "p": "capital_of",
+        "o": "Greece",
+        "sentence": "The capital of Greece is Athens.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P1376",
+        "reverse": false,
+        "source": [
+          "llm",
+          "spacy"
+        ],
+        "p_raw": "capital_of",
+        "verification_strategy": "capital",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q1524",
+        "o_qid": "Q41",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:19:39.673683",
+    "prompt": "Was Netflix founded in 1980?",
+    "answer": "No, Netflix was not founded in 1980. It was founded on August 29, 1997. The location of its founding could not be verified. Initially, it started as a DVD rental service by mail before transitioning to streaming and becoming a major producer of original content.",
+    "claims": [
+      {
+        "s": "Netflix",
+        "p": "founded_on",
+        "o": "August 29, 1997",
+        "sentence": "It was founded on August 29, 1997.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q116452644",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:19:47.865624",
+    "prompt": "Was SpaceX founded in 1990?",
+    "answer": "No, SpaceX was founded in 2002 by Elon Musk. The company was established with the goal of reducing space transportation costs to enable the colonization of Mars.",
+    "claims": [
+      {
+        "s": "SpaceX",
+        "p": "founded_on",
+        "o": "2002",
+        "sentence": "SpaceX was founded in 2002 by Elon Musk.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q193701",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "SpaceX",
+        "p": "founded_by",
+        "o": "Elon Musk",
+        "sentence": "SpaceX was founded in 2002 by Elon Musk.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q193701",
+        "o_qid": "Q317521",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
+  },
+  {
+    "timestamp": "2026-04-28T12:20:01.271786",
+    "prompt": "Was Oracle founded in 2005?",
+    "answer": "No, Oracle was not founded in 2005. Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates. It initially focused on database software and has since expanded into a wide range of software and hardware products and services.",
+    "claims": [
+      {
+        "s": "Oracle Corporation",
+        "p": "founded_on",
+        "o": "1977",
+        "sentence": "Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q19900",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
       {
         "s": "Larry Ellison",
         "p": "founded_by",
@@ -3974,1385 +3895,23 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
-      },
-      {
-        "s": "Oracle Corporation",
-        "p": "founded_on",
-        "o": "1977",
-        "sentence": "Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q19900",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:18:11.695421",
-    "prompt": "Who founded Samsung?",
-    "answer": "Samsung was founded by Lee Byung-chul in 1938. Originally established as a trading company in Su-dong, South Korea, it has since evolved into a multinational conglomerate with diverse business interests, including electronics, shipbuilding, construction, and more.",
-    "claims": [
-      {
-        "s": "Samsung",
-        "p": "founded_by",
-        "o": "Lee Byung-chul",
-        "sentence": "Samsung was founded by Lee Byung-chul in 1938.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q445643",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Samsung",
-        "p": "founded_on",
-        "o": "1938",
-        "sentence": "Samsung was founded by Lee Byung-chul in 1938.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [
-          {
-            "predicate": "founded_on",
-            "subject": "subject",
-            "relation": "founded_on",
-            "object": "1969"
-          }
-        ],
-        "explanation": "Refuted: the graph stores year 1969.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      },
-      {
-        "s": "Samsung",
-        "p": "located_in",
-        "o": "Su-dong",
-        "sentence": "Originally established as a trading company in Su-dong, South Korea, it has since evolved into a multinational conglomerate.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "South Korea"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Samsung Group"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Dow Jones Global Titans 50"
-          }
-        ],
-        "explanation": " The graph instead connects the subject to places such as South Korea, Samsung Group, Dow Jones Global Titans 50.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q69509804",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      },
-      {
-        "s": "Samsung",
-        "p": "instance_of",
-        "o": "multinational conglomerate",
-        "sentence": "it has since evolved into a multinational conglomerate with diverse business interests, including electronics, shipbuilding, construction, and more.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P31",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "instance_of",
-        "verification_strategy": "subclass",
-        "graph_evidence": [
-          {
-            "predicate": "instance_of",
-            "subject": "subject",
-            "relation": "instance_of",
-            "object": "organization"
-          },
-          {
-            "predicate": "instance_of",
-            "subject": "subject",
-            "relation": "instance_of",
-            "object": "public company"
-          },
-          {
-            "predicate": "instance_of",
-            "subject": "subject",
-            "relation": "instance_of",
-            "object": "business"
-          },
-          {
-            "predicate": "instance_of",
-            "subject": "subject",
-            "relation": "instance_of",
-            "object": "enterprise"
-          }
-        ],
-        "explanation": "Nearby graph types include organization, public company, business.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-23T11:18:18.124052",
-    "prompt": "When was Netflix founded?",
-    "answer": "Netflix was founded on August 29, 1997.",
-    "claims": [
-      {
-        "s": "Netflix",
-        "p": "founded_on",
-        "o": "August 29, 1997",
-        "sentence": "Netflix was founded on August 29, 1997.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q116452644",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:18:25.375353",
-    "prompt": "When was SpaceX founded?",
-    "answer": "SpaceX was founded on March 14, 2002, by Elon Musk.",
-    "claims": [
-      {
-        "s": "SpaceX",
-        "p": "founded_on",
-        "o": "March 14, 2002",
-        "sentence": "SpaceX was founded on March 14, 2002, by Elon Musk.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q193701",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "SpaceX",
-        "p": "founded_by",
-        "o": "Elon Musk",
-        "sentence": "SpaceX was founded on March 14, 2002, by Elon Musk.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q193701",
-        "o_qid": "Q317521",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:18:30.600243",
-    "prompt": "When was Oracle founded?",
-    "answer": "Oracle was founded on April 16, 1977.",
-    "claims": [
-      {
-        "s": "Oracle",
-        "p": "founded_on",
-        "o": "April 16, 1977",
-        "sentence": "Oracle was founded on April 16, 1977.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q19900",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:18:42.456838",
-    "prompt": "When was Samsung founded?",
-    "answer": "Samsung was founded on March 1, 1938. It started as a trading company in Su-dong, South Korea, and has since evolved into a global conglomerate with diverse interests, including electronics, shipbuilding, and construction.",
-    "claims": [
-      {
-        "s": "Samsung",
-        "p": "founded_on",
-        "o": "March 1, 1938",
-        "sentence": "Samsung was founded on March 1, 1938.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [
-          {
-            "predicate": "founded_on",
-            "subject": "subject",
-            "relation": "founded_on",
-            "object": "1969"
-          }
-        ],
-        "explanation": "Refuted: the graph stores year 1969.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      },
-      {
-        "s": "Samsung",
-        "p": "located_in",
-        "o": "Su-dong",
-        "sentence": "It started as a trading company in Su-dong, South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "South Korea"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Samsung Group"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Dow Jones Global Titans 50"
-          }
-        ],
-        "explanation": " The graph instead connects the subject to places such as South Korea, Samsung Group, Dow Jones Global Titans 50.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q69509804",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-23T11:18:47.818793",
-    "prompt": "Where is Netflix headquartered?",
-    "answer": "Netflix is headquartered in Los Gatos, California, USA.",
-    "claims": [
-      {
-        "s": "Netflix",
-        "p": "headquarters_in",
-        "o": "Los Gatos",
-        "sentence": "Netflix is headquartered in Los Gatos, California, USA.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P159",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "headquarters_in",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q907311",
-        "o_qid": "Q747509",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:19:01.041185",
-    "prompt": "Where is SpaceX headquartered?",
-    "answer": "SpaceX is headquartered in Hawthorne, California, USA.",
-    "claims": [
-      {
-        "s": "SpaceX",
-        "p": "headquarters_in",
-        "o": "Hawthorne",
-        "sentence": "SpaceX is headquartered in Hawthorne, California, USA.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P159",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "headquarters_in",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "predicate": "headquarters_in",
-            "subject": "subject",
-            "relation": "headquarters_in",
-            "object": "Brownsville"
-          }
-        ],
-        "explanation": "Refuted: the graph places headquarters in Brownsville.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q193701",
-        "o_qid": "Q688596",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
-  },
-  {
-    "timestamp": "2026-04-23T11:19:06.486006",
-    "prompt": "Where is Oracle headquartered?",
-    "answer": "Oracle Corporation is headquartered in Austin, Texas, USA.",
-    "claims": [
-      {
-        "s": "Oracle Corporation",
-        "p": "headquarters_in",
-        "o": "Austin",
-        "sentence": "Oracle Corporation is headquartered in Austin, Texas, USA.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P159",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "headquarters_in",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q19900",
-        "o_qid": "Q16559",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:19:18.926625",
-    "prompt": "Where is Samsung headquartered?",
-    "answer": "Samsung is headquartered in Suwon, South Korea. The company's main office is located in the Samsung Digital City complex.",
-    "claims": [
-      {
-        "s": "Samsung",
-        "p": "headquarters_in",
-        "o": "Suwon",
-        "sentence": "Samsung is headquartered in Suwon, South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P159",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "headquarters_in",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q20714",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Samsung",
-        "p": "located_at",
-        "o": "Samsung Digital City",
-        "sentence": "The company's main office is located in the Samsung Digital City complex.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P276",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": "No supporting graph evidence found",
-        "reason": "No supporting graph evidence found",
-        "nei_type": "unknown",
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q55737242",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "UNVERIFIABLE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "UNVERIFIABLE"
-  },
-  {
-    "timestamp": "2026-04-23T11:20:17.331883",
-    "prompt": "What is Elon Musk’s occupation?",
-    "answer": "Elon Musk is an entrepreneur and business magnate known for founding and leading several high-profile companies. He is the CEO and lead designer of SpaceX, CEO and product architect of Tesla, Inc., and co-founder of Neuralink and The Boring Company. Additionally, he played a significant role in the founding of PayPal. His work primarily focuses on technology, space exploration, renewable energy, and transportation.",
-    "claims": [
-      {
-        "s": "Elon Musk",
-        "p": "ceo_of",
-        "o": "SpaceX",
-        "sentence": "He is the CEO and lead designer of SpaceX.",
-        "confidence": 0.9,
-        "negated": false,
-        "property_id": "P169",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "ceo_of",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q317521",
-        "o_qid": "Q193701",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Elon Musk",
-        "p": "ceo_of",
-        "o": "Tesla, Inc",
-        "sentence": "He is the CEO and product architect of Tesla, Inc.",
-        "confidence": 0.9,
-        "negated": false,
-        "property_id": "P169",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "ceo_of",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q317521",
-        "o_qid": "Q478214",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:20:28.731769",
-    "prompt": "What is Bill Gates’s occupation?",
-    "answer": "Bill Gates is primarily known as a businessman, software developer, and philanthropist. He co-founded Microsoft Corporation, which became one of the largest and most influential technology companies in the world. In addition to his work in technology, Gates is also recognized for his philanthropic efforts through the Bill & Melinda Gates Foundation, which focuses on global health, education, and poverty alleviation.",
-    "claims": [
-      {
-        "s": "Bill Gates",
-        "p": "founded_by",
-        "o": "Microsoft Corporation",
-        "sentence": "He co-founded Microsoft Corporation, which became one of the largest and most influential technology companies in the world.",
-        "confidence": 0.9,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q5284",
-        "o_qid": "Q2283",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:21:27.161261",
-    "prompt": "Where is the Empire State Building located?",
-    "answer": "The Empire State Building is located in New York City, at 350 5th Avenue, between West 33rd and West 34th Streets, in the borough of Manhattan.",
-    "claims": [
-      {
-        "s": "Empire State Building",
-        "p": "located_in",
-        "o": "New York City",
-        "sentence": "The Empire State Building is located in New York City, at 350 5th Avenue, between West 33rd and West 34th Streets, in the borough of Manhattan.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q9188",
-        "o_qid": "Q60",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Empire State Building",
-        "p": "located_at",
-        "o": "350 5th Avenue",
-        "sentence": "The Empire State Building is located in New York City, at 350 5th Avenue, between West 33rd and West 34th Streets, in the borough of Manhattan.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P276",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_at",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": "No supporting graph evidence found",
-        "reason": "No supporting graph evidence found",
-        "nei_type": "unknown",
-        "likely_hallucination": false,
-        "s_qid": "Q9188",
-        "o_qid": "Q9188",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "UNVERIFIABLE"
-      },
-      {
-        "s": "Empire State Building",
-        "p": "located_in",
-        "o": "Manhattan",
-        "sentence": "The Empire State Building is located in New York City, at 350 5th Avenue, between West 33rd and West 34th Streets, in the borough of Manhattan.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q9188",
-        "o_qid": "Q11299",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "UNVERIFIABLE"
-  },
-  {
-    "timestamp": "2026-04-23T11:21:35.559713",
-    "prompt": "Where is the Sydney Opera House located?",
-    "answer": "The Sydney Opera House is located in Sydney, Australia. Specifically, it sits on Bennelong Point, which is situated on the eastern shore of Sydney Harbour. The iconic structure is a major cultural landmark and is known for its unique architectural design and vibrant performances.",
-    "claims": [
-      {
-        "s": "Sydney Opera House",
-        "p": "located_in",
-        "o": "Sydney",
-        "sentence": "The Sydney Opera House is located in Sydney, Australia.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q45178",
-        "o_qid": "Q3130",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:21:49.413009",
-    "prompt": "Where is the Taj Mahal located?",
-    "answer": "The Taj Mahal is located in Agra, India. It is situated on the southern bank of the Yamuna River and is a UNESCO World Heritage Site, renowned for its stunning architecture and historical significance.",
-    "claims": [
-      {
-        "s": "Taj Mahal",
-        "p": "located_in",
-        "o": "Agra",
-        "sentence": "The Taj Mahal is located in Agra, India.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q9141",
-        "o_qid": "Q42941",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Taj Mahal",
-        "p": "instance_of",
-        "o": "UNESCO World Heritage Site",
-        "sentence": "It is a UNESCO World Heritage Site.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P31",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "instance_of",
-        "verification_strategy": "subclass",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q9141",
-        "o_qid": "Q9259",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:21:56.245084",
-    "prompt": "Is London the capital of France?",
-    "answer": "No, London is the capital of the United Kingdom. The capital of France is Paris.",
-    "claims": [
-      {
-        "s": "London",
-        "p": "capital_of",
-        "o": "United Kingdom",
-        "sentence": "London is the capital of the United Kingdom.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q84",
-        "o_qid": "Q145",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Paris",
-        "p": "capital_of",
-        "o": "France",
-        "sentence": "The capital of France is Paris.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q90",
-        "o_qid": "Q142",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:07.905055",
-    "prompt": "Is Seoul the capital of China?",
-    "answer": "No, Seoul is not the capital of China. Seoul is the capital of South Korea. The capital of China is Beijing.",
-    "claims": [
-      {
-        "s": "Seoul",
-        "p": "capital_of",
-        "o": "South Korea",
-        "sentence": "Seoul is the capital of South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q8684",
-        "o_qid": "Q884",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Beijing",
-        "p": "capital_of",
-        "o": "China",
-        "sentence": "The capital of China is Beijing.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q956",
-        "o_qid": "Q148",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:14.055301",
-    "prompt": "Is Mexico City the capital of Brazil?",
-    "answer": "No, Mexico City is not the capital of Brazil. Mexico City is the capital of Mexico. The capital of Brazil is Brasília.",
-    "claims": [
-      {
-        "s": "Mexico City",
-        "p": "capital_of",
-        "o": "Mexico",
-        "sentence": "Mexico City is the capital of Mexico.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q1489",
-        "o_qid": "Q96",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Brasília",
-        "p": "capital_of",
-        "o": "Brazil",
-        "sentence": "The capital of Brazil is Brasília.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q2844",
-        "o_qid": "Q155",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:21.642026",
-    "prompt": "Is Ankara the capital of Greece?",
-    "answer": "No, Ankara is not the capital of Greece. Ankara is the capital of Turkey. The capital of Greece is Athens.",
-    "claims": [
-      {
-        "s": "Ankara",
-        "p": "capital_of",
-        "o": "Turkey",
-        "sentence": "Ankara is the capital of Turkey.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q3640",
-        "o_qid": "Q43",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Athens",
-        "p": "capital_of",
-        "o": "Greece",
-        "sentence": "The capital of Greece is Athens.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P1376",
-        "reverse": false,
-        "source": [
-          "llm",
-          "spacy"
-        ],
-        "p_raw": "capital_of",
-        "verification_strategy": "capital",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q1524",
-        "o_qid": "Q41",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:29.814585",
-    "prompt": "Was Netflix founded in 1980?",
-    "answer": "No, Netflix was not founded in 1980. It was founded on August 29, 1997, by Reed Hastings and Marc Randolph. Initially, it started as a DVD rental service and later transitioned to streaming and original content production, becoming the widely known platform it is today.",
-    "claims": [
-      {
-        "s": "Netflix",
-        "p": "founded_on",
-        "o": "August 29, 1997",
-        "sentence": "It was founded on August 29, 1997, by Reed Hastings and Marc Randolph.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q116452644",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Netflix",
-        "p": "founded_by",
-        "o": "Reed Hastings",
-        "sentence": "It was founded on August 29, 1997, by Reed Hastings and Marc Randolph.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q116452644",
-        "o_qid": "Q7306657",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Netflix",
-        "p": "founded_by",
-        "o": "Marc Randolph",
-        "sentence": "It was founded on August 29, 1997, by Reed Hastings and Marc Randolph.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q116452644",
-        "o_qid": "Q18341330",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:35.915229",
-    "prompt": "Was SpaceX founded in 1990?",
-    "answer": "No, SpaceX was founded in 2002 by Elon Musk. The company was established with the goal of reducing space transportation costs to enable the colonization of Mars.",
-    "claims": [
-      {
-        "s": "SpaceX",
-        "p": "founded_on",
-        "o": "2002",
-        "sentence": "SpaceX was founded in 2002 by Elon Musk.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q193701",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "SpaceX",
-        "p": "founded_by",
-        "o": "Elon Musk",
-        "sentence": "SpaceX was founded in 2002 by Elon Musk.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q193701",
-        "o_qid": "Q317521",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:44.927376",
-    "prompt": "Was Oracle founded in 2005?",
-    "answer": "No, Oracle was not founded in 2005. Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates. It is known for its database software and technology, cloud solutions, and enterprise software products.",
-    "claims": [
-      {
-        "s": "Oracle Corporation",
-        "p": "founded_on",
-        "o": "1977",
-        "sentence": "Oracle Corporation was founded in 1977 by Larry Ellison, Bob Miner, and Ed Oates.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q19900",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
-    "verified_references": [],
-    "reference_only_label": "CLEAN"
-  },
-  {
-    "timestamp": "2026-04-23T11:22:58.374503",
+    "timestamp": "2026-04-28T12:20:24.178656",
     "prompt": "Was Samsung founded in 2000?",
-    "answer": "No, Samsung was not founded in 2000. It was established much earlier, in 1938, by Lee Byung-chul in Su-dong, South Korea. Initially, it started as a trading company and has since expanded into various sectors, including electronics, shipbuilding, construction, and more.",
-    "claims": [
-      {
-        "s": "Samsung",
-        "p": "founded_on",
-        "o": "1938",
-        "sentence": "It was established much earlier, in 1938, by Lee Byung-chul in Su-dong, South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P571",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founded_on",
-        "verification_strategy": "year",
-        "graph_evidence": [
-          {
-            "predicate": "founded_on",
-            "subject": "subject",
-            "relation": "founded_on",
-            "object": "1969"
-          }
-        ],
-        "explanation": "Refuted: the graph stores year 1969.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      },
-      {
-        "s": "Lee Byung-chul",
-        "p": "founder_of",
-        "o": "Samsung",
-        "sentence": "It was established much earlier, in 1938, by Lee Byung-chul in Su-dong, South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P112",
-        "reverse": true,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "founder_of",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q445643",
-        "o_qid": "Q20718",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Samsung",
-        "p": "located_in",
-        "o": "Su-dong",
-        "sentence": "It was established much earlier, in 1938, by Lee Byung-chul in Su-dong, South Korea.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P131",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "located_in",
-        "verification_strategy": "location_union",
-        "graph_evidence": [
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "South Korea"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Samsung Group"
-          },
-          {
-            "predicate": "located_in",
-            "subject": "subject",
-            "relation": "located_in",
-            "object": "Dow Jones Global Titans 50"
-          }
-        ],
-        "explanation": " The graph instead connects the subject to places such as South Korea, Samsung Group, Dow Jones Global Titans 50.",
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q20718",
-        "o_qid": "Q69509804",
-        "ask_result": false,
-        "verdict": "REFUTED",
-        "final_label": "FALSE"
-      }
-    ],
+    "answer": "No, Samsung was not founded in 2000. The founding year could not be verified, and the location of its establishment as Su-dong is also unverified. However, it is known that Samsung is located in South Korea.",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-23T11:23:19.880141",
+    "timestamp": "2026-04-28T12:20:30.167508",
     "prompt": "Is Tim Berners-Lee a chemist?",
-    "answer": "No, Tim Berners-Lee is not a chemist. He is a computer scientist best known for inventing the World Wide Web. His work primarily focuses on web technologies, including HTML, HTTP, and the concept of hyperlinks.",
+    "answer": "No, Tim Berners-Lee is not a chemist. He is a computer scientist best known for inventing the World Wide Web in 1989. His work has had a profound impact on how we access and share information online.",
     "claims": [
       {
         "s": "Tim Berners-Lee",
@@ -5386,7 +3945,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:35:53.829437",
+    "timestamp": "2026-04-28T12:20:39.190809",
     "prompt": "Who wrote '1984'?",
     "answer": "'1984' was written by George Orwell. It was published in 1949 and is a dystopian novel that explores themes of totalitarianism, surveillance, and individuality.",
     "claims": [
@@ -5445,15 +4004,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:13.758992",
+    "timestamp": "2026-04-28T12:20:49.424445",
     "prompt": "Who wrote 'To Kill a Mockingbird'?",
-    "answer": "\"To Kill a Mockingbird\" was written by Harper Lee. It was published in 1960 and has since become a classic of American literature.",
+    "answer": "'To Kill a Mockingbird' was written by Harper Lee. It was published in 1960 and has since become a classic of modern American literature.",
     "claims": [
       {
         "s": "To Kill a Mockingbird",
         "p": "written_by",
         "o": "Harper Lee",
-        "sentence": "\"To Kill a Mockingbird\" was written by Harper Lee.",
+        "sentence": "'To Kill a Mockingbird' was written by Harper Lee.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P50",
@@ -5504,9 +4063,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:21.855786",
+    "timestamp": "2026-04-28T12:20:57.765795",
     "prompt": "Who wrote 'The Great Gatsby'?",
-    "answer": "'The Great Gatsby' was written by F. Scott Fitzgerald. It was published in 1925 and is considered one of the greatest American novels.",
+    "answer": "'The Great Gatsby' was written by F. Scott Fitzgerald. It was first published in 1925 and is considered one of the great American novels.",
     "claims": [
       {
         "s": "Great Gatsby",
@@ -5537,7 +4096,7 @@
         "s": "Great Gatsby",
         "p": "publication_year",
         "o": "1925",
-        "sentence": "It was published in 1925.",
+        "sentence": "It was first published in 1925.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P577",
@@ -5563,7 +4122,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:29.870781",
+    "timestamp": "2026-04-28T12:21:06.218840",
     "prompt": "Who wrote 'Moby-Dick'?",
     "answer": "'Moby-Dick' was written by Herman Melville. It was first published in 1851 and is considered one of the great American novels.",
     "claims": [
@@ -5622,9 +4181,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:39.019384",
+    "timestamp": "2026-04-28T12:21:16.942396",
     "prompt": "Who wrote 'War and Peace'?",
-    "answer": "\"War and Peace\" was written by the Russian author Leo Tolstoy. It was first published in 1869 and is considered one of his greatest works, as well as one of the most significant novels in world literature.",
+    "answer": "\"War and Peace\" was written by the Russian author Leo Tolstoy. It was first published in 1869 and is considered one of his greatest works. The novel explores themes of war, society, and human experience during the Napoleonic Wars.",
     "claims": [
       {
         "s": "War and Peace",
@@ -5681,9 +4240,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:46.721978",
+    "timestamp": "2026-04-28T12:21:24.951300",
     "prompt": "Who wrote 'Crime and Punishment'?",
-    "answer": "\"Crime and Punishment\" was written by the Russian author Fyodor Dostoevsky. It was first published in 1866.",
+    "answer": "\"Crime and Punishment\" was written by the Russian author Fyodor Dostoevsky. It was first published in 1866 and is considered one of his most famous works.",
     "claims": [
       {
         "s": "Crime and Punishment",
@@ -5740,9 +4299,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:36:52.520451",
+    "timestamp": "2026-04-28T12:21:34.081709",
     "prompt": "Who wrote 'The Catcher in the Rye'?",
-    "answer": "'The Catcher in the Rye' was written by J.D. Salinger.",
+    "answer": "'The Catcher in the Rye' was written by J.D. Salinger. It was first published in 1951 and has since become a classic of American literature.",
     "claims": [
       {
         "s": "Catcher in the Rye",
@@ -5768,15 +4327,40 @@
         "ask_result": true,
         "verdict": "SUPPORTED",
         "final_label": "TRUE"
+      },
+      {
+        "s": "Catcher in the Rye",
+        "p": "publication_year",
+        "o": "1951",
+        "sentence": "It was first published in 1951.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P577",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "publication_year",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q183883",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
       }
     ],
     "verified_references": [],
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:37:01.853786",
+    "timestamp": "2026-04-28T12:21:42.971299",
     "prompt": "Who wrote 'Brave New World'?",
-    "answer": "\"Brave New World\" was written by Aldous Huxley. It was first published in 1932 and is a classic work of dystopian literature.",
+    "answer": "\"Brave New World\" was written by Aldous Huxley. It was published in 1932 and is a dystopian novel that explores themes of technology, control, and the loss of individuality.",
     "claims": [
       {
         "s": "Brave New World",
@@ -5807,7 +4391,7 @@
         "s": "Brave New World",
         "p": "publication_year",
         "o": "1932",
-        "sentence": "It was first published in 1932.",
+        "sentence": "It was published in 1932.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P577",
@@ -5833,91 +4417,15 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:37:18.744769",
+    "timestamp": "2026-04-28T12:22:19.388297",
     "prompt": "Who wrote 'The Hobbit'?",
-    "answer": "\"The Hobbit\" was written by J.R.R. Tolkien. It was first published in 1937 and is a fantasy novel that serves as a precursor to his later work, \"The Lord of the Rings.\"",
-    "claims": [
-      {
-        "s": "Hobbit",
-        "p": "written_by",
-        "o": "J.R.R. Tolkien",
-        "sentence": "\"The Hobbit\" was written by J.R.R. Tolkien.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q74287",
-        "o_qid": "Q892",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Hobbit",
-        "p": "publication_year",
-        "o": "1937",
-        "sentence": "It was first published in 1937.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P577",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "publication_year",
-        "verification_strategy": "year",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q74287",
-        "o_qid": null,
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Hobbit",
-        "p": "genre",
-        "o": "fantasy",
-        "sentence": "It is a fantasy novel.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P136",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "genre",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q74287",
-        "o_qid": "Q132311",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
+    "answer": "The fact about \"The Hobbit\" being a fantasy novel could not be confirmed.",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "CLEAN"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-23T11:37:29.509238",
+    "timestamp": "2026-04-28T12:22:26.620107",
     "prompt": "Who wrote 'The Lord of the Rings'?",
     "answer": "'The Lord of the Rings' was written by J.R.R. Tolkien.",
     "claims": [
@@ -5951,9 +4459,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:37:39.938463",
+    "timestamp": "2026-04-28T12:22:34.732968",
     "prompt": "Who wrote 'Jane Eyre'?",
-    "answer": "'Jane Eyre' was written by Charlotte Brontë. It was first published in 1847 under the pen name Currer Bell.",
+    "answer": "'Jane Eyre' was written by Charlotte Brontë. It was first published in 1847 under the pseudonym \"Currer Bell.\"",
     "claims": [
       {
         "s": "Jane Eyre",
@@ -5984,7 +4492,7 @@
         "s": "Jane Eyre",
         "p": "publication_year",
         "o": "1847",
-        "sentence": "It was first published in 1847 under the pen name Currer Bell.",
+        "sentence": "It was first published in 1847 under the pseudonym \"Currer Bell.\"",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P577",
@@ -6010,7 +4518,7 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:37:47.961528",
+    "timestamp": "2026-04-28T12:22:44.270994",
     "prompt": "Who wrote 'Wuthering Heights'?",
     "answer": "\"Wuthering Heights\" was written by Emily Brontë. It was published in 1847 under the pseudonym \"Ellis Bell.\"",
     "claims": [
@@ -6069,9 +4577,9 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:37:56.192885",
-    "prompt": "Who wrote 'The Alchemist'?",
-    "answer": "\"The Alchemist\" was written by Brazilian author Paulo Coelho. The novel, first published in 1988, has gained worldwide acclaim and has been translated into numerous languages.",
+    "timestamp": "2026-04-28T12:22:53.118651",
+    "prompt": "Who wrote 'The Alchemist’?",
+    "answer": "\"The Alchemist\" was written by Brazilian author Paulo Coelho. It was first published in 1988 and has since become one of the best-selling books in history.",
     "claims": [
       {
         "s": "Alchemist",
@@ -6102,7 +4610,7 @@
         "s": "Alchemist",
         "p": "publication_year",
         "o": "1988",
-        "sentence": "The novel, first published in 1988, has gained worldwide acclaim and has been translated into numerous languages.",
+        "sentence": "It was first published in 1988.",
         "confidence": 1.0,
         "negated": false,
         "property_id": "P577",
@@ -6128,161 +4636,19 @@
     "reference_only_label": "CLEAN"
   },
   {
-    "timestamp": "2026-04-23T11:42:08.050565",
-    "prompt": "Did Harper Lee write 'War and Peace'?",
-    "answer": "No, Harper Lee did not write \"War and Peace.\" That novel was written by Leo Tolstoy, a Russian author. Harper Lee is best known for her novel \"To Kill a Mockingbird.\"",
-    "claims": [
-      {
-        "s": "War and Peace",
-        "p": "written_by",
-        "o": "Leo Tolstoy",
-        "sentence": "That novel was written by Leo Tolstoy.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q161531",
-        "o_qid": "Q7243",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      },
-      {
-        "s": "Harper Lee",
-        "p": "notable_work",
-        "o": "To Kill a Mockingbird",
-        "sentence": "Harper Lee is best known for her novel \"To Kill a Mockingbird.\"",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P800",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "notable_work",
-        "verification_strategy": "direct",
-        "graph_evidence": [],
-        "explanation": null,
-        "reason": null,
-        "nei_type": null,
-        "likely_hallucination": false,
-        "s_qid": "Q182658",
-        "o_qid": "Q212340",
-        "ask_result": true,
-        "verdict": "SUPPORTED",
-        "final_label": "TRUE"
-      }
-    ],
+    "timestamp": "2026-04-28T12:23:09.361671",
+    "prompt": "Did Harper Lee write 'War and Peace’?",
+    "answer": "The claim that Leo Tolstoy wrote \"War and Peace\" is not supported by the verification findings. Therefore, it cannot be confirmed.",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "CLEAN"
+    "reference_only_label": "NO_CLAIMS"
   },
   {
-    "timestamp": "2026-04-23T11:43:30.226063",
+    "timestamp": "2026-04-28T12:23:22.999453",
     "prompt": "Who wrote 'The Quantum Crown'?",
-    "answer": "\"The Quantum Crown\" is a novel written by Rachael K. Jones. It was published in 2022 and is part of the science fiction genre. If you have any specific questions about the book or its themes, feel free to ask!",
-    "claims": [
-      {
-        "s": "Quantum Crown",
-        "p": "written_by",
-        "o": "Rachael K. Jones",
-        "sentence": "\"The Quantum Crown\" is a novel written by Rachael K. Jones.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P50",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "written_by",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Quantum Crown"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q127256986",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Quantum Crown",
-        "p": "publication_year",
-        "o": "2022",
-        "sentence": "It was published in 2022.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P577",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "publication_year",
-        "verification_strategy": "year",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Quantum Crown"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": null,
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      },
-      {
-        "s": "Quantum Crown",
-        "p": "genre",
-        "o": "science fiction",
-        "sentence": "It is part of the science fiction genre.",
-        "confidence": 1.0,
-        "negated": false,
-        "property_id": "P136",
-        "reverse": false,
-        "source": [
-          "llm"
-        ],
-        "p_raw": "genre",
-        "verification_strategy": "direct",
-        "graph_evidence": [
-          {
-            "type": "entity_linking_failure",
-            "entity": "Quantum Crown"
-          }
-        ],
-        "explanation": "Likely fabricated title/work/entity",
-        "reason": "Likely fabricated title/work/entity",
-        "nei_type": "hallucinated",
-        "likely_hallucination": true,
-        "s_qid": null,
-        "o_qid": "Q24925",
-        "ask_result": false,
-        "verdict": "NEI",
-        "final_label": "HALLUCINATION"
-      }
-    ],
+    "answer": "I could not verify \"Quantum Crown\" in the knowledge graph, so I cannot confidently provide a factual answer to the question: Who wrote 'The Quantum Crown'?",
+    "claims": [],
     "verified_references": [],
-    "reference_only_label": "HALLUCINATED"
+    "reference_only_label": "NO_CLAIMS"
   }
 ]

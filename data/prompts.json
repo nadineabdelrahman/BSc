@@ -1,5 +1,134 @@
 [
+  {"question": "State the capital of France."},
+  {"question": "State the capital of Germany."},
+  {"question": "State the capital of Japan."},
+  {"question": "State the capital of Italy."},
+  {"question": "State the capital of Spain."},
+  {"question": "State the capital of Canada."},
+  {"question": "State the capital of Brazil."},
+  {"question": "State the capital of Egypt."},
 
-  {"question": "Name the capital of France and the country in which Lyon is located."}
+  {"question": "Where is Paris located?"},
+  {"question": "Where is Rome located?"},
+
+
+  {"question": "Who founded Microsoft?"},
+
+  {"question": "Who founded Facebook?"},
+  {"question": "Who founded Tesla?"},
+  {"question": "Who founded Google?"},
+
+  {"question": "When was Microsoft founded?"},
+
+  {"question": "When was Google founded?"},
+  {"question": "When was Facebook founded?"},
+  {"question": "When was Amazon founded?"},
+
+  {"question": "Where is Microsoft headquartered?"},
+  {"question": "Where is IBM headquartered?"},
+  {"question": "Where is Intel headquartered?"},
+
+  {"question": "What is Albert Einstein’s occupation?"},
+
+  {"question": "What is Nikola Tesla’s occupation?"},
+
+  {"question": "Where is the Eiffel Tower located?"},
+  {"question": "Where is the Colosseum located?"},
+  {"question": "Where is the Statue of Liberty located?"},
+
+
+
+
+  {"question": "Was Google founded in 1980?"},
+  {"question": "Was Facebook founded in 2010?"},
+
+  {"question": "Was Microsoft founded in 1990?"},
+
+  {"question": "Is Paris the capital of Germany?"},
+  {"question": "Is Berlin the capital of France?"},
+  {"question": "Is Cairo the capital of Saudi Arabia?"},
+  {"question": "Is Tokyo the capital of China?"},
+  {"question": "Which country is Madrid located in?"},
+  {"question": "Which country is Ottawa located in?"},
+  {"question": "Which country is Brasília located in?"},
+  
+
+  {"question": "Who wrote the book 'Silent Empire of Mars'?"},
+  {"question": "Who wrote the novel 'Shadows of Orion'?"},
+  {"question": "Who directed the film 'Shadow Reef'?"},
+  {"question": "What is the main idea of the paper 'Neural Horizons in Quantum AI'?"},
+  {"question": "State what JavaScript is and the year it was first released."},
+
+  {"question": "Who authored the paper 'Neural Horizons in Quantum AI'?"},
+  {"question": "Who authored the paper 'Deep Learning Beyond Reality'?"},
+  {"question": "Who authored the paper 'Synthetic Minds and Reasoning'?"},
+  {"question": "Who authored the paper 'Quantum Networks for AI Systems'?"},
+  {"question": "Who authored the paper 'Emergent Intelligence in Machines'?"},
+  {"question": "Who authored the paper 'Cognitive Architectures in AI'?"},
+  {"question": "Who authored the paper 'Adaptive Neural Worlds'?"},
+  {"question": "Who authored the paper 'Parallel Thinking Models'?"},
+  {"question": "Who authored the paper 'Artificial Reasoning Engines'?"},
+  {"question": "Who authored the paper 'Neural Structures in Autonomous Systems'? "},
+  {"question": "State the capital of the United Kingdom."},
+  {"question": "State the capital of South Korea."},
+  {"question": "State the capital of Mexico."},
+  {"question": "State the capital of Turkey."},
+
+  {"question": "Who founded Netflix?"},
+  {"question": "Who founded SpaceX?"},
+  {"question": "Who founded Oracle?"},
+  {"question": "Who founded Samsung?"},
+
+  {"question": "When was Netflix founded?"},
+  {"question": "When was SpaceX founded?"},
+  {"question": "When was Oracle founded?"},
+  {"question": "When was Samsung founded?"},
+
+  {"question": "Where is Netflix headquartered?"},
+  {"question": "Where is SpaceX headquartered?"},
+  {"question": "Where is Oracle headquartered?"},
+  {"question": "Where is Samsung headquartered?"},
+
+
+  {"question": "What is Elon Musk’s occupation?"},
+  {"question": "What is Bill Gates’s occupation?"},
+
+
+  {"question": "Where is the Empire State Building located?"},
+  {"question": "Where is the Sydney Opera House located?"},
+  {"question": "Where is the Taj Mahal located?"},
+  
+  {"question": "Is London the capital of France?"},
+  {"question": "Is Seoul the capital of China?"},
+  {"question": "Is Mexico City the capital of Brazil?"},
+  {"question": "Is Ankara the capital of Greece?"},
+
+  {"question": "Was Netflix founded in 1980?"},
+  {"question": "Was SpaceX founded in 1990?"},
+  {"question": "Was Oracle founded in 2005?"},
+  {"question": "Was Samsung founded in 2000?"},
+
+
+  {"question": "Is Tim Berners-Lee a chemist?"},
+  {"question": "Who wrote '1984'?"},
+  {"question": "Who wrote 'To Kill a Mockingbird'?"},
+  {"question": "Who wrote 'The Great Gatsby'?"},
+  {"question": "Who wrote 'Moby-Dick'?"},
+  {"question": "Who wrote 'War and Peace'?"},
+  {"question": "Who wrote 'Crime and Punishment'?"},
+  {"question": "Who wrote 'The Catcher in the Rye'?"},
+  {"question": "Who wrote 'Brave New World'?"},
+  {"question": "Who wrote 'The Hobbit'?"},
+
+  {"question": "Who wrote 'The Lord of the Rings'?"},
+  {"question": "Who wrote 'Jane Eyre'?"},
+  {"question": "Who wrote 'Wuthering Heights'?"},
+  {"question": "Who wrote 'The Alchemist’?"},
+  {"question": "Did Harper Lee write 'War and Peace’?"},
+  {"question": "Who wrote 'The Quantum Crown'?"}
+
+
+
+
 
 ]
