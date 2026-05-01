@@ -571,6 +571,7 @@ def _prefer_role_consistent_candidates(
 ) -> List[Dict[str, Any]]:
     good = [c for c in ranked_candidates if _candidate_matches_expected_role(c, predicate, is_subject)]
     return good if good else ranked_candidates
+
 def _ask_sparql(query: str) -> Optional[bool]:
     headers = {"User-Agent": USER_AGENT, "Accept": "application/sparql-results+json"}
     try:
@@ -594,6 +595,100 @@ def _select_sparql(query: str) -> List[Dict[str, str]]:
         return out
     except Exception:
         return []
+GRAPH_REASONING_STRATEGIES = {
+    "located_in": {
+        "name": "spatial_path_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P17 wd:{o} .",
+            "wd:{s} wdt:P30 wd:{o} .",
+            "wd:{s} wdt:P361 wd:{o} .",
+            "wd:{s} wdt:P276 wd:{o} .",
+            "wd:{s} wdt:P276 ?x . ?x wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P131 ?x . ?x wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P361 ?x . ?x wdt:P131* wd:{o} .",
+        ],
+    },
+
+    "headquarters_in": {
+        "name": "headquarters_location_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P159 wd:{o} .",
+            "wd:{s} wdt:P159 ?x . ?x wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P159 ?x . ?x wdt:P17 wd:{o} .",
+            "wd:{s} wdt:P159 ?x . ?x wdt:P30 wd:{o} .",
+        ],
+    },
+
+    "place_of_birth": {
+        "name": "birthplace_containment_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P19 wd:{o} .",
+            "wd:{s} wdt:P19 ?x . ?x wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P19 ?x . ?x wdt:P17 wd:{o} .",
+            "wd:{s} wdt:P19 ?x . ?x wdt:P30 wd:{o} .",
+        ],
+    },
+
+    "instance_of": {
+        "name": "subclass_hierarchy_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P31/wdt:P279* wd:{o} .",
+            "wd:{s} wdt:P31 ?x . ?x wdt:P279* wd:{o} .",
+        ],
+    },
+
+    "occupation": {
+        "name": "occupation_hierarchy_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P106 ?x . ?x wdt:P279* wd:{o} .",
+            "wd:{s} wdt:P106 ?x . wd:{o} wdt:P279* ?x .",
+            "wd:{s} wdt:P106 ?x . ?x wdt:P31/wdt:P279* wd:{o} .",
+        ],
+    },
+
+    "capital_of": {
+        "name": "bidirectional_capital_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P1376 wd:{o} .",
+            "wd:{o} wdt:P36 wd:{s} .",
+            "wd:{s} wdt:P36 wd:{o} .",
+            "wd:{o} wdt:P1376 wd:{s} .",
+        ],
+    },
+}
+def _graph_reasoning_ask(predicate: str, s_qid: str, o_qid: str) -> tuple[Optional[bool], Optional[str], Optional[str]]:
+    """
+    Generic bounded semantic graph reasoning.
+
+    Instead of checking only one direct edge, this function evaluates
+    whether a predicate-specific valid graph path exists between subject
+    and object.
+
+    Returns:
+        ask_result, strategy_name, matched_path
+    """
+
+    strategy = GRAPH_REASONING_STRATEGIES.get(predicate)
+
+    if not strategy or not s_qid or not o_qid:
+        return None, None, None
+
+    for template in strategy["ask_templates"]:
+        triple_pattern = template.format(s=s_qid, o=o_qid)
+
+        query = f"""
+        ASK WHERE {{
+            {triple_pattern}
+        }}
+        """
+
+        result = _ask_sparql(query)
+
+        if result is True:
+            return True, strategy["name"], triple_pattern
+
+    return False, strategy["name"], None
 def _auto_correct_direction(s_qid, o_qid, pid, predicate):
     """
     Try both directions automatically.
@@ -930,6 +1025,7 @@ def _predicate_ask(predicate: str, s_qid: str, o_qid: str, pid: Optional[str], r
 
     if strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}:
         return None
+
     if strategy == "capital" or p == "capital_of":
         # canonical preferred meaning: city capital_of country
         r = _ask_sparql(f"ASK WHERE {{ wd:{s_qid} wdt:P1376 wd:{o_qid} . }}")
@@ -1206,6 +1302,18 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
 
     t["s_qid"] = s_qid
     t["o_qid"] = o_qid
+    # -----------------------------
+    # Alias-of shortcut (IMPORTANT FIX)
+    # -----------------------------
+    if p == "alias_of" and s_qid and o_qid and s_qid == o_qid:
+        t["ask_result"] = True
+        t["verdict"] = "SUPPORTED"
+        t["explanation"] = "Supported: subject and object resolve to the same Wikidata entity."
+        t["reason"] = None
+        t["nei_type"] = None
+        t["likely_hallucination"] = False
+        _assign_final_label(t)
+        return t
 
     if not s_qid:
         t["ask_result"] = False
@@ -1218,6 +1326,15 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         _assign_final_label(t)
         return t
     ask_result: Optional[bool] = pair_ask
+    graph_strategy_used = None
+    graph_path_used = None
+    if ask_result is not True and s_qid and o_qid:
+        graph_result, graph_strategy_used, graph_path_used = _graph_reasoning_ask(p, s_qid, o_qid)
+
+        if graph_result is True:
+            ask_result = True
+            t["verification_strategy"] = graph_strategy_used
+            t["graph_path"] = graph_path_used
 
     if ask_result is not True and (strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}):
         year = _looks_like_year(o) or _looks_like_year(sentence)

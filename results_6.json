@@ -6284,5 +6284,386 @@
     ],
     "verified_references": [],
     "reference_only_label": "HALLUCINATED"
+  },
+  {
+    "timestamp": "2026-04-28T18:19:19.164547",
+    "prompt": "Who founded Facebook?",
+    "answer": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+    "claims": [
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Mark Zuckerberg",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q36215",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Eduardo Saverin",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q312663",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Andrew McCollum",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q4757939",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Dustin Moskovitz",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q370217",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_by",
+        "o": "Chris Hughes",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P112",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_by",
+        "verification_strategy": "direct",
+        "graph_evidence": [
+          {
+            "predicate": "founded_by",
+            "subject": "subject",
+            "relation": "founded_by",
+            "object": "Mark Zuckerberg"
+          },
+          {
+            "predicate": "founded_by",
+            "subject": "subject",
+            "relation": "founded_by",
+            "object": "Eduardo Saverin"
+          },
+          {
+            "predicate": "founded_by",
+            "subject": "subject",
+            "relation": "founded_by",
+            "object": "Dustin Moskovitz"
+          },
+          {
+            "predicate": "founded_by",
+            "subject": "subject",
+            "relation": "founded_by",
+            "object": "Chris Hughes"
+          },
+          {
+            "predicate": "founded_by",
+            "subject": "subject",
+            "relation": "founded_by",
+            "object": "بن منشلين"
+          }
+        ],
+        "explanation": "Refuted: the graph lists founders such as Mark Zuckerberg, Eduardo Saverin, Dustin Moskovitz.",
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": "Q911923",
+        "ask_result": false,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Facebook",
+        "p": "founded_on",
+        "o": "2004",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q380",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Mark Zuckerberg",
+        "p": "educated_at",
+        "o": "Harvard University",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q36215",
+        "o_qid": "Q13371",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Eduardo Saverin",
+        "p": "educated_at",
+        "o": "Harvard University",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q312663",
+        "o_qid": "Q13371",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Andrew McCollum",
+        "p": "educated_at",
+        "o": "Harvard University",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q4757939",
+        "o_qid": "Q13371",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Dustin Moskovitz",
+        "p": "educated_at",
+        "o": "Harvard University",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q370217",
+        "o_qid": "Q13371",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "Chris Hughes",
+        "p": "educated_at",
+        "o": "Harvard University",
+        "sentence": "Facebook was founded by Mark Zuckerberg, along with his college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes, while they were students at Harvard University in 2004.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P69",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "educated_at",
+        "verification_strategy": "direct",
+        "graph_evidence": [
+          {
+            "predicate": "educated_at",
+            "subject": "subject",
+            "relation": "educated_at",
+            "object": "Emanuel School"
+          }
+        ],
+        "explanation": " Graph links the subject to institutions such as Emanuel School.",
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q911923",
+        "o_qid": "Q13371",
+        "ask_result": false,
+        "verdict": "REFUTED",
+        "final_label": "FALSE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "HALLUCINATED"
+  },
+  {
+    "timestamp": "2026-04-28T18:40:42.833311",
+    "prompt": "When was IBM founded?",
+    "answer": "IBM was founded on June 16, 1911. It was originally established as the Computing-Tabulating-Recording Company (CTR) through the merger of four companies. It was renamed International Business Machines Corporation (IBM) in 1924.",
+    "claims": [
+      {
+        "s": "IBM",
+        "p": "founded_on",
+        "o": "June 16, 1911",
+        "sentence": "IBM was founded on June 16, 1911.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P571",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "founded_on",
+        "verification_strategy": "year",
+        "graph_evidence": [],
+        "explanation": null,
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q37156",
+        "o_qid": null,
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      },
+      {
+        "s": "IBM",
+        "p": "alias_of",
+        "o": "International Business Machines Corporation",
+        "sentence": "It was renamed International Business Machines Corporation (IBM) in 1924.",
+        "confidence": 1.0,
+        "negated": false,
+        "property_id": "P4970",
+        "reverse": false,
+        "source": [
+          "llm"
+        ],
+        "p_raw": "alias_of",
+        "verification_strategy": "direct",
+        "graph_evidence": [],
+        "explanation": "Supported: subject and object resolve to the same Wikidata entity.",
+        "reason": null,
+        "nei_type": null,
+        "likely_hallucination": false,
+        "s_qid": "Q37156",
+        "o_qid": "Q37156",
+        "ask_result": true,
+        "verdict": "SUPPORTED",
+        "final_label": "TRUE"
+      }
+    ],
+    "verified_references": [],
+    "reference_only_label": "CLEAN"
   }
 ]

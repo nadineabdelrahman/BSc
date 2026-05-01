@@ -239,16 +239,26 @@ def _semantically_valid_triple(s: str, p: str, o: str, sentence: str) -> bool:
             return False
 
     # location-style relations should not take scenic/vague phrases
+# location-style relations should not take scenic/vague phrases
     if p in {"located_in", "located_at", "headquarters_in"}:
         bad_loc = {"world", "history", "culture", "civilization"}
         if o_l in bad_loc:
             return False
+
         if any(x in o_l for x in [
             "river", "coast", "shore", "bank", "corner",
             "north", "south", "east", "west",
             "northern", "southern", "eastern", "western"
         ]):
             return False
+
+        # Prevent extraction error:
+        # "Netflix was founded ... in Scotts Valley" should not become
+        # (Netflix, located_in, Scotts Valley).
+        # This is founding-location context, not current location.
+        if p == "located_in":
+            if "founded" in sent_l and re.search(r"\bfounded\b.*\bin\b", sent_l):
+                return False
 
     return True
 def _extract_extra_date_fact(t: Dict[str, Any]) -> Dict[str, Any] | None:
