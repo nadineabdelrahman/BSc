@@ -347,16 +347,29 @@ def _candidate_role_score(c: Dict[str, Any], predicate: str, is_subject: bool, c
                 "river", "human", "fictional country", "chemical element", "planet", "species"
             ]):
                 score += 18
-
-    # -------- occupation --------
     elif pred == "occupation":
         if is_subject:
-            if "human" in desc or "person" in desc:
-                score += 18
+            if any(k in desc for k in ["human", "person", "scientist", "writer", "artist", "engineer", "politician"]):
+                score += 24
         else:
+            # The object of occupation must be an occupation/profession-like entity.
             if any(k in desc for k in ["occupation", "profession"]):
-                score += 8
+                score += 35
 
+            # Many Wikidata occupation items use descriptions like "type of scientist"
+            # or "person who writes poetry", so give small boosts for known profession words.
+            if any(k in lab for k in [
+                "physicist", "chemist", "biologist", "mathematician", "scientist",
+                "engineer", "inventor", "writer", "author", "novelist", "playwright",
+                "poet", "actor", "composer", "artist", "painter", "politician",
+                "computer scientist"
+            ]):
+                score += 20
+
+            # Avoid selecting non-occupation concepts with similar names.
+            if any(k in desc for k in ["film", "album", "song", "book", "novel", "fictional", "disambiguation"]):
+                score -= 40
+    
     # Context-sensitive boosts
     if pred == "located_in" and "river" in ctx and "river" in desc:
         score += 20
@@ -445,7 +458,18 @@ def _candidate_role_score(c: Dict[str, Any], predicate: str, is_subject: bool, c
                 score += 35
             if any(k in desc for k in ["human", "given name", "surname"]):
                 score -= 30
-
+    if label_norm == "taj mahal":
+        if any(k in ctx for k in ["india", "agra", "monument", "mausoleum", "asia", "located"]):
+            if any(k in desc for k in ["mausoleum", "monument", "world heritage", "agra", "india"]):
+                score += 45
+            if any(k in desc for k in ["album", "song", "discography", "chronological order", "music"]):
+                score -= 45
+    if label_norm == "colosseum":
+        if any(k in ctx for k in ["rome", "italy", "europe", "monument", "amphitheatre", "amphitheater", "located"]):
+            if any(k in desc for k in ["amphitheatre", "amphitheater", "rome", "italy", "monument", "ancient roman"]):
+                score += 45
+            if any(k in desc for k in ["film", "album", "song", "disambiguation", "software", "game"]):
+                score -= 45
     if label_norm in {"eiffel tower", "tour eiffel"}:
         if any(k in ctx for k in ["paris", "landmark", "tower", "france"]):
             if any(k in desc for k in ["tower", "landmark", "wrought-iron lattice tower"]):
@@ -531,11 +555,6 @@ def _candidate_matches_expected_role(c: Dict[str, Any], predicate: str, is_subje
             return not any(k in desc for k in ["disambiguation page"])
         return True
 
-    if pred == "occupation":
-        if is_subject:
-            return any(k in desc for k in ["human", "person"])
-        return True
-
     if pred == "ceo_of":
         if is_subject:
             return any(k in desc for k in ["company", "corporation", "business", "organization", "enterprise"])
@@ -555,7 +574,19 @@ def _candidate_matches_expected_role(c: Dict[str, Any], predicate: str, is_subje
         if is_subject:
             return any(k in desc for k in ["book", "novel", "work", "poem", "play", "film", "literary work", "album", "song"])
         return True
+    if pred == "occupation":
+        if is_subject:
+            return any(k in desc for k in ["human", "person", "scientist", "writer", "engineer", "artist", "politician"])
 
+        return (
+            any(k in desc for k in ["occupation", "profession"])
+            or any(k in _label(c) for k in [
+                "physicist", "chemist", "biologist", "mathematician", "scientist",
+                "engineer", "inventor", "writer", "author", "novelist", "playwright",
+                "poet", "actor", "composer", "artist", "painter", "politician",
+                "computer scientist"
+            ])
+        )
     if pred in {"date_of_birth", "date_of_death"}:
         if is_subject:
             return any(k in desc for k in ["human", "person", "writer", "scientist", "businessperson", "politician", "artist"])
@@ -596,19 +627,37 @@ def _select_sparql(query: str) -> List[Dict[str, str]]:
     except Exception:
         return []
 GRAPH_REASONING_STRATEGIES = {
-    "located_in": {
+   "located_in": {
         "name": "spatial_path_reasoning",
         "ask_templates": [
+            # direct / administrative containment
             "wd:{s} wdt:P131* wd:{o} .",
             "wd:{s} wdt:P17 wd:{o} .",
             "wd:{s} wdt:P30 wd:{o} .",
             "wd:{s} wdt:P361 wd:{o} .",
             "wd:{s} wdt:P276 wd:{o} .",
+
+            # landmark/building -> local place -> target
             "wd:{s} wdt:P276 ?x . ?x wdt:P131* wd:{o} .",
             "wd:{s} wdt:P131 ?x . ?x wdt:P131* wd:{o} .",
             "wd:{s} wdt:P361 ?x . ?x wdt:P131* wd:{o} .",
+
+            # landmark/building/city -> country -> continent
+            "wd:{s} wdt:P131* ?country . ?country wdt:P30 wd:{o} .",
+            "wd:{s} wdt:P17 ?country . ?country wdt:P30 wd:{o} .",
+            "wd:{s} wdt:P276 ?x . ?x wdt:P131* ?country . ?country wdt:P30 wd:{o} .",
+            "wd:{s} wdt:P361 ?x . ?x wdt:P131* ?country . ?country wdt:P30 wd:{o} .",
         ],
     },
+    "located_at": {
+        "name": "physical_location_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P276 wd:{o} .",
+            "wd:{s} wdt:P276 ?x . ?x wdt:P131* wd:{o} .",
+            "wd:{s} wdt:P276 ?x . ?x wdt:P17 wd:{o} .",
+            "wd:{s} wdt:P276 ?x . ?x wdt:P30 wd:{o} .",
+        ],
+},
 
     "headquarters_in": {
         "name": "headquarters_location_reasoning",
@@ -637,6 +686,12 @@ GRAPH_REASONING_STRATEGIES = {
             "wd:{s} wdt:P31 ?x . ?x wdt:P279* wd:{o} .",
         ],
     },
+    "educated_at": {
+        "name": "education_relation_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P69 wd:{o} .",
+        ],
+    },
 
     "occupation": {
         "name": "occupation_hierarchy_reasoning",
@@ -656,7 +711,368 @@ GRAPH_REASONING_STRATEGIES = {
             "wd:{o} wdt:P1376 wd:{s} .",
         ],
     },
+    "written_by": {
+        "name": "authorship_relation_reasoning",
+        "ask_templates": [
+            "wd:{s} wdt:P50 wd:{o} .",
+            "wd:{s} wdt:P170 wd:{o} .",
+            "wd:{s} wdt:P629 ?work . ?work wdt:P50 wd:{o} .",
+            "?edition wdt:P629 wd:{s} . ?edition wdt:P50 wd:{o} .",
+        ],
+    },
 }
+def _qid_from_uri(uri: str) -> str | None:
+    if not uri:
+        return None
+    m = re.search(r"/entity/(Q\d+)$", str(uri))
+    return m.group(1) if m else None
+
+
+def _qid_label(qid: str) -> str:
+    if not qid:
+        return ""
+
+    rows = _select_sparql(f"""
+    SELECT ?label WHERE {{
+      wd:{qid} rdfs:label ?label .
+      FILTER(LANG(?label) = "en")
+    }}
+    LIMIT 1
+    """)
+
+    if rows and rows[0].get("label"):
+        return rows[0]["label"]
+
+    return qid
+
+def _dedupe_path(qids: List[str], labels: List[str]) -> Tuple[List[str], List[str]]:
+    clean_qids = []
+    clean_labels = []
+
+    for qid, label in zip(qids, labels):
+        if qid is None or label is None:
+            continue
+
+        if clean_qids and qid == clean_qids[-1]:
+            continue
+
+        if clean_labels and str(label).strip().lower() == str(clean_labels[-1]).strip().lower():
+            continue
+
+        clean_qids.append(qid)
+        clean_labels.append(label)
+
+    return clean_qids, clean_labels
+def _path_visualization_select(predicate: str, s_qid: str, o_qid: str, s_label: str, o_label: str) -> dict | None:
+    """
+    SELECT-based path reconstruction for thesis visualization.
+    Does NOT decide verdict. It only explains a path after support is already found.
+    """
+
+    if not s_qid or not o_qid:
+        return None
+
+# 1) location path: landmark/city -> country -> continent
+    if predicate == "located_in":
+
+        # Prefer paths that expose country -> continent.
+        # Example: Eiffel Tower -> France -> Europe
+        # Example: Taj Mahal -> India -> Asia
+        rows = _select_sparql(f"""
+        SELECT ?country ?countryLabel WHERE {{
+        {{
+            wd:{s_qid} wdt:P17 ?country .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P131* ?country .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P276 ?loc .
+            ?loc wdt:P131* ?country .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P361 ?loc .
+            ?loc wdt:P131* ?country .
+        }}
+
+        ?country wdt:P30 wd:{o_qid} .
+
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            country_label = rows[0].get("countryLabel")
+            country_qid = _qid_from_uri(rows[0].get("country", ""))
+
+            labels = [s_label, country_label, o_label] if country_label else [s_label, o_label]
+            qids = [s_qid, country_qid, o_qid] if country_qid else [s_qid, o_qid]
+            qids, labels = _dedupe_path(qids, labels)
+ 
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "spatial_path_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by a country-to-continent path in the knowledge graph."
+            }
+
+        # Fallback: local containment path.
+        # Example: Eiffel Tower -> 7th arrondissement of Paris -> France
+        rows = _select_sparql(f"""
+        SELECT ?mid ?midLabel WHERE {{
+        {{
+            wd:{s_qid} wdt:P131 ?mid .
+            ?mid wdt:P131* wd:{o_qid} .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P276 ?mid .
+            ?mid wdt:P131* wd:{o_qid} .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P361 ?mid .
+            ?mid wdt:P131* wd:{o_qid} .
+        }}
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            mid_label = rows[0].get("midLabel")
+            mid_qid = _qid_from_uri(rows[0].get("mid", ""))
+
+            labels = [s_label, mid_label, o_label] if mid_label else [s_label, o_label]
+            qids = [s_qid, mid_qid, o_qid] if mid_qid else [s_qid, o_qid]
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "spatial_path_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by a spatial containment path in the knowledge graph."
+            }
+    if predicate == "educated_at":
+        rows = _select_sparql(f"""
+        SELECT ?school ?schoolLabel WHERE {{
+        wd:{s_qid} wdt:P69 ?school .
+        FILTER(?school = wd:{o_qid})
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            labels = [s_label, o_label]
+            qids = [s_qid, o_qid]
+
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "education_relation_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by an education relation in the knowledge graph."
+            }
+    if predicate == "located_at":
+        rows = _select_sparql(f"""
+        SELECT ?loc ?locLabel WHERE {{
+        wd:{s_qid} wdt:P276 ?loc .
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            loc_label = rows[0].get("locLabel")
+            loc_qid = _qid_from_uri(rows[0].get("loc", ""))
+
+            labels = [s_label, loc_label] if loc_label else [s_label, o_label]
+            qids = [s_qid, loc_qid] if loc_qid else [s_qid, o_qid]
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "physical_location_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by a physical-location relation in the knowledge graph."
+            }
+    if predicate == "occupation":
+        rows = _select_sparql(f"""
+        SELECT ?occ ?occLabel WHERE {{
+        wd:{s_qid} wdt:P106 ?occ .
+        {{
+            FILTER(?occ = wd:{o_qid})
+        }}
+        UNION
+        {{
+            ?occ wdt:P279* wd:{o_qid} .
+        }}
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            occ_label = rows[0].get("occLabel")
+            occ_qid = _qid_from_uri(rows[0].get("occ", ""))
+
+            labels = [s_label, occ_label, o_label] if occ_label else [s_label, o_label]
+            qids = [s_qid, occ_qid, o_qid] if occ_qid else [s_qid, o_qid]
+
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "occupation_hierarchy_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported through an occupation hierarchy path in the knowledge graph."
+            }
+    # 2) headquarters path: Company -> HQ city -> Country/Region
+    if predicate == "headquarters_in":
+        rows = _select_sparql(f"""
+        SELECT ?mid ?midLabel WHERE {{
+          wd:{s_qid} wdt:P159 ?mid .
+          {{
+            ?mid wdt:P131* wd:{o_qid} .
+          }}
+          UNION
+          {{
+            ?mid wdt:P17 wd:{o_qid} .
+          }}
+          SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+          }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            mid_label = rows[0].get("midLabel")
+            mid_qid = _qid_from_uri(rows[0].get("mid", ""))
+
+            labels = [s_label, mid_label, o_label] if mid_label else [s_label, o_label]
+            qids = [s_qid, mid_qid, o_qid] if mid_qid else [s_qid, o_qid]
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "headquarters_location_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by a headquarters-location containment path."
+            }
+
+    # 3) instance/subclass path: Python -> interpreted language -> programming language
+    if predicate == "instance_of":
+        rows = _select_sparql(f"""
+        SELECT ?mid ?midLabel WHERE {{
+          wd:{s_qid} wdt:P31 ?mid .
+          ?mid wdt:P279* wd:{o_qid} .
+          SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+          }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            mid_label = rows[0].get("midLabel")
+            mid_qid = _qid_from_uri(rows[0].get("mid", ""))
+
+            labels = [s_label, mid_label, o_label] if mid_label else [s_label, o_label]
+            qids = [s_qid, mid_qid, o_qid] if mid_qid else [s_qid, o_qid]
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "subclass_hierarchy_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported through instance/subclass hierarchy traversal."
+            }
+
+    # 4) capital path: Paris -> capital_of -> France
+    if predicate == "capital_of":
+        return {
+            "type": "predicate_constrained_path",
+            "strategy": "bidirectional_capital_reasoning",
+            "path_qids": [s_qid, o_qid],
+            "path_labels": [s_label, o_label],
+            "readable_path": f"{s_label} -> {o_label}",
+            "explanation": "The claim is supported by a capital relation, including bidirectional Wikidata handling."
+        }
+    if predicate == "written_by":
+        rows = _select_sparql(f"""
+        SELECT ?author ?authorLabel WHERE {{
+        {{
+            wd:{s_qid} wdt:P50 ?author .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P170 ?author .
+        }}
+        UNION
+        {{
+            wd:{s_qid} wdt:P629 ?work .
+            ?work wdt:P50 ?author .
+        }}
+        UNION
+        {{
+            ?edition wdt:P629 wd:{s_qid} .
+            ?edition wdt:P50 ?author .
+        }}
+
+        FILTER(?author = wd:{o_qid})
+
+        SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+        }}
+        }}
+        LIMIT 1
+        """)
+
+        if rows:
+            labels = [s_label, o_label]
+            qids = [s_qid, o_qid]
+
+            qids, labels = _dedupe_path(qids, labels)
+
+            return {
+                "type": "predicate_constrained_path",
+                "strategy": "authorship_relation_reasoning",
+                "path_qids": qids,
+                "path_labels": labels,
+                "readable_path": " -> ".join(labels),
+                "explanation": "The claim is supported by an authorship relation in the knowledge graph."
+            }
+    return None
 def _graph_reasoning_ask(predicate: str, s_qid: str, o_qid: str) -> tuple[Optional[bool], Optional[str], Optional[str]]:
     """
     Generic bounded semantic graph reasoning.
@@ -736,11 +1152,43 @@ def _build_located_in_union_ask(s_qid: str, o_qid: str) -> str:
       UNION {{ wd:{s_qid} wdt:P131 ?loc . ?loc wdt:P17 wd:{o_qid} . }}
       UNION {{ wd:{s_qid} wdt:P361 ?loc . ?loc wdt:P131* wd:{o_qid} . }}
       UNION {{ wd:{s_qid} wdt:P361 ?loc . ?loc wdt:P17 wd:{o_qid} . }}
+
+      # country -> continent reasoning
+      UNION {{ wd:{s_qid} wdt:P131* ?country . ?country wdt:P30 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P17 ?country . ?country wdt:P30 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P276 ?loc . ?loc wdt:P131* ?country . ?country wdt:P30 wd:{o_qid} . }}
+      UNION {{ wd:{s_qid} wdt:P361 ?loc . ?loc wdt:P131* ?country . ?country wdt:P30 wd:{o_qid} . }}
     }}
     """.strip()
 
+def _written_by_ask_with_fallbacks(work_qid: str, author_qid: str) -> Optional[bool]:
+    """
+    Verify authorship using Wikidata authorship relations.
 
+    Main:
+      work --P50(author)--> author
 
+    Fallbacks:
+      work --P170(creator)--> author
+      edition --P629(edition or translation of)--> work --P50--> author
+    """
+
+    if not work_qid or not author_qid:
+        return None
+
+    queries = [
+        f"ASK WHERE {{ wd:{work_qid} wdt:P50 wd:{author_qid} . }}",
+        f"ASK WHERE {{ wd:{work_qid} wdt:P170 wd:{author_qid} . }}",
+        f"ASK WHERE {{ wd:{work_qid} wdt:P629 ?work . ?work wdt:P50 wd:{author_qid} . }}",
+        f"ASK WHERE {{ ?edition wdt:P629 wd:{work_qid} . ?edition wdt:P50 wd:{author_qid} . }}",
+    ]
+
+    for q in queries:
+        r = _ask_sparql(q)
+        if r is True:
+            return True
+
+    return False
 def _build_occupation_ask(s_qid: str, o_qid: str) -> str:
     return f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . ?occ wdt:P279* wd:{o_qid} . }}"
 
@@ -776,27 +1224,38 @@ def _build_place_of_birth_in_ask(person_qid: str, loc_qid: str) -> str:
     }}
     """.strip()
 def _occupation_ask_with_fallbacks(s_qid: str, o_qid: str) -> Optional[bool]:
-    # Main intended logic: person's occupation is subclass of claimed occupation
-    r = _ask_sparql(_build_occupation_ask(s_qid, o_qid))
-    if r is True:
-        return True
+    """
+    Safer occupation verification.
 
-    # Reverse subclass fallback:
-    # useful when the linked object is more specific than the stored occupation label
-    r2 = _ask_sparql(
-        f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . wd:{o_qid} wdt:P279* ?occ . }}"
-    )
-    if r2 is True:
-        return True
+    Allowed:
+      person's stored occupation is exactly the claimed occupation
+      OR stored occupation is a subclass of the claimed broad occupation
 
-    # Instance/type fallback for cases where the linked target is represented through class typing
-    r3 = _ask_sparql(
-        f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . ?occ wdt:P31/wdt:P279* wd:{o_qid} . }}"
-    )
-    if r3 is True:
-        return True
+    Not allowed:
+      claimed occupation is a subclass of a broad stored occupation.
+      This caused false positives such as specific artistic/writing occupations.
+    """
 
-    return r
+    if not s_qid or not o_qid:
+        return None
+
+    queries = [
+        # exact occupation
+        f"ASK WHERE {{ wd:{s_qid} wdt:P106 wd:{o_qid} . }}",
+
+        # stored occupation is more specific than claimed broad occupation
+        f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . ?occ wdt:P279* wd:{o_qid} . }}",
+
+        # stored occupation is typed under claimed occupation class
+        f"ASK WHERE {{ wd:{s_qid} wdt:P106 ?occ . ?occ wdt:P31/wdt:P279* wd:{o_qid} . }}",
+    ]
+
+    for q in queries:
+        r = _ask_sparql(q)
+        if r is True:
+            return True
+
+    return False
 def _rank_candidates_for_role(
     label: str,
     predicate: str,
@@ -951,18 +1410,55 @@ def _educated_at_counter_evidence(s_qid: str) -> Tuple[List[Dict[str, str]], Opt
     return evidence, explanation
 
 def _written_by_counter_evidence(work_qid: Optional[str], author_qid: Optional[str] = None) -> Tuple[List[Dict[str, str]], Optional[str]]:
+    """
+    Counter-evidence for written_by should only come from the linked work's actual
+    author/creator. Do NOT use other works by the claimed author as refutation.
+    """
+
     evidence: List[Dict[str, str]] = []
+
     if work_qid:
-        rows = _select_sparql(f"SELECT ?authorLabel WHERE {{ wd:{work_qid} wdt:P50 ?author . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
+        rows = _select_sparql(f"""
+        SELECT ?author ?authorLabel WHERE {{
+          {{
+            wd:{work_qid} wdt:P50 ?author .
+          }}
+          UNION
+          {{
+            wd:{work_qid} wdt:P170 ?author .
+          }}
+          UNION
+          {{
+            wd:{work_qid} wdt:P629 ?work .
+            ?work wdt:P50 ?author .
+          }}
+          UNION
+          {{
+            ?edition wdt:P629 wd:{work_qid} .
+            ?edition wdt:P50 ?author .
+          }}
+
+          SERVICE wikibase:label {{
+            bd:serviceParam wikibase:language "en".
+          }}
+        }}
+        LIMIT 5
+        """)
+
         for r in rows:
             if r.get("authorLabel"):
-                evidence.append({"predicate": "written_by", "subject": "subject", "relation": "written_by", "object": r.get("authorLabel", "")})
-    if not evidence and author_qid:
-        rows = _select_sparql(f"SELECT ?workLabel WHERE {{ ?work wdt:P50 wd:{author_qid} . SERVICE wikibase:label {{ bd:serviceParam wikibase:language 'en'. }} }} LIMIT 5")
-        for r in rows:
-            if r.get("workLabel"):
-                evidence.append({"predicate": "written_by", "subject": "object", "relation": "author_of", "object": r.get("workLabel", "")})
-    explanation = f"The graph links the work/author neighborhood to {', '.join(e['object'] for e in evidence[:3])}." if evidence else None
+                evidence.append({
+                    "predicate": "written_by",
+                    "subject": "subject",
+                    "relation": "written_by",
+                    "object": r.get("authorLabel", ""),
+                    "object_qid": _qid_from_uri(r.get("author", ""))
+                })
+
+    explanation = None
+    if evidence:
+        explanation = f"The graph lists the work's author/creator as {', '.join(e['object'] for e in evidence[:3])}."
+
     return evidence, explanation
 def _norm_text(x: str) -> str:
     x = _normalize_entity_text(x or "")
@@ -1014,7 +1510,10 @@ def _should_emit_refuted(
 
     if predicate in WEAK_REFUTATION_PREDICATES:
         return bool(evidence)
-
+    if predicate == "written_by":
+        # Only refute authorship if we retrieved the linked work's actual author/creator.
+        # Do not refute from other works by the claimed author.
+        return any(e.get("relation") == "written_by" for e in evidence)
     return True
 
 
@@ -1070,6 +1569,11 @@ def _predicate_ask(predicate: str, s_qid: str, o_qid: str, pid: Optional[str], r
         if r is not True and pid:
             r = _ask_sparql(_build_ask_query(o_qid, pid, s_qid, reverse=False))
         return r
+
+    if p == "written_by":
+        return _written_by_ask_with_fallbacks(s_qid, o_qid)
+
+
     if pid:
         r = _ask_sparql(_build_ask_query(s_qid, pid, o_qid, reverse=reverse))
         if r is not True:
@@ -1135,12 +1639,19 @@ def _set_nei_metadata(t: Dict[str, Any], reason: str, nei_type: str = 'unknown')
     t['verdict'] = 'NEI'
     t['reason'] = reason
     t['nei_type'] = nei_type
-    # useful for your evaluation loop
+
+    t['nei_reason_detail'] = {
+        "type": nei_type,
+        "message": reason,
+        "is_hallucination_signal": nei_type == "hallucinated"
+    }
+
     t['likely_hallucination'] = (nei_type == 'hallucinated')
+
     if not t.get('explanation'):
         t['explanation'] = reason
-    return t
 
+    return t
 
 def _classify_nei_reason(
     s: str,
@@ -1159,21 +1670,23 @@ def _classify_nei_reason(
             return 'Likely fabricated title/work/entity', 'hallucinated'
         if p in geo_like_preds and str(s).strip()[:1].isupper() and " " not in str(s).strip():
             return 'Likely fabricated title/work/entity', 'hallucinated'
-        return 'Entity not found in Wikidata', 'unknown'
+        return 'Entity not found in Wikidata', 'entity_not_found'
 
     if not pid:
-        return 'Relation unsupported for linked entity types', 'unknown'
+        return 'Relation unsupported for linked entity types', 'relation_unsupported'
 
     if not o_qid and p not in {'founded_on', 'publication_year', 'date_of_birth', 'date_of_death'}:
         if _looks_like_fabricated_entity_text(o):
             return 'Likely fabricated title/work/entity', 'hallucinated'
-        return 'Multiple candidate entities, no confident disambiguation' if len(str(o).split()) >= 2 else 'Entity not found in Wikidata', 'unknown'
+        if len(str(o).split()) >= 2:
+            return 'Multiple candidate entities, no confident disambiguation', 'ambiguous_entity'
+        return 'Entity not found in Wikidata', 'entity_not_found'
 
     if ask_result is False and not evidence:
-        return 'No supporting graph evidence found', 'unknown'
+        return 'No supporting graph evidence found', 'no_supporting_graph_evidence'
 
     if ask_result is False and evidence:
-        return 'No supporting graph evidence found', 'unknown'
+        return 'No supporting graph evidence found', 'kg_conflict_or_incomplete'
 
     return 'The claim could not be verified confidently from the knowledge graph.', 'unknown'
 def _parse_numeric_value(text: str) -> Optional[float]:
@@ -1274,6 +1787,11 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
     t.setdefault("reason", None)
     t.setdefault("nei_type", None)
     t.setdefault("likely_hallucination", False)
+    t.setdefault("graph_reasoning_used", False)
+    t.setdefault("graph_path", None)
+    t.setdefault("graph_path_readable", None)
+    t.setdefault("graph_visualization", None)
+    t.setdefault("nei_reason_detail", None)
 
     pid = t.get("property_id") or pred_meta.get("property_id") or _get_property_id(p)
     reverse = bool(t.get("reverse", False)) or bool(pred_meta.get("reverse", False)) or (p in REVERSE_PREDICATES)
@@ -1295,7 +1813,12 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         o_qid = None
         pair_ask = None
     else:
-        s_qid, o_qid, pair_ask = _best_qid_pair_by_graph(s, o, sentence, p, pid, reverse, strategy, max_k=3)
+        candidate_k = 8 if p in {"written_by", "author_of"} else 3
+
+        s_qid, o_qid, pair_ask = _best_qid_pair_by_graph(
+            s, o, sentence, p, pid, reverse, strategy, max_k=candidate_k
+        )
+
         if s_qid is None and o_qid is None:
             s_qid, o_qid = _resolve_subject_object_qids(s, o, sentence, p)
             pair_ask = None
@@ -1334,8 +1857,55 @@ def verify_triple(triple: Dict[str, Any]) -> Dict[str, Any]:
         if graph_result is True:
             ask_result = True
             t["verification_strategy"] = graph_strategy_used
+            t["graph_reasoning_used"] = True
             t["graph_path"] = graph_path_used
 
+            viz = _path_visualization_select(
+                predicate=p,
+                s_qid=s_qid,
+                o_qid=o_qid,
+                s_label=s,
+                o_label=o
+            )
+
+            if viz:
+                t["graph_visualization"] = viz
+                t["graph_path_labels"] = viz.get("path_labels")
+                t["graph_path_qids"] = viz.get("path_qids")
+                t["graph_path_readable"] = viz.get("readable_path")
+            else:
+                t["graph_visualization"] = {
+                    "type": "predicate_constrained_path",
+                    "strategy": graph_strategy_used,
+                    "path_qids": [s_qid, o_qid],
+                    "path_labels": [s, o],
+                    "readable_path": f"{s} -> {o}",
+                    "explanation": "Supported by predicate-specific graph reasoning."
+                }
+                t["graph_path_labels"] = [s, o]
+                t["graph_path_qids"] = [s_qid, o_qid]
+                t["graph_path_readable"] = f"{s} -> {o}"
+        # ------------------------------------------------
+    # Visualization-only path reconstruction.
+    # This does NOT change the verdict.
+    # It only adds graph path metadata for claims that were already supported
+    # by existing strategies such as location_union.
+    # ------------------------------------------------
+    if ask_result is True and s_qid and o_qid and p in GRAPH_REASONING_STRATEGIES:
+        viz = _path_visualization_select(
+            predicate=p,
+            s_qid=s_qid,
+            o_qid=o_qid,
+            s_label=s,
+            o_label=o
+        )
+
+        if viz:
+            t["graph_reasoning_used"] = True
+            t["graph_visualization"] = viz
+            t["graph_path_labels"] = viz.get("path_labels")
+            t["graph_path_qids"] = viz.get("path_qids")
+            t["graph_path_readable"] = viz.get("readable_path")
     if ask_result is not True and (strategy == "year" or p in {"founded_on", "publication_year", "date_of_birth", "date_of_death"}):
         year = _looks_like_year(o) or _looks_like_year(sentence)
         if year:

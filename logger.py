@@ -1,8 +1,9 @@
 import json
 import os
 from datetime import datetime
+from typing import Optional, Any
 
-RESULTS_FILE = "results_6.json"
+RESULTS_FILE = "results_7.json"
 
 
 def log_results(
@@ -10,21 +11,51 @@ def log_results(
     answer: str,
     claims: list,
     verified_references: list = None,
-    reference_only_label: str = None
+    reference_only_label: str = None,
+
+    # Correction-loop logging fields
+    original_answer: Optional[str] = None,
+    corrected_answer: Optional[str] = None,
+    original_claims: Optional[list] = None,
+    corrected_claims: Optional[list] = None,
+    correction_attempted: bool = False,
+    correction_accepted: bool = False,
+    bad_claims_before: Optional[int] = None,
+    bad_claims_after: Optional[int] = None,
+    correction_reason: Optional[str] = None,
 ):
-    record = {
+    record: dict[str, Any] = {
         "timestamp": datetime.utcnow().isoformat(),
         "prompt": prompt,
+
+        # Final answer after possible correction
         "answer": answer,
 
-        # Claims (triples after full pipeline)
+        # Before/after correction-loop answers
+        "original_answer": original_answer,
+        "corrected_answer": corrected_answer,
+
+        # Final claims after possible correction
         "claims": claims if claims else [],
 
-        # References (after verification)
+        # Before/after claim sets
+        "original_claims": original_claims if original_claims else [],
+        "corrected_claims": corrected_claims if corrected_claims else [],
+
+        # Correction-loop metadata
+        "correction": {
+            "attempted": correction_attempted,
+            "accepted": correction_accepted,
+            "bad_claims_before": bad_claims_before,
+            "bad_claims_after": bad_claims_after,
+            "reason": correction_reason,
+        },
+
+        # References
         "verified_references": verified_references if verified_references else [],
 
-        # Summary label (important for your thesis)
-        "reference_only_label": reference_only_label
+        # Summary label
+        "reference_only_label": reference_only_label,
     }
 
     # Create file if missing
